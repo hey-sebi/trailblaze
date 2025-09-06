@@ -1,0 +1,20 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Configure (CMake + Ninja + MSVC)",
+      "type": "shell",
+      "detail": "Configures CMake to use Ninja and MSVC after setting up the MSVC env",
+      "command": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "args": [
+        "-NoProfile", "-ExecutionPolicy", "Bypass",
+        "-File", "${workspaceFolder}\\scripts\\configure-msvc.ps1",
+        "-Arch", "x64"
+      ],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": "$msCompile",
+      "runOptions": { "reevaluateOnRerun": false },
+      "group": { "kind": "build", "isDefault": false }
+    }
+  ]
+}
