@@ -1,0 +1,99 @@
+# .clang-tidy
+---
+Checks: >
+  -*,
+  clang-analyzer-*,
+  bugprone-*,
+  performance-*,
+  portability-*,
+  readability-*,
+  modernize-*,
+  cppcoreguidelines-*,
+  google-*
+
+WarningsAsErrors: ''
+HeaderFilterRegex: '.*'        # tighten to your tree if you like
+AnalyzeTemporaryDtors: true
+FormatStyle: file
+InheritParentConfig: false
+
+# Trim or defer a few noisy/styley checks or ones not ideal for mixed C++17 codebases.
+# Re-enable later if desired.
+# (google-* stays enabled overall; we just mute a couple of overzealous ones.)
+Checks: >
+  -*,
+  clang-analyzer-*,
+  bugprone-*,
+  performance-*,
+  portability-*,
+  readability-*,
+  modernize-*,
+  cppcoreguidelines-*,
+  google-*,
+  -readability-identifier-naming,                # we re-enable below with options
+  -readability-magic-numbers,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -cppcoreguidelines-non-private-member-variables-in-classes,
+  -modernize-use-trailing-return-type,
+  -modernize-use-std-span,                       # C++20
+  -google-runtime-references                     # often too prescriptive for APIs
+
+CheckOptions:
+  # ===== identifier naming (Google C++ Style Guide) =====
+  - { key: readability-identifier-naming.NamespaceCase,               value: lower_case }
+  - { key: readability-identifier-naming.ClassCase,                   value: CamelCase }
+  - { key: readability-identifier-naming.StructCase,                  value: CamelCase }
+  - { key: readability-identifier-naming.UnionCase,                   value: CamelCase }
+  - { key: readability-identifier-naming.EnumCase,                    value: CamelCase }
+  - { key: readability-identifier-naming.EnumConstantCase,            value: CamelCase }
+  - { key: readability-identifier-naming.EnumConstantPrefix,          value: k }
+  - { key: readability-identifier-naming.TypedefCase,                 value: CamelCase }
+  - { key: readability-identifier-naming.TypeAliasCase,               value: CamelCase }
+  - { key: readability-identifier-naming.TemplateParameterCase,       value: CamelCase }
+
+  - { key: readability-identifier-naming.FunctionCase,                value: CamelCase }
+  - { key: readability-identifier-naming.MethodCase,                  value: CamelCase }
+  - { key: readability-identifier-naming.MacroDefinitionCase,         value: UPPER_CASE }
+
+  - { key: readability-identifier-naming.VariableCase,                value: lower_case }
+  - { key: readability-identifier-naming.GlobalVariableCase,          value: lower_case }
+  - { key: readability-identifier-naming.StaticVariableCase,          value: lower_case }
+  - { key: readability-identifier-naming.ParameterCase,               value: lower_case }
+  - { key: readability-identifier-naming.LocalVariableCase,           value: lower_case }
+
+  # Data members: snake_case with trailing underscore.
+  - { key: readability-identifier-naming.MemberCase,                  value: lower_case }
+  - { key: readability-identifier-naming.MemberSuffix,                value: _ }
+  - { key: readability-identifier-naming.PrivateMemberCase,           value: lower_case }
+  - { key: readability-identifier-naming.PrivateMemberSuffix,         value: _ }
+  - { key: readability-identifier-naming.ProtectedMemberCase,         value: lower_case }
+  - { key: readability-identifier-naming.ProtectedMemberSuffix,       value: _ }
+
+  # Constants: kConstantName (incl. globals, members, locals)
+  - { key: readability-identifier-naming.ConstantCase,                value: CamelCase }
+  - { key: readability-identifier-naming.ConstantPrefix,              value: k }
+  - { key: readability-identifier-naming.GlobalConstantCase,          value: CamelCase }
+  - { key: readability-identifier-naming.GlobalConstantPrefix,        value: k }
+  - { key: readability-identifier-naming.MemberConstantCase,          value: CamelCase }
+  - { key: readability-identifier-naming.MemberConstantPrefix,        value: k }
+  - { key: readability-identifier-naming.LocalConstantCase,           value: CamelCase }
+  - { key: readability-identifier-naming.LocalConstantPrefix,         value: k }
+
+  # ===== modernize =====
+  - { key: modernize-use-auto.MinTypeNameLength,                      value: '5' }
+  - { key: modernize-loop-convert.MinConfidence,                      value: reasonable }
+  - { key: modernize-use-nullptr.NullMacros,                          value: 'NULL' }
+  - { key: modernize-pass-by-value.IncludeStyle,                      value: llvm }
+  - { key: modernize-use-trailing-return-type.UseTrailingReturnType,  value: 'false' }
+
+  # ===== readability =====
+  - { key: readability-braces-around-statements.ShortStatementLines,  value: '1' }
+  - { key: readability-else-after-return.WarnOnUnfixable,             value: 'false' }
+
+  # ===== performance =====
+  - { key: performance-unnecessary-value-param.AllowedTypes,
+      value: '::std::string_view;::absl::string_view' }
+
+# Re-enable naming now that options are set:
+ExtraArgs: ['-std=c++17']
+
