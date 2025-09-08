@@ -1,0 +1,31 @@
+#ifndef TRAILBLAZE_INTERPOLATION_COMPOSITION_H_
+#define TRAILBLAZE_INTERPOLATION_COMPOSITION_H_
+
+namespace trailblaze {
+
+/** Composition of interpolation functions.
+ *
+ *  In case a state space is a composite, state interpolation will usually also be a
+ *  composite. This structs composes multiple atomic interpolator pieces, where each piece
+ *  provides:
+ *
+ *  @code
+ *   void Apply(const S& a, const S& b, double t, S& out) const;
+ *  @endcode
+ */
+template <typename... Pieces>
+struct InterpolationComposition
+{
+  template <typename S>
+  S operator()(const S& a, const S& b, double t) const
+  {
+    // copy target layout, then overwrite touched components
+    S out = b;
+    (Pieces{}.Apply(a, b, t, out), ...);
+    return out;
+  }
+};
+
+}  // namespace trailblaze
+
+#endif  // TRAILBLAZE_INTERPOLATION_COMPOSITION_H_

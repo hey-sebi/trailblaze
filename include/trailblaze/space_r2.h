@@ -3,29 +3,48 @@
 
 #include <cmath>
 
-#include "trailblaze/interpolation.h"
+#include "trailblaze/interpolation_composition.h"
+#include "trailblaze/math/interpolation.h"
 #include "trailblaze/traits.h"
 
 namespace trailblaze {
 
 // -------------------- State --------------------
-struct R2 {
+struct R2
+{
   double x;
   double y;
 };
 
 // -------------------- Accessors --------------------
 namespace access {
-inline double& x(R2& s) noexcept { return s.x; }
-inline double& y(R2& s) noexcept { return s.y; }
-inline double x(const R2& s) noexcept { return s.x; }
-inline double y(const R2& s) noexcept { return s.y; }
+inline double& x(R2& s) noexcept
+{
+  return s.x;
+}
+
+inline double& y(R2& s) noexcept
+{
+  return s.y;
+}
+
+inline double x(const R2& s) noexcept
+{
+  return s.x;
+}
+
+inline double y(const R2& s) noexcept
+{
+  return s.y;
+}
 }  // namespace access
 
 // -------------------- Metric(s) --------------------
-struct MetricXy {
+struct MetricR2
+{
   template <typename S>
-  double operator()(const S& a, const S& b) const {
+  double operator()(const S& a, const S& b) const
+  {
     // For R2 it’s trivial, but made generic to accept any S with x,y.
     const double dx = a.x - b.x;
     const double dy = a.y - b.y;
@@ -34,9 +53,11 @@ struct MetricXy {
 };
 
 // -------------------- Atomic interpolator(s) --------------------
-struct InterpR2 {
+struct InterpR2
+{
   template <typename S>
-  void Apply(const S& a, const S& b, double t, S& out) const {
+  void Apply(const S& a, const S& b, double t, S& out) const
+  {
     out.x = LerpScalar::Lerp(a.x, b.x, t);
     out.y = LerpScalar::Lerp(a.y, b.y, t);
   }
@@ -48,9 +69,10 @@ template <typename S>
 struct StateSpace;  // NOLINT(readability/identifier_naming)
 
 template <>
-struct StateSpace<R2> {
-  using Metric = MetricXy;
-  using Interp = ComposeInterp<InterpR2>;  // XY only
+struct StateSpace<R2>
+{
+  using Metric = MetricR2;
+  using Interp = InterpolationComposition<InterpR2>;
 };
 
 }  // namespace trailblaze

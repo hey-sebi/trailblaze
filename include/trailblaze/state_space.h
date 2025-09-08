@@ -5,7 +5,8 @@ namespace trailblaze {
 
 // Primary template. Specialize per state type to set defaults.
 template <typename S>
-struct StateSpace {
+struct StateSpace
+{
   // using Metric = ...;
   // using Interp = ...;
 };
