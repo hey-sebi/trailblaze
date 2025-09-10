@@ -15,16 +15,27 @@ namespace plot {
 // ----- R^2: requires x,y -----------------------------------------------------
 
 template <typename State>
-typename std::enable_if<trailblaze::has_xy_v<State>, void>::type BuildSceneFromPath(
-    const Path<State>& path, Scene* scene)
+typename std::enable_if<trailblaze::has_xy_v<State>, void>::type
+
+BuildSceneFromPath(const Path<State>& path, Scene* scene, double arrow_len = 0.25,
+                   std::size_t every_n = 10)
 {
-  Polyline2D pl;
-  pl.pts.reserve(path.size());
-  for (const auto& s : path.states())
+  Polyline2D polyline;
+  polyline.pts.reserve(path.size());
+  if (every_n == 0)
   {
-    pl.pts.push_back({s.x, s.y});
+    every_n = 1;
   }
-  scene->polylines.push_back(std::move(pl));
+  if (path.size() < every_n)
+  {
+    every_n = 1;
+  }
+  for (std::size_t i = 0; i < path.size(); i += every_n)
+  {
+    const auto& state = path[i];
+    polyline.pts.push_back({state.x, state.y});
+    scene->polylines.push_back(std::move(polyline));
+  }
 }
 
 // ----- SE(2): requires x,y,yaw  ----------------------------------------------
@@ -42,16 +53,20 @@ BuildSceneFromPathSE2(const trailblaze::Path<State>& path, Scene* scene,
   {
     every_n = 1;
   }
+  if (path.size() < every_n)
+  {
+    every_n = 1;
+  }
   for (std::size_t i = 0; i < path.size(); i += every_n)
   {
-    const auto& s = path[i];
-    const double c = std::cos(s.yaw);
-    const double d = std::sin(s.yaw);
-    Arrow2D a;
-    a.p = {s.x, s.y};
-    a.q = {s.x + arrow_len * c, s.y + arrow_len * d};
-    a.head_len = arrow_len * 0.25;
-    scene->arrows.push_back(std::move(a));
+    const auto& state = path[i];
+    const double cos = std::cos(state.yaw);
+    const double sin = std::sin(state.yaw);
+    Arrow2D arrow;
+    arrow.p = {state.x, state.y};
+    arrow.q = {state.x + arrow_len * cos, state.y + arrow_len * sin};
+    arrow.head_len = arrow_len * 0.25;
+    scene->arrows.push_back(std::move(arrow));
   }
 }
 
