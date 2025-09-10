@@ -4,7 +4,7 @@
 #include <cmath>
 
 #include "trailblaze/backport/span.h"
-#include "trailblaze/traits.h"
+#include "trailblaze/state_traits.h"
 
 // Note: XY utilities require accessors from space_r2.h (included by users who
 // call these). We keep these algorithms lightweight and traits-guarded.

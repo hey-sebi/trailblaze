@@ -2,7 +2,7 @@
 #define TRAILBLAZE_PLOT_PLOT_API_H_
 
 #include "trailblaze/path.h"
-#include "trailblaze/traits.h"
+#include "trailblaze/state_traits.h"
 // plotting related
 #include "trailblaze/plot/primitives.h"
 #include "trailblaze/plot/renderer.h"

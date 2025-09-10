@@ -2,12 +2,14 @@
 #define TRAILBLAZE_PATH_H_
 
 #include <cassert>
+#include <iostream>
 #include <memory_resource>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
 #include "trailblaze/backport/span.h"
+#include "trailblaze/type_traits.h"
 
 namespace trailblaze {
 
@@ -39,6 +41,11 @@ struct AoSStorage
   void Reserve(std::size_t n)
   {
     data_.reserve(n);
+  }
+
+  void Resize(std::size_t n)
+  {
+    data_.resize(n);
   }
 
   void PushBack(const S& v)
@@ -100,6 +107,11 @@ class Path
   void reserve(std::size_t n)
   {
     storage_.Reserve(n);
+  }
+
+  void resize(std::size_t n)
+  {
+    storage_.Resize(n);
   }
 
   void push_back(const State& s)
@@ -175,6 +187,26 @@ class Path
 // PMR convenience alias.
 template <typename S>
 using PmrPath = Path<S, AoSStorage, std::pmr::polymorphic_allocator<S>>;
+
+/** Puts each state in a path onto an output stream.
+ *
+ *  TODO
+ *
+ */
+template <typename State, template <typename, typename> class Storage = AoSStorage,
+          typename Allocator = std::allocator<State>>
+inline std::ostream& operator<<(std::ostream& os, const Path<State>& path)
+{
+  static_assert(is_ostream_insertable_v<State>,
+                "Requires that State is stream-insertable (has operator<<(ostream&, "
+                "const State&)).");
+
+  for (const auto& state : path.states())
+  {
+    os << state << '\n';
+  }
+  return os;
+}
 
 }  // namespace trailblaze
 

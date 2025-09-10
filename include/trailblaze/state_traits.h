@@ -1,7 +1,7 @@
-#ifndef TRAILBLAZE_TRAITS_H_
-#define TRAILBLAZE_TRAITS_H_
+#ifndef TRAILBLAZE_STATE_TRAITS_H_
+#define TRAILBLAZE_STATE_TRAITS_H_
 
-#include "trailblaze/detail/traits.h"
+#include "trailblaze/detail/state_traits.h"
 
 namespace trailblaze {
 

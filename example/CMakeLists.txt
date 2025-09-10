@@ -8,3 +8,4 @@ target_link_libraries(how_to_use
 )
 
 add_subdirectory(plot)
+add_subdirectory(generate)

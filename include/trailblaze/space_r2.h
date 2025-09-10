@@ -2,10 +2,11 @@
 #define TRAILBLAZE_SPACE_R2_H_
 
 #include <cmath>
+#include <ostream>
 
 #include "trailblaze/interpolation_composition.h"
 #include "trailblaze/math/interpolation.h"
-#include "trailblaze/traits.h"
+#include "trailblaze/state_traits.h"
 
 namespace trailblaze {
 
@@ -15,6 +16,12 @@ struct R2
   double x;
   double y;
 };
+
+inline std::ostream& operator<<(std::ostream& out, const R2& state)
+{
+  out << "(" << state.x << ", " << state.y << ")";
+  return out;
+}
 
 // -------------------- Accessors --------------------
 namespace access {

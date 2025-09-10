@@ -5,7 +5,7 @@
 #include <cmath>
 
 #include "trailblaze/path.h"
-#include "trailblaze/traits.h"
+#include "trailblaze/state_traits.h"
 // plotting related
 #include "trailblaze/plot/scene.h"
 

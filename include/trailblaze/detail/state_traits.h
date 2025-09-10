@@ -1,5 +1,5 @@
-#ifndef TRAILBLAZE_DETAIL_TRAITS_H_
-#define TRAILBLAZE_DETAIL_TRAITS_H_
+#ifndef TRAILBLAZE_DETAIL_STATE_TRAITS_H_
+#define TRAILBLAZE_DETAIL_STATE_TRAITS_H_
 
 #include <type_traits>
 #include <utility>

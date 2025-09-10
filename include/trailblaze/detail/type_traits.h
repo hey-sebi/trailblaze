@@ -1,0 +1,26 @@
+#ifndef TRAILBLAZE_DETAIL_TYPE_TRAITS_H_
+#define TRAILBLAZE_DETAIL_TYPE_TRAITS_H_
+
+#include <ostream>
+#include <type_traits>
+
+namespace trailblaze {
+namespace detail {
+
+// Primary template: not stream-insertable.
+template <typename T, typename = void>
+struct is_ostream_insertable : std::false_type
+{
+};
+
+// Specialization: valid if `std::ostream << const T&` is well-formed.
+template <typename T>
+struct is_ostream_insertable<
+    T, std::void_t<decltype(std::declval<std::ostream&>() << std::declval<const T&>())>>
+    : std::true_type
+{
+};
+}  // namespace detail
+}  // namespace trailblaze
+
+#endif

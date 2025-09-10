@@ -6,7 +6,7 @@
 
 #include "trailblaze/interpolation_composition.h"
 #include "trailblaze/math/interpolation.h"
-#include "trailblaze/traits.h"
+#include "trailblaze/state_traits.h"
 
 namespace trailblaze {
 
@@ -17,6 +17,12 @@ struct SE2
   double y;
   double yaw;  // radians
 };
+
+inline std::ostream& operator<<(std::ostream& out, const SE2& state)
+{
+  out << "(" << state.x << ", " << state.y << " | " << state.yaw << ")";
+  return out;
+}
 
 // -------------------- Accessors --------------------
 namespace access {
