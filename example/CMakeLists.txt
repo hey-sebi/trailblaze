@@ -6,3 +6,5 @@ add_executable(how_to_use
 target_link_libraries(how_to_use
   PRIVATE trailblaze
 )
+
+add_subdirectory(plot)
