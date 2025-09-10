@@ -3,6 +3,8 @@
 
 #include <cassert>
 #include <memory_resource>
+#include <stdexcept>
+#include <string>
 #include <vector>
 
 #include "trailblaze/backport/span.h"
@@ -132,6 +134,38 @@ class Path
   {
     assert(!empty());
     return *(data() + (size() - 1));
+  }
+
+  State& operator[](std::size_t index)
+  {
+    return *(data() + index);
+  }
+
+  const State& operator[](std::size_t index) const
+  {
+    return *(data() + index);
+  }
+
+  State& at(std::size_t index)
+  {
+    if (pos >= size())
+    {
+      std::string msg = "pos " + std::to_string(pos) + " is out of range. Path size is " +
+                        std::to_string(size());
+      throw std::out_of_range(msg);
+    }
+    return *(data() + index);
+  }
+
+  const State& at(std::size_t index) const
+  {
+    if (pos >= size())
+    {
+      std::string msg = "pos " + std::to_string(pos) + " is out of range. Path size is " +
+                        std::to_string(size());
+      throw std::out_of_range(msg);
+    }
+    return *(data() + index);
   }
 
  private:
