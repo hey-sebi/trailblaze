@@ -1,0 +1,126 @@
+# ------------------- Project -------------------
+PROJECT_NAME           = "@DOXYGEN_PROJECT_NAME@"
+PROJECT_BRIEF          = "@DOXYGEN_PROJECT_BRIEF@"
+PROJECT_NUMBER         =
+OUTPUT_DIRECTORY       = "@DOXYGEN_OUTPUT_DIR@"
+CREATE_SUBDIRS         = NO
+
+# ------------------- Input -------------------
+INPUT                  = "@DOXYGEN_INPUT_DIR@" README.md
+RECURSIVE              = YES
+FILE_PATTERNS          = *.h *.hpp *.hh *.hxx *.c *.cc *.cpp *.ipp *.md
+EXCLUDE_PATTERNS       = */tests/* */.git/*
+
+# ------------------- Parsing / Extraction -------------------
+EXTRACT_ALL            = NO
+EXTRACT_PRIVATE        = NO
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+EXTRACT_ANON_NSPACES   = YES
+EXTRACT_PACKAGE        = NO
+HIDE_UNDOC_MEMBERS     = YES
+HIDE_UNDOC_CLASSES     = YES
+
+# Show short, relative labels everywhere (HTML, tooltips, Graphviz nodes)
+FULL_PATH_NAMES        = NO
+
+# Keep the file tree clean
+SHOW_USED_FILES        = NO
+SHOW_DIRECTORIES       = YES
+SHOW_FILES             = YES
+
+# Strip these prefixes from any discovered file paths (source, headers, graphs).
+# Add both source and build roots so nothing leaks absolute paths.
+STRIP_FROM_PATH        = "@CMAKE_SOURCE_DIR@" \
+                         "@CMAKE_BINARY_DIR@"
+
+# When Doxygen prints include file names, strip this prefix too.
+# (Set to your public header root.)
+STRIP_FROM_INC_PATH    = "@CMAKE_SOURCE_DIR@/include"
+
+
+# Prefer Google-style/Javadoc one-liners
+JAVADOC_AUTOBRIEF      = YES
+MULTILINE_CPP_IS_BRIEF = YES
+QT_AUTOBRIEF           = NO
+
+# C++ language & preprocessing
+OPTIMIZE_OUTPUT_FOR_C  = NO
+OPTIMIZE_OUTPUT_JAVA   = NO
+OPTIMIZE_OUTPUT_VHDL   = NO
+OPTIMIZE_OUTPUT_FOR_CPLUSPLUS = YES
+EXTENSION_MAPPING      = hpp=C++ hh=C++ hxx=C++ ipp=C++
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = NO
+SEARCH_INCLUDES        = YES
+INCLUDE_PATH           =
+ALIASES                = todo="\\todo" note="\\note" warning="\\warning"
+
+# ------------------- Diagrams (optional Graphviz) -------------------
+HAVE_DOT               = YES
+DOT_NUM_THREADS        = 0
+CLASS_DIAGRAMS         = YES
+CALL_GRAPH             = NO
+CALLER_GRAPH           = NO
+DOT_TRANSPARENT        = YES
+UML_LOOK               = YES
+
+# ------------------- HTML output -------------------
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+GENERATE_TREEVIEW      = YES
+DISABLE_INDEX          = NO
+ENUM_VALUES_PER_LINE   = 1
+
+# Theme: doxygen-awesome-css
+# - CSS files
+HTML_EXTRA_STYLESHEET  = \
+  "@DOXYGEN_AWESOME_DIR@/doxygen-awesome.css" \
+  "@DOXYGEN_AWESOME_DIR@/doxygen-awesome-sidebar-only.css" \
+  "@DOXYGEN_AWESOME_DIR@/doxygen-awesome-tabs.css"
+
+# - JS (dark mode toggle, anchor scrolling)
+HTML_EXTRA_FILES       = \
+  "@DOXYGEN_AWESOME_DIR@/doxygen-awesome-darkmode-toggle.js" \
+  "@DOXYGEN_AWESOME_DIR@/doxygen-awesome-fragment-copy-button.js"
+
+# Inject toggle button and scripts into header
+HTML_HEADER            =
+HTML_FOOTER            =
+HTML_EXTRA_FILES      += "@DOXYGEN_AWESOME_DIR@/doxygen-custom/awesome-doxygen.css"
+
+# Add a little snippet to enable dark-mode toggle
+# (Doxygen 1.9+ lets us inject extra scripts via HTML_EXTRA_FILES; the toggle looks for the button automatically)
+HTML_COLORSTYLE        = LIGHT
+HTML_DYNAMIC_MENUS     = YES
+
+# ------------------- Search -------------------
+SEARCHENGINE           = YES
+SERVER_BASED_SEARCH    = NO
+
+# ------------------- Warnings / Quality -------------------
+WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_DOC_ERROR      = YES
+WARN_NO_PARAMDOC       = YES
+WARN_AS_ERROR          = NO
+
+# ------------------- Source browsing -------------------
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = NO
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES
+VERBATIM_HEADERS       = YES
+
+# ------------------- Markdown -------------------
+MARKDOWN_SUPPORT       = YES
+TOC_INCLUDE_HEADINGS   = 3
+
+# ------------------- XML (future-proof for Sphinx/Breathe, if desired) -------------------
+GENERATE_XML           = YES
+XML_OUTPUT             = xml
+
+# ------------------- Misc -------------------
+SHOW_USED_FILES        = NO
+SORT_MEMBER_DOCS       = YES
+SORT_BRIEF_DOCS        = YES
+SORT_MEMBERS_CTORS_1ST = YES

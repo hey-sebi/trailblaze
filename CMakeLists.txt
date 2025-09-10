@@ -29,6 +29,7 @@ option(ENABLE_TESTING "Activates support for unit tests" ON)
 option(USE_EXTERNAL_GTEST "Use preinstalled/externally provided GTest" OFF)
 option(ENABLE_CCACHE "Enables CCache integration" ON)
 option(ENABLE_CLANG_TIDY "Enables Clang-Tidy integration" ON)
+option(ENABLE_DOXYGEN "Enables doxygen documentation generation" ON)
 
 # Set the project wide C++ standard.
 set(CMAKE_CXX_STANDARD 17)
@@ -56,6 +57,44 @@ if (ENABLE_CLANG_TIDY)
   endif()
 endif()
 
+# ---------------------------------------------------------------------------
+#  Setup for Doxygen
+# ---------------------------------------------------------------------------
+
+if(ENABLE_DOXYGEN)
+  find_package(Doxygen REQUIRED)
+
+  include(FetchContent)
+
+  # Integrate doxygen-awesome theme
+  FetchContent_Declare(
+    doxygen_awesome
+    GIT_REPOSITORY https://github.com/jothepro/doxygen-awesome-css.git
+    GIT_TAG        v2.3.4
+  )
+  FetchContent_MakeAvailable(doxygen_awesome)
+
+  # Paths for theme files
+  set(DOXYGEN_AWESOME_DIR ${doxygen_awesome_SOURCE_DIR})
+
+  # Configure Doxyfile from template
+  set(DOXYGEN_INPUT_DIR "${CMAKE_SOURCE_DIR}/include")
+  set(DOXYGEN_OUTPUT_DIR "${CMAKE_BINARY_DIR}/docs")
+  set(DOXYGEN_PROJECT_NAME "trailblaze")
+  set(DOXYGEN_PROJECT_BRIEF "A C++ library for modeling paths in robotics")
+
+  configure_file(${CMAKE_SOURCE_DIR}/docs/Doxyfile.in
+                 ${CMAKE_BINARY_DIR}/Doxyfile @ONLY)
+
+  #  Custom 'doc' target so we can generate the documentation with 'make doc' or 'ninja doc'
+  add_custom_target(doc
+    COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/Doxyfile
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    COMMENT "Generating API documentation with Doxygen"
+    VERBATIM
+  )
+
+endif()
 
 # ---------------------------------------------------------------------------
 #  Setup for CTest / CCache / install dirs
@@ -189,4 +228,9 @@ if(ENABLE_INSTALL)
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/trailblaze
   )
 
+  if(ENABLE_DOXYGEN)
+    install(DIRECTORY "${DOXYGEN_OUTPUT_DIR}/html"
+        DESTINATION "share/trailblaze/docs"
+        OPTIONAL)
+  endif()
 endif()
