@@ -39,22 +39,23 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 #  Setup for clang-tidy
 # ---------------------------------------------------------------------------
 
-# if (ENABLE_CLANG_TIDY)
-#   # CMake integration
-#   find_program(CLANG_TIDY_EXE NAMES clang-tidy REQUIRED)
-#   if(CLANG_TIDY_EXE)
-#     set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE};-p=${CMAKE_BINARY_DIR};-format-style=file")
-#   endif()
+if (ENABLE_CLANG_TIDY)
+  # CMake integration
+  find_program(CLANG_TIDY_EXE NAMES clang-tidy REQUIRED)
+  if(CLANG_TIDY_EXE)
+    set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE};-p=${CMAKE_BINARY_DIR};-format-style=file")
+  endif()
 
-#   # Custom arget for manual runs
-#   find_program(RUN_CLANG_TIDY NAMES run-clang-tidy run-clang-tidy.py)
-#   if(RUN_CLANG_TIDY)
-#     add_custom_target(tidy
-#       COMMAND "${RUN_CLANG_TIDY}" -p "${CMAKE_BINARY_DIR}" -format-style=file
-#       COMMENT "Running clang-tidy over the whole project"
-#     )
-#   endif()
-# endif()
+  # Custom arget for manual runs
+  find_program(RUN_CLANG_TIDY NAMES run-clang-tidy run-clang-tidy.py)
+  if(RUN_CLANG_TIDY)
+    add_custom_target(tidy
+      COMMAND "${RUN_CLANG_TIDY}" -p "${CMAKE_BINARY_DIR}" -format-style=file
+      COMMENT "Running clang-tidy over the whole project"
+    )
+  endif()
+endif()
+
 
 # ---------------------------------------------------------------------------
 #  Setup for CTest / CCache / install dirs
