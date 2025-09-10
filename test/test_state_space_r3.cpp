@@ -7,7 +7,7 @@
 
 namespace trailblaze {
 
-TEST(TestStateSpaces, TestSpaceR3Accessors)
+TEST(StateSpaces, SpaceR3Accessors)
 {
   R3 state;
   state.x = 10;
@@ -27,7 +27,7 @@ TEST(TestStateSpaces, TestSpaceR3Accessors)
   EXPECT_EQ(60, state.z);
 }
 
-TEST(TestStateSpaces, TestSpaceR3Metric)
+TEST(StateSpaces, SpaceR3Metric)
 {
   // Metric in R3 is Euclidean distance.
   typename StateSpace<R3>::Metric dist;
@@ -46,7 +46,7 @@ TEST(TestStateSpaces, TestSpaceR3Metric)
   EXPECT_DOUBLE_EQ(dist(zero, state3), 7.0710678118654752440084436210485);
 }
 
-TEST(TestStateSpaces, TestSpaceR3LinearInterpolation)
+TEST(StateSpaces, SpaceR3LinearInterpolation)
 {
   using test::kLinearInterpolationAccuracy;
   typename StateSpace<R3>::Interp interpolate;

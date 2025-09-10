@@ -15,25 +15,33 @@ inline double ToRad(double deg)
   return deg / 180. * M_PI;
 }
 
-/** Normalizes an angle to the range (-Pi, Pi].
- *  @tparam Any floating point type
+/** Normalizes an angle to the range [-Pi, Pi).
+ *  @tparam T Any floating point type
  *  @param angle Angle value in [rad]
  *  @returns the normalized angle
  */
 template <typename T>
-inline T NormalizeAngle(T angle)
+inline T NormalizedAngle(const T angle)
 {
-  static_assert(std::is_floating_point_v<T>, "NormalizeAngle requires floating-point T");
+  static_assert(std::is_floating_point_v<T>, "NormalizedAngle requires floating-point T");
+  constexpr T two_pi = static_cast<T>(2.0) * static_cast<T>(M_PI);
 
-  while (angle < -M_PI)
+  T x = std::fmod(angle + static_cast<T>(M_PI), two_pi);
+  if (x < static_cast<T>(0))
   {
-    angle += 2 * M_PI;
+    x += two_pi;  // keep in [0, 2*Pi)
   }
-  while (angle >= M_PI)
-  {
-    angle -= 2 * M_PI;
-  }
-  return angle;
+  return x - static_cast<T>(M_PI);
+}
+
+/** Normalizes an angle to the range [-Pi, Pi)
+ *  @tparam T Any floating point type
+ *  @param angle Angle that is normalized, in [rad]
+ */
+template <typename T>
+inline void NormalizeAngle(T& angle)
+{
+  angle = NormalizedAngle(angle);
 }
 
 }  // namespace trailblaze

@@ -1,80 +1,50 @@
 #ifndef TRAILBLAZE_TRAITS_H_
 #define TRAILBLAZE_TRAITS_H_
 
-#include <type_traits>
-#include <utility>
+#include "trailblaze/detail/traits.h"
 
 namespace trailblaze {
 
-template <typename...>
-using void_t = void;
+/** Trait to check if a state has x and y components.
+ *  @tparam T The state type
+ *  @returns @c true if the state has the components, @c false otherwise.
+ */
+template <typename T>
+inline constexpr bool has_xy_v = detail::has_xy<T>::value;
 
-// Basic field presence detectors for common atoms.
-template <typename S, typename = void>
-struct has_xy : std::false_type
-{
-};
+template <typename T>
+inline constexpr bool has_yaw_v = detail::has_yaw<T>::value;
 
-template <typename S>
-struct has_xy<S, void_t<decltype(std::declval<S>().x), decltype(std::declval<S>().y)>>
-    : std::true_type
-{
-};
+template <typename T>
+constexpr bool has_xyz_v = detail::has_xyz<T>::value;
 
-template <typename S>
-constexpr bool kHasXy = has_xy<S>::value;
+template <typename T>
+constexpr bool has_quat_v = detail::has_quat<T>::value;
 
-template <typename S, typename = void>
-struct has_yaw : std::false_type
-{
-};
-
-template <typename S>
-struct has_yaw<S, void_t<decltype(std::declval<S>().yaw)>> : std::true_type
-{
-};
-
-template <typename S>
-constexpr bool kHasYaw = has_yaw<S>::value;
-
-template <typename S, typename = void>
-struct has_xyz : std::false_type
-{
-};
-
-template <typename S>
-struct has_xyz<S, void_t<decltype(std::declval<S>().x), decltype(std::declval<S>().y),
-                         decltype(std::declval<S>().z)>> : std::true_type
-{
-};
-
-template <typename S>
-constexpr bool kHasXyz = has_xyz<S>::value;
-
-template <typename S, typename = void>
-struct has_quat : std::false_type
-{
-};
-
-template <typename S>
-struct has_quat<S, void_t<decltype(std::declval<S>().rotation.x),
-                          decltype(std::declval<S>().rotation.y),
-                          decltype(std::declval<S>().rotation.z),
-                          decltype(std::declval<S>().rotation.w)>> : std::true_type
-{
-};
-
-template <typename S>
-constexpr bool kHasQuat = has_quat<S>::value;
-
-// Central traits, user-specializable per type if needed.
-template <typename S>
+/** Bundles state traits.
+ *  @tparam T State type
+ *
+ *   Usage example:
+ *  @code
+ *    struct SomeState
+ *    {
+ *      double x;
+ *      double y;
+ *    };
+ *
+ *    if constexpr (StateTraits<SomeState>::kHasXy)
+ *    {
+ *       // handle components
+ *    }
+ *  @endcode
+ */
+template <typename T>
 struct StateTraits
 {
-  static constexpr bool kHasXy = kHasXy<S>;
-  static constexpr bool kHasYaw = kHasYaw<S>;
-  static constexpr bool kHasXyz = kHasXyz<S>;
-  static constexpr bool kHasQuat = kHasQuat<S>;
+  static constexpr bool kHasXy = has_xy_v<T>;
+  static constexpr bool kHasYaw = has_yaw_v<T>;
+  static constexpr bool kHasXyz = has_xyz_v<T>;
+  static constexpr bool kHasQuat = has_quat_v<T>;
 };
 
 }  // namespace trailblaze

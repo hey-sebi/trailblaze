@@ -21,9 +21,19 @@ inline Quaternion operator*(double scalar, const Quaternion& q)
   return result;
 }
 
-inline double Norm(const Quaternion& q)
+inline Quaternion operator*(const Quaternion& q, double scalar)
+{
+  return scalar * q;
+}
+
+inline double SquaredNorm(const Quaternion& q)
 {
   return (q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
+}
+
+inline double Norm(const Quaternion& q)
+{
+  return std::sqrt(SquaredNorm(q));
 }
 
 inline void Normalize(Quaternion& q)
@@ -33,6 +43,13 @@ inline void Normalize(Quaternion& q)
   {
     q = (1. / norm) * q;
   }
+}
+
+inline Quaternion Normalized(Quaternion q)
+{
+  Quaternion normalized = q;
+  Normalize(normalized);
+  return normalized;
 }
 
 }  // namespace trailblaze

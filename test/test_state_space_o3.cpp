@@ -8,7 +8,7 @@
 
 namespace trailblaze {
 
-TEST(TestStateSpaces, TestSpaceO3Accessors)
+TEST(StateSpaces, SpaceO3Accessors)
 {
   O3 state;
   state.orientation.x = 0;
@@ -32,7 +32,7 @@ TEST(TestStateSpaces, TestSpaceO3Accessors)
   EXPECT_EQ(0.4, state.orientation.w);
 }
 
-TEST(TestStateSpaces, TestSpaceO3LinearInterpolation)
+TEST(StateSpaces, SpaceO3LinearInterpolation)
 {
   using test::kLinearInterpolationAccuracy;
   typename StateSpace<O3>::Interp interpolate;

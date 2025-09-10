@@ -43,8 +43,8 @@ T InterpolateAngleShortest(T a, T b, double t)
 {
   static_assert(std::is_floating_point_v<T>,
                 "InterpolateAngleShortest requires floating-point T");
-  double dist = NormalizeAngle(b - a);
-  return NormalizeAngle(a + t * dist);
+  double dist = NormalizedAngle(b - a);
+  return NormalizedAngle(a + t * dist);
 }
 
 inline Quaternion InterpolateQuaternion(const Quaternion& a, Quaternion b, double t)
@@ -59,7 +59,7 @@ inline Quaternion InterpolateQuaternion(const Quaternion& a, Quaternion b, doubl
     dot = -dot;
   }
 
-  const double kEps = 1e-6;
+  constexpr double kEps = 1e-6;
   double sx, sy, sz, sw;
   if (dot > 1.0 - kEps)
   {

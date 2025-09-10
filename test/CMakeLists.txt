@@ -1,6 +1,7 @@
 add_executable(test_state_spaces
   test_angle.cpp
   test_interpolation.cpp
+  test_quaternion.cpp
   test_state_space_r2.cpp
   test_state_space_r3.cpp
   test_state_space_se2.cpp

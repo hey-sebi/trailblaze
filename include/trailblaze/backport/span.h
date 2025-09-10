@@ -1,9 +1,9 @@
 #ifndef TRAILBLAZE_BACKPORT_SPAN_H_
 #define TRAILBLAZE_BACKPORT_SPAN_H_
 
-/** @brief This file provides a backport of std::span which is only available on C++20 and
- *         later. However, since this is the only C++20 requirement for now, the decision was
- *         made to port this type.
+/** @file span.h
+ *  @brief This file provides a backport of std::span which is only available on C++20 and
+ *         later.
  */
 
 #include <cstddef>

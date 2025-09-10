@@ -12,7 +12,7 @@ namespace trailblaze {
 
 using test::kLinearInterpolationAccuracy;
 
-TEST(TestInterpolation, TestLinearScalarInterpolation)
+TEST(Interpolation, LinearScalarInterpolation)
 {
   EXPECT_NEAR(LerpScalar::Lerp(0., 1., 0.5), 0.5, kLinearInterpolationAccuracy);
   EXPECT_NEAR(LerpScalar::Lerp(1., 2., 0.5), 1.5, kLinearInterpolationAccuracy);
@@ -24,7 +24,7 @@ TEST(TestInterpolation, TestLinearScalarInterpolation)
   EXPECT_NEAR(LerpScalar::Lerp(0., 1., -0.3), -0.3, kLinearInterpolationAccuracy);
 }
 
-TEST(TestInterpolation, TestLinearAngleInterpolation)
+TEST(Interpolation, LinearAngleInterpolation)
 {
   EXPECT_NEAR(InterpolateAngleShortest(ToRad(0.), ToRad(100.), 0.5), ToRad(50),
               kLinearInterpolationAccuracy);

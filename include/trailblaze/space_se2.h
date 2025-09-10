@@ -80,7 +80,7 @@ struct InterpolateYawAngle
   template <typename S>
   void Apply(const S& a, const S& b, double t, S& out) const
   {
-    static_assert(kHasYaw<S>, "InterpolateYawAngle needs states with yaw component");
+    static_assert(has_yaw_v<S>, "InterpolateYawAngle needs states with yaw component");
     access::yaw(out) = InterpolateAngleShortest(access::yaw(a), access::yaw(b), t);
   }
 };
