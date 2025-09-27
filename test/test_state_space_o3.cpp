@@ -1,7 +1,6 @@
-
 #include <gtest/gtest.h>
 
-#include "trailblaze/space_o3.h"
+#include "trailblaze/state_spaces/state_space_o3.h"
 
 // related to testing
 #include "common.h"
@@ -10,22 +9,23 @@ namespace trailblaze {
 
 TEST(StateSpaces, SpaceO3Accessors)
 {
-  O3 state;
+  StateO3 state;
   state.orientation.x = 0;
   state.orientation.y = 0;
   state.orientation.z = 0;
   state.orientation.w = 1;
+
   // read access
-  EXPECT_EQ(access::qx(state), state.orientation.x);
-  EXPECT_EQ(access::qy(state), state.orientation.y);
-  EXPECT_EQ(access::qz(state), state.orientation.z);
-  EXPECT_EQ(access::qw(state), state.orientation.w);
+  EXPECT_EQ(comp::qx(state), state.orientation.x);
+  EXPECT_EQ(comp::qy(state), state.orientation.y);
+  EXPECT_EQ(comp::qz(state), state.orientation.z);
+  EXPECT_EQ(comp::qw(state), state.orientation.w);
 
   // write access
-  access::qx(state) = 0.1;
-  access::qy(state) = 0.2;
-  access::qz(state) = 0.3;
-  access::qw(state) = 0.4;
+  comp::qx(state) = 0.1;
+  comp::qy(state) = 0.2;
+  comp::qz(state) = 0.3;
+  comp::qw(state) = 0.4;
   EXPECT_EQ(0.1, state.orientation.x);
   EXPECT_EQ(0.2, state.orientation.y);
   EXPECT_EQ(0.3, state.orientation.z);
@@ -35,7 +35,7 @@ TEST(StateSpaces, SpaceO3Accessors)
 TEST(StateSpaces, SpaceO3LinearInterpolation)
 {
   using test::kLinearInterpolationAccuracy;
-  typename StateSpace<O3>::Interp interpolate;
+  typename StateSpace<StateO3>::Interpolation interpolate;
   // TODO
 }
 

@@ -18,12 +18,13 @@ namespace trailblaze {
  *         All other values extrapolate.
  *  @returns the interpolated value.
  */
-struct LerpScalar
+struct ScalarInterpolator
 {
   template <typename T>
-  static T Lerp(const T& a, const T& b, double t)
+  static T Linear(const T& a, const T& b, double t)
   {
-    static_assert(std::is_floating_point_v<T>, "Lerp requires floating-point T");
+    static_assert(std::is_floating_point_v<T>,
+                  "Linear scalar interpolation requires floating-point T");
     return a + t * (b - a);
   }
 };

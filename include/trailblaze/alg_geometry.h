@@ -6,33 +6,39 @@
 #include "trailblaze/backport/span.h"
 #include "trailblaze/state_traits.h"
 
-// Note: XY utilities require accessors from space_r2.h (included by users who
-// call these). We keep these algorithms lightweight and traits-guarded.
-
 namespace trailblaze {
 
-// Requires S to expose x,y members (flat types) or ensure accessors exist if
-// you adapt this to use accessors instead.
-template <typename S>
-double LengthXy(Span<const S> p)
+/** Computes the length of a path or a path segment.
+ *  Considers only X and Y components of the state space.
+ *
+ *  @tparam TState State that has X and Y components.
+ *
+ *  @param path_span Path or path segment for which to compute the length.
+ *  @returns the length.
+ */
+template <typename TState>
+double LengthXy(Span<const TState> path_span)
 {
-  static_assert(StateTraits<S>::kHasXy, "LengthXy: S must have members x,y");
-  if (p.size() < 2)
-    return 0.0;
-  double L = 0.0;
-  for (std::size_t i = 1; i < p.size(); ++i)
+  static_assert(StateTraits<TState>::kHasXy,
+                "LengthXy: TState must have components x & y");
+  if (path_span.size() < 2)
   {
-    const double dx = p[i].x - p[i - 1].x;
-    const double dy = p[i].y - p[i - 1].y;
-    L += std::hypot(dx, dy);
+    return 0.0;
   }
-  return L;
+  double length = 0.0;
+  for (std::size_t i = 1; i < path_span.size(); ++i)
+  {
+    const double dx = path_span[i].x - path_span[i - 1].x;
+    const double dy = path_span[i].y - path_span[i - 1].y;
+    length += std::hypot(dx, dy);
+  }
+  return length;
 }
 
-template <typename Logger, typename S>
-void NormalizeYaw(Span<S> p)
+template <typename Logger, typename StateR3>
+void NormalizeYaw(Span<StateR3> p)
 {
-  static_assert(StateTraits<S>::kHasYaw, "NormalizeYaw: S must have member yaw");
+  static_assert(StateTraits<StateR3>::kHasYaw, "NormalizeYaw: S must have member yaw");
   TRAILBLAZE_LOG_DBG(Logger, ("NormalizeYaw: N=", p.size()));
   constexpr double kPi = 3.141592653589793238462643383279502884;
   constexpr double kTwoPi = 2.0 * kPi;
@@ -52,4 +58,4 @@ void NormalizeYaw(Span<S> p)
 
 }  // namespace trailblaze
 
-#endif  // TRAILBLAZE_ALG_GEOMETRY_H_
+#endif

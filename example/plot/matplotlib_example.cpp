@@ -1,5 +1,5 @@
 #include <trailblaze/path.h>
-#include <trailblaze/space_se2.h>
+#include <trailblaze/state_spaces/state_space_se2.h>
 
 // for plotting:
 #include <trailblaze/plot/matplotlib_renderer.h>
@@ -7,9 +7,9 @@
 
 int main(int argc, char const* argv[])
 {
-  using trailblaze::SE2;
+  using trailblaze::StateSe2;
 
-  trailblaze::Path<SE2> p3;
+  trailblaze::Path<StateSe2> p3;
   p3.push_back({0, 0, 0});
   p3.push_back({1, 0.3, 0.2});
   p3.push_back({2, 0.8, 0.4});

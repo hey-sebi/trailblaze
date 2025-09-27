@@ -3,14 +3,18 @@
 
 namespace trailblaze {
 
-// Primary template. Specialize per state type to set defaults.
-template <typename S>
+/** Primary state space template.
+ * Specialize per state type to set defaults.
+ *
+ * @tparam TState the state type belonging to the state space
+ */
+template <typename TState>
 struct StateSpace
 {
   // using Metric = ...;
-  // using Interp = ...;
+  // using Interpolation = ...;
 };
 
 }  // namespace trailblaze
 
-#endif  // TRAILBLAZE_STATE_SPACE_H_
+#endif

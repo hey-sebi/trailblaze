@@ -14,14 +14,14 @@ using test::kLinearInterpolationAccuracy;
 
 TEST(Interpolation, LinearScalarInterpolation)
 {
-  EXPECT_NEAR(LerpScalar::Lerp(0., 1., 0.5), 0.5, kLinearInterpolationAccuracy);
-  EXPECT_NEAR(LerpScalar::Lerp(1., 2., 0.5), 1.5, kLinearInterpolationAccuracy);
-  EXPECT_NEAR(LerpScalar::Lerp(0., 10., 0.5), 5, kLinearInterpolationAccuracy);
-  EXPECT_NEAR(LerpScalar::Lerp(-10., 10., 0.5), 0., kLinearInterpolationAccuracy);
-  EXPECT_NEAR(LerpScalar::Lerp(0., 1., 0.3), 0.3, kLinearInterpolationAccuracy);
-  EXPECT_NEAR(LerpScalar::Lerp(0., -1., 0.3), -0.3, kLinearInterpolationAccuracy);
+  EXPECT_NEAR(ScalarInterpolator::Linear(0., 1., 0.5), 0.5, kLinearInterpolationAccuracy);
+  EXPECT_NEAR(ScalarInterpolator::Linear(1., 2., 0.5), 1.5, kLinearInterpolationAccuracy);
+  EXPECT_NEAR(ScalarInterpolator::Linear(0., 10., 0.5), 5, kLinearInterpolationAccuracy);
+  EXPECT_NEAR(ScalarInterpolator::Linear(-10., 10., 0.5), 0., kLinearInterpolationAccuracy);
+  EXPECT_NEAR(ScalarInterpolator::Linear(0., 1., 0.3), 0.3, kLinearInterpolationAccuracy);
+  EXPECT_NEAR(ScalarInterpolator::Linear(0., -1., 0.3), -0.3, kLinearInterpolationAccuracy);
   // this actually extrapolates
-  EXPECT_NEAR(LerpScalar::Lerp(0., 1., -0.3), -0.3, kLinearInterpolationAccuracy);
+  EXPECT_NEAR(ScalarInterpolator::Linear(0., 1., -0.3), -0.3, kLinearInterpolationAccuracy);
 }
 
 TEST(Interpolation, LinearAngleInterpolation)

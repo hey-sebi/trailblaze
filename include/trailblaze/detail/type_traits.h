@@ -20,6 +20,7 @@ struct is_ostream_insertable<
     : std::true_type
 {
 };
+
 }  // namespace detail
 }  // namespace trailblaze
 

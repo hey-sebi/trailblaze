@@ -11,11 +11,13 @@
 
 namespace trailblaze {
 
-// State-agnostic resampler: you inject Metric and Interp policies.
-// Metric:  double operator()(const S& a, const S& b) const;
-// Interp:  S operator()(const S& a, const S& b, double t) const;
-template <typename Logger, typename S, typename Metric, typename Interp, typename OutIt>
-std::size_t Resample(Span<const S> p, double ds, OutIt out, Metric metric, Interp interp)
+// State-agnostic resampler: you inject TMetric and TInterpolation policies.
+// TMetric:  double operator()(const S& a, const S& b) const;
+// TInterpolation:  S operator()(const S& a, const S& b, double t) const;
+template <typename TLogger, typename TState, typename TMetric, typename TInterpolation,
+          typename OutIt>
+std::size_t Resample(Span<const TState> p, double ds, OutIt out, TMetric metric,
+                     TInterpolation interpolator)
 {
   if (p.size() == 0)
   {
@@ -28,7 +30,7 @@ std::size_t Resample(Span<const S> p, double ds, OutIt out, Metric metric, Inter
   }
   if (ds <= 0)
   {
-    TRAILBLAZE_LOG_DBG(Logger, ("Resample: nonpositive ds"));
+    TRAILBLAZE_LOG_DBG(TLogger, ("Resample: nonpositive ds"));
     *out++ = p.front();
     *out++ = p.back();
     return 2;
@@ -40,8 +42,8 @@ std::size_t Resample(Span<const S> p, double ds, OutIt out, Metric metric, Inter
   double carry = 0.0;
   for (std::size_t i = 1; i < p.size(); ++i)
   {
-    const S& a = p[i - 1];
-    const S& b = p[i];
+    const TState& a = p[i - 1];
+    const TState& b = p[i];
 
     const double seg = metric(a, b);
     if (seg <= std::numeric_limits<double>::epsilon())
@@ -54,7 +56,7 @@ std::size_t Resample(Span<const S> p, double ds, OutIt out, Metric metric, Inter
     {
       // absolute t in [0,1] along the current segment
       const double t_abs = 1.0 - (remaining - (ds - carry)) / seg;
-      S s = interp(a, b, t_abs);
+      TState s = interpolator(a, b, t_abs);
       *out++ = s;
       ++written;
       remaining -= (ds - carry);
@@ -66,40 +68,44 @@ std::size_t Resample(Span<const S> p, double ds, OutIt out, Metric metric, Inter
   *out++ = p.back();
   ++written;
 
-  TRAILBLAZE_LOG_DBG(Logger, ("Resample: in=", p.size(), " out=", written, " ds=", ds));
+  TRAILBLAZE_LOG_DBG(TLogger, ("Resample: in=", p.size(), " out=", written, " ds=", ds));
   return written;
 }
 
 // Sugar: use defaults provided by StateSpace<S>.
-template <typename Logger, typename S, typename OutIt>
-std::size_t Resample(Span<const S> p, double ds, OutIt out)
+template <typename TLogger, typename TState, typename OutIt>
+std::size_t Resample(Span<const TState> p, double ds, OutIt out)
 {
-  using Metric = typename StateSpace<S>::Metric;
-  using Interp = typename StateSpace<S>::Interp;
-  return Resample<Logger>(p, ds, out, Metric{}, Interp{});
+  using TMetric = typename StateSpace<TState>::TMetric;
+  using TInterpolation = typename StateSpace<TState>::TInterpolation;
+  return Resample<TLogger>(p, ds, out, TMetric{}, TInterpolation{});
 }
 
-// forwarding overload to help template deduction when caller has Span<S>.
-template <typename Logger, typename S, typename Metric, typename Interp, typename OutIt>
-std::size_t Resample(Span<S> p, double ds, OutIt out, Metric metric, Interp interp)
+// forwarding overload to help template deduction when caller has Span<TState>.
+template <typename TLogger, typename TState, typename TMetric, typename TInterpolation,
+          typename OutIt>
+std::size_t Resample(Span<TState> p, double ds, OutIt out, TMetric metric,
+                     TInterpolation interpolator)
 {
-  using Base = std::remove_const_t<S>;
+  using Base = std::remove_const_t<TState>;
   // Build a Span<const Base> from pointer+size (works with your minimal Span)
-  return Resample<Logger>(Span<const Base>(static_cast<const Base*>(p.data()), p.size()),
-                          ds, out, metric, interp);
+  return Resample<TLogger>(Span<const Base>(static_cast<const Base*>(p.data()), p.size()),
+                           ds, out, metric, interpolator);
 }
 
-// forwarding overload for the 3-arg sugar as well.
-template <typename Logger, typename S, typename OutIt>
-std::size_t Resample(Span<S> p, double ds, OutIt out)
+// forwarding overload using StateSpace Metric and Interpolation
+template <typename TLogger, typename TState, typename OutIt>
+std::size_t Resample(Span<TState> path_span, double ds, OutIt out)
 {
-  using Base = std::remove_const_t<S>;
-  using Metric = typename StateSpace<Base>::Metric;
-  using Interp = typename StateSpace<Base>::Interp;
-  return Resample<Logger>(Span<const Base>(static_cast<const Base*>(p.data()), p.size()),
-                          ds, out, Metric{}, Interp{});
+  using StateBase = std::remove_const_t<TState>;
+  using TMetric = typename StateSpace<StateBase>::Metric;
+  using TInterpolation = typename StateSpace<StateBase>::Interpolation;
+  return Resample<TLogger>(
+      Span<const StateBase>(static_cast<const StateBase*>(path_span.data()),
+                            path_span.size()),
+      ds, out, TMetric{}, TInterpolation{});
 }
 
 }  // namespace trailblaze
 
-#endif  // TRAILBLAZE_ALG_RESAMPLE_H_
+#endif
