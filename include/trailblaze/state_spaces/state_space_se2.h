@@ -7,6 +7,7 @@
 
 #include "trailblaze/interpolation_composition.h"
 #include "trailblaze/math/interpolation.h"
+#include "trailblaze/metrics/euclidean_distance.h"
 
 namespace trailblaze {
 
@@ -23,51 +24,6 @@ inline std::ostream& operator<<(std::ostream& out, const StateSe2& state)
   out << "(" << state.x << ", " << state.y << " | " << state.yaw << ")";
   return out;
 }
-
-// ------------ component-wise accessors  -----------------
-namespace comp {
-
-inline double& x(StateSe2& s) noexcept
-{
-  return s.x;
-}
-
-inline double& y(StateSe2& s) noexcept
-{
-  return s.y;
-}
-
-inline double& yaw(StateSe2& s) noexcept
-{
-  return s.yaw;
-}
-
-inline double x(const StateSe2& s) noexcept
-{
-  return s.x;
-}
-
-inline double y(const StateSe2& s) noexcept
-{
-  return s.y;
-}
-
-inline double yaw(const StateSe2& s) noexcept
-{
-  return s.yaw;
-}
-}  // namespace comp
-
-struct MetricSe2
-{
-  double operator()(const StateSe2& a, const StateSe2& b) const
-  {
-    // TODO same as for R2 for now
-    const double dx = a.x - b.x;
-    const double dy = a.y - b.y;
-    return std::hypot(dx, dy);
-  }
-};
 
 struct InterpolatePositionSe2
 {
@@ -93,7 +49,7 @@ struct StateSpace;  // NOLINT
 template <>
 struct StateSpace<StateSe2>
 {
-  using Metric = MetricSe2;
+  using Metric = EuclideanDistance2D; // TODO: only considers translation for now
   using Interpolation =
       InterpolationComposition<InterpolatePositionSe2, InterpolateOrientationSe2>;
 };

@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "trailblaze/component_access.h"
 #include "trailblaze/state_spaces/state_space_se2.h"
 
 // related to testing
@@ -15,14 +16,14 @@ TEST(StateSpaces, SpaceSE2Accessors)
   state.yaw = 0.1234;
 
   // read access
-  EXPECT_EQ(comp::x(state), state.x);
-  EXPECT_EQ(comp::y(state), state.y);
-  EXPECT_EQ(comp::yaw(state), state.yaw);
+  EXPECT_EQ(comp::X(state), state.x);
+  EXPECT_EQ(comp::Y(state), state.y);
+  EXPECT_EQ(comp::Yaw(state), state.yaw);
 
   // write access
-  comp::x(state) = 40;
-  comp::y(state) = 50;
-  comp::yaw(state) = 1.;
+  comp::X(state) = 40;
+  comp::Y(state) = 50;
+  comp::Yaw(state) = 1.;
   EXPECT_EQ(40., state.x);
   EXPECT_EQ(50., state.y);
   EXPECT_EQ(1., state.yaw);
@@ -51,9 +52,9 @@ TEST(StateSpaces, SpaceSE2LinearInterpolation)
   StateSe2 zero{0., 0., 0.};
   StateSe2 state1{10., 20., 1.};
   StateSe2 result = Interpolator(zero, state1, 0.5);
-  EXPECT_NEAR(comp::x(result), 5., kLinearInterpolationAccuracy);
-  EXPECT_NEAR(comp::y(result), 10., kLinearInterpolationAccuracy);
-  EXPECT_NEAR(comp::yaw(result), .5, kLinearInterpolationAccuracy);
+  EXPECT_NEAR(comp::X(result), 5., kLinearInterpolationAccuracy);
+  EXPECT_NEAR(comp::Y(result), 10., kLinearInterpolationAccuracy);
+  EXPECT_NEAR(comp::Yaw(result), .5, kLinearInterpolationAccuracy);
 }
 
 }  // namespace trailblaze

@@ -13,12 +13,12 @@ TEST(StateSpaces, SpaceR2Accessors)
   state.y = 20;
 
   // read access
-  EXPECT_EQ(comp::x(state), state.x);
-  EXPECT_EQ(comp::y(state), state.y);
+  EXPECT_EQ(comp::X(state), state.x);
+  EXPECT_EQ(comp::Y(state), state.y);
 
   // write access
-  comp::x(state) = 40;
-  comp::y(state) = 50;
+  comp::X(state) = 40;
+  comp::Y(state) = 50;
   EXPECT_EQ(40, state.x);
   EXPECT_EQ(50, state.y);
 }
@@ -46,8 +46,8 @@ TEST(StateSpaces, SpaceR2LinearInterpolation)
   StateR2 zero{0., 0.};
   StateR2 state1{10., 20.};
   StateR2 result = Interpolator(zero, state1, 0.5);
-  EXPECT_NEAR(comp::x(result), 5., kLinearInterpolationAccuracy);
-  EXPECT_NEAR(comp::y(result), 10., kLinearInterpolationAccuracy);
+  EXPECT_NEAR(comp::X(result), 5., kLinearInterpolationAccuracy);
+  EXPECT_NEAR(comp::Y(result), 10., kLinearInterpolationAccuracy);
 }
 
 }  // namespace trailblaze

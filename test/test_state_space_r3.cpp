@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "trailblaze/component_access.h"
 #include "trailblaze/state_spaces/state_space_r3.h"
 
 // related to testing
@@ -15,14 +16,14 @@ TEST(StateSpaces, SpaceR3Accessors)
   state.z = 30;
 
   // read access
-  EXPECT_EQ(comp::x(state), state.x);
-  EXPECT_EQ(comp::y(state), state.y);
-  EXPECT_EQ(comp::z(state), state.z);
+  EXPECT_EQ(comp::X(state), state.x);
+  EXPECT_EQ(comp::Y(state), state.y);
+  EXPECT_EQ(comp::Z(state), state.z);
 
   // write access
-  comp::x(state) = 40;
-  comp::y(state) = 50;
-  comp::z(state) = 60;
+  comp::X(state) = 40;
+  comp::Y(state) = 50;
+  comp::Z(state) = 60;
   EXPECT_EQ(40, state.x);
   EXPECT_EQ(50, state.y);
   EXPECT_EQ(60, state.z);
@@ -54,9 +55,9 @@ TEST(StateSpaces, SpaceR3LinearInterpolation)
   StateR3 zero{0., 0., 0.};
   StateR3 state1{10., 20., 30.};
   StateR3 result = Interpolator(zero, state1, 0.5);
-  EXPECT_NEAR(comp::x(result), 5., kLinearInterpolationAccuracy);
-  EXPECT_NEAR(comp::y(result), 10., kLinearInterpolationAccuracy);
-  EXPECT_NEAR(comp::z(result), 15., kLinearInterpolationAccuracy);
+  EXPECT_NEAR(comp::X(result), 5., kLinearInterpolationAccuracy);
+  EXPECT_NEAR(comp::Y(result), 10., kLinearInterpolationAccuracy);
+  EXPECT_NEAR(comp::Z(result), 15., kLinearInterpolationAccuracy);
 }
 
 }  // namespace trailblaze

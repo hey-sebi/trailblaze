@@ -6,6 +6,7 @@
 
 #include "trailblaze/interpolation_composition.h"
 #include "trailblaze/math/interpolation.h"
+#include "trailblaze/metrics/euclidean_distance.h"
 
 namespace trailblaze {
 
@@ -23,53 +24,6 @@ inline std::ostream& operator<<(std::ostream& out, const StateR3& state)
   return out;
 }
 
-// ------------ component-wise accessors  -----------------
-namespace comp {
-
-inline double& x(StateR3& s) noexcept
-{
-  return s.x;
-}
-
-inline double& y(StateR3& s) noexcept
-{
-  return s.y;
-}
-
-inline double& z(StateR3& s) noexcept
-{
-  return s.z;
-}
-
-inline double x(const StateR3& s) noexcept
-{
-  return s.x;
-}
-
-inline double y(const StateR3& s) noexcept
-{
-  return s.y;
-}
-
-inline double z(const StateR3& s) noexcept
-{
-  return s.z;
-}
-
-}  // namespace comp
-
-struct MetricR3
-{
-  double operator()(const StateR3& a, const StateR3& b) const
-  {
-    // Euclidean distance measure
-    const double dx = a.x - b.x;
-    const double dy = a.y - b.y;
-    const double dz = a.z - b.z;
-    return std::hypot(dx, dy, dz);
-  }
-};
-
 struct InterpolateR3
 {
   void Apply(const StateR3& a, const StateR3& b, double t, StateR3& out) const
@@ -86,7 +40,7 @@ struct StateSpace;  // NOLINT(readability/identifier_naming)
 template <>
 struct StateSpace<StateR3>
 {
-  using Metric = MetricR3;
+  using Metric = EuclideanDistance3D;
   using Interpolation = InterpolationComposition<InterpolateR3>;
 };
 
