@@ -1,3 +1,7 @@
+/* ------------------------------------------------------------------------
+ * Copyright(c) 2024-present, Sebastian Klemm & contributors.
+ * Distributed under the MIT License (http://opensource.org/licenses/MIT)
+ * ------------------------------------------------------------------------- */
 #include <gtest/gtest.h>
 
 #include "trailblaze/state_spaces/state_space_r2.h"

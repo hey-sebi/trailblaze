@@ -1,3 +1,7 @@
+/* ------------------------------------------------------------------------
+ * Copyright(c) 2024-present, Sebastian Klemm & contributors.
+ * Distributed under the MIT License (http://opensource.org/licenses/MIT)
+ * ------------------------------------------------------------------------- */
 #ifndef TRAILBLAZE_SEGMENTS_VIEW_H_
 #define TRAILBLAZE_SEGMENTS_VIEW_H_
 
@@ -60,4 +64,4 @@ inline SegmentsView<S> Segments(Span<S> s)
 
 }  // namespace trailblaze
 
-#endif  // TRAILBLAZE_SEGMENTS_VIEW_H_
+#endif

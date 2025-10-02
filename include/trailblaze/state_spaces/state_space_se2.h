@@ -1,3 +1,7 @@
+/* ------------------------------------------------------------------------
+ * Copyright(c) 2024-present, Sebastian Klemm & contributors.
+ * Distributed under the MIT License (http://opensource.org/licenses/MIT)
+ * ------------------------------------------------------------------------- */
 #ifndef TRAILBLAZE_STATE_SPACES_STATE_SPACE_SE2_H_
 #define TRAILBLAZE_STATE_SPACES_STATE_SPACE_SE2_H_
 
@@ -56,4 +60,4 @@ struct StateSpace<StateSe2>
 
 }  // namespace trailblaze
 
-#endif  // TRAILBLAZE_SPACE_SE2_H_
+#endif

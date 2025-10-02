@@ -1,3 +1,7 @@
+/* ------------------------------------------------------------------------
+ * Copyright(c) 2024-present, Sebastian Klemm & contributors.
+ * Distributed under the MIT License (http://opensource.org/licenses/MIT)
+ * ------------------------------------------------------------------------- */
 #ifndef TRAILBLAZE_DETAIL_TYPE_TRAITS_H_
 #define TRAILBLAZE_DETAIL_TYPE_TRAITS_H_
 

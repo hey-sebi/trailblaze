@@ -1,13 +1,17 @@
-#include <trailblaze/generate.h>
-#include <trailblaze/path.h>
-#include <trailblaze/sampling.h>
-
+/* ------------------------------------------------------------------------
+ * Copyright(c) 2024-present, Sebastian Klemm & contributors.
+ * Distributed under the MIT License (http://opensource.org/licenses/MIT)
+ * ------------------------------------------------------------------------- */
 #include <iostream>
 
-int main(int argc, char const* argv[])
+#include "trailblaze/generate.h"
+#include "trailblaze/path.h"
+#include "trailblaze/sampling.h"
+
+int main(int argc, char const *argv[])
 {
-  using trailblaze::Path;
   using trailblaze::StateR2;
+  using trailblaze::Path;
 
   StateR2 start{1.0, 1.0};
   StateR2 goal{10.0, 8.0};

@@ -1,3 +1,7 @@
+/* ------------------------------------------------------------------------
+ * Copyright(c) 2024-present, Sebastian Klemm & contributors.
+ * Distributed under the MIT License (http://opensource.org/licenses/MIT)
+ * ------------------------------------------------------------------------- */
 #ifndef TRAILBLAZE_INTERPOLATION_COMPOSITION_H_
 #define TRAILBLAZE_INTERPOLATION_COMPOSITION_H_
 
@@ -28,4 +32,4 @@ struct InterpolationComposition
 
 }  // namespace trailblaze
 
-#endif  // TRAILBLAZE_INTERPOLATION_COMPOSITION_H_
+#endif

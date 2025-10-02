@@ -1,5 +1,7 @@
-// STL
-#include <cmath>
+/* ------------------------------------------------------------------------
+ * Copyright(c) 2024-present, Sebastian Klemm & contributors.
+ * Distributed under the MIT License (http://opensource.org/licenses/MIT)
+ * ------------------------------------------------------------------------- */
 // external
 #include <gtest/gtest.h>
 

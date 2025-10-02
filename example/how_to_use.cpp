@@ -1,3 +1,9 @@
+/* ------------------------------------------------------------------------
+ * Copyright(c) 2024-present, Sebastian Klemm & contributors.
+ * Distributed under the MIT License (http://opensource.org/licenses/MIT)
+ * ------------------------------------------------------------------------- */
+#include <vector>
+
 #include "trailblaze/alg_resample.h"
 #include "trailblaze/logging.h"
 #include "trailblaze/path.h"

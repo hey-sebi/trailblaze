@@ -1,5 +1,10 @@
+/* ------------------------------------------------------------------------
+ * Copyright(c) 2024-present, Sebastian Klemm & contributors.
+ * Distributed under the MIT License (http://opensource.org/licenses/MIT)
+ * ------------------------------------------------------------------------- */
 #ifndef TRAILBLAZE_SAMPLING_H_
 #define TRAILBLAZE_SAMPLING_H_
+
 #include <cstddef>
 
 namespace trailblaze {

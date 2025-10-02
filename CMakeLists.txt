@@ -23,7 +23,7 @@ project(trailblaze
 #
 # ---------------------------------------------------------------------------
 
-option(ENABLE_INSTALL "Activates support for installing the project" ON)
+option(ENABLE_INSTALL "Activates support for installing the project" OFF)
 option(ENABLE_TESTING "Activates support for unit tests" ON)
 # If unit test support is ON: decide if you want provided or external GTest
 option(USE_EXTERNAL_GTEST "Use preinstalled/externally provided GTest" OFF)
@@ -35,6 +35,7 @@ option(ENABLE_DOXYGEN "Enables doxygen documentation generation" ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # ---------------------------------------------------------------------------
 #  Setup for clang-tidy
@@ -170,11 +171,8 @@ target_compile_definitions(trailblaze
   $<$<CXX_COMPILER_ID:MSVC>:_USE_MATH_DEFINES > # TODO: move to MSVC toolchain
 )
 
-add_executable(hello
-  src/hello.cpp
-)
 
-list(APPEND INSTALL_TARGETS hello)
+# list(APPEND INSTALL_TARGETS todo)
 
 add_subdirectory(example)
 # ===========================================================================

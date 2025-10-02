@@ -1,3 +1,7 @@
+/* ------------------------------------------------------------------------
+ * Copyright(c) 2024-present, Sebastian Klemm & contributors.
+ * Distributed under the MIT License (http://opensource.org/licenses/MIT)
+ * ------------------------------------------------------------------------- */
 #ifndef TRAILBLAZE_ANNOTATE_H_
 #define TRAILBLAZE_ANNOTATE_H_
 
@@ -135,4 +139,5 @@ inline std::vector<StateSe2> YawConstant(const std::vector<StateR2>& r2, double 
 
 }  // namespace annotate
 }  // namespace trailblaze
+
 #endif
