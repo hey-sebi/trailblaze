@@ -83,6 +83,7 @@ inline Quaternion InterpolateQuaternion(const Quaternion& a, Quaternion b, doubl
   out.y = sy / n;
   out.z = sz / n;
   out.w = sw / n;
+  return out;
 }
 
 } // namespace trailblaze
