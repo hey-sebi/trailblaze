@@ -120,7 +120,7 @@ double& Yaw(TState& s) noexcept {
  *  @returns the orientation component of @p s.
  */
 template <typename TState>
-Quaternion Orientation(const TState& s) noexcept {
+quaternion Orientation(const TState& s) noexcept {
   return s.orientation;
 }
 
@@ -132,7 +132,7 @@ Quaternion Orientation(const TState& s) noexcept {
  *  @returns the orientation component of @p s.
  */
 template <typename TState>
-Quaternion& Orientation(TState& s) noexcept {
+quaternion& Orientation(TState& s) noexcept {
   return s.orientation;
 }
 

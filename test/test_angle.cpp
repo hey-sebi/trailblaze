@@ -6,14 +6,15 @@
 #include <gtest/gtest.h>
 
 #include "trailblaze/math/angle.h"
+#include "trailblaze/math/numbers.h"
 
 namespace trailblaze {
 
 TEST(Angle, DegToRadConversion) {
-  EXPECT_DOUBLE_EQ(ToRad(0.), 0);
-  EXPECT_DOUBLE_EQ(ToRad(90.), M_PI_2);
-  EXPECT_DOUBLE_EQ(ToRad(-90.), -M_PI_2);
-  EXPECT_DOUBLE_EQ(ToRad(180.), M_PI);
+  EXPECT_DOUBLE_EQ(to_rad(0.), 0);
+  EXPECT_DOUBLE_EQ(to_rad(90.), numbers::pi_2);
+  EXPECT_DOUBLE_EQ(to_rad(-90.), -numbers::pi_2);
+  EXPECT_DOUBLE_EQ(to_rad(180.), numbers::pi);
 }
 
 // Fixture for parameterized normalization test
@@ -21,10 +22,10 @@ class AngleNormalization : public ::testing::TestWithParam<double> {};
 
 TEST_P(AngleNormalization, NormalizedAngleIsInTargetRange) {
   double angle            = GetParam();
-  double normalized_angle = NormalizedAngle(angle);
+  double normalized_angle = normalized(angle);
 
-  EXPECT_GE(normalized_angle, -M_PI);
-  EXPECT_LT(normalized_angle, M_PI);
+  EXPECT_GE(normalized_angle, -numbers::pi);
+  EXPECT_LT(normalized_angle, numbers::pi);
 }
 
 INSTANTIATE_TEST_SUITE_P(

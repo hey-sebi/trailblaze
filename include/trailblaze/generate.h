@@ -27,7 +27,7 @@ inline Path<StateR2> LineR2(const StateR2& start, const StateR2& goal, sampling:
   }
   out.resize(policy.n);
   for (std::size_t i = 0; i < policy.n; ++i) {
-    double t = (policy.n == 1) ? 0.0 : static_cast<double>(i) / (policy.n - 1);
+    double t = (policy.n == 1) ? 0.0 : static_cast<double>(i) / static_cast<double>(policy.n - 1);
     out[i].x = (1.0 - t) * start.x + t * goal.x;
     out[i].y = (1.0 - t) * start.y + t * goal.y;
   }
@@ -79,7 +79,7 @@ inline std::vector<StateR2> CircleArcR2(const StateR2&    center,
   }
   out.resize(policy.n);
   for (std::size_t i = 0; i < policy.n; ++i) {
-    double t = (policy.n == 1) ? 0.0 : static_cast<double>(i) / (policy.n - 1);
+    double t = (policy.n == 1) ? 0.0 : static_cast<double>(i) / static_cast<double>(policy.n - 1);
     double a = theta0 + t * sweep;
     out[i].x = center.x + radius * std::cos(a);
     out[i].y = center.y + radius * std::sin(a);

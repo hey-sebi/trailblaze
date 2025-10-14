@@ -26,7 +26,7 @@ struct QuaternionDistance {
     diff.y = comp::Qy(lhs) - comp::Qy(rhs);
     diff.z = comp::Qz(lhs) - comp::Qz(rhs);
     diff.w = comp::Qw(lhs) - comp::Qw(rhs);
-    return Norm(diff);
+    return norm(diff);
   }
 };
 

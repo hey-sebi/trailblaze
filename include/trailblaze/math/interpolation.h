@@ -23,11 +23,11 @@ namespace trailblaze {
  *         All other values extrapolate.
  *  @returns the interpolated value.
  */
-struct ScalarInterpolator {
+struct scalar_interpolator {
   template <typename T>
-  static T Linear(const T& a, const T& b, double t) {
+  static T linear(const T& a, const T& b, double t) {
     static_assert(std::is_floating_point_v<T>,
-                  "Linear scalar interpolation requires floating-point T");
+                  "linear scalar interpolation requires floating-point T");
     return a + t * (b - a);
   }
 };
@@ -43,13 +43,14 @@ struct ScalarInterpolator {
  *  @returns the interpolated value.
  */
 template <typename T>
-T InterpolateAngleShortest(T a, T b, double t) {
-  static_assert(std::is_floating_point_v<T>, "InterpolateAngleShortest requires floating-point T");
-  double dist = NormalizedAngle(b - a);
-  return NormalizedAngle(a + t * dist);
+T interpolate_angle_shortest(T a, T b, double t) {
+  static_assert(std::is_floating_point_v<T>,
+                "interpolate_angle_shortest requires floating-point T");
+  double dist = normalized(b - a);
+  return normalized(a + t * dist);
 }
 
-inline Quaternion InterpolateQuaternion(const Quaternion& a, Quaternion b, double t) {
+inline quaternion interpolate_quaternion(const quaternion& a, quaternion b, double t) {
   double dot = a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
   if (dot < 0.0) {
     b.x = -b.x;
@@ -78,7 +79,7 @@ inline Quaternion InterpolateQuaternion(const Quaternion& a, Quaternion b, doubl
   }
   const double n = std::sqrt(sx * sx + sy * sy + sz * sz + sw * sw);
 
-  Quaternion out;
+  quaternion out;
   out.x = sx / n;
   out.y = sy / n;
   out.z = sz / n;

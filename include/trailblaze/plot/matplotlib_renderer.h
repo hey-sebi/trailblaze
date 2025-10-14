@@ -34,7 +34,7 @@ public:
     f << ss_.str();
   }
 
-  void SetTitle(std::string title) override {
+  void SetTitle(std::string_view title) override {
     ss_ << "ax.set_title(" << PyStr(title) << ")\n";
   }
 
@@ -87,7 +87,7 @@ public:
   }
 
 private:
-  static std::string PyStr(const std::string& s) {
+  static std::string PyStr(std::string_view s) {
     std::string q = "'";
     for (char c : s)
       q += (c == '\'' ? "\\'" : std::string(1, c));

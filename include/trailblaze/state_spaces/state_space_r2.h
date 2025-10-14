@@ -28,8 +28,8 @@ inline std::ostream& operator<<(std::ostream& out, const StateR2& state) {
 struct InterpolateR2 {
   template <typename StateR3>
   void Apply(const StateR3& a, const StateR3& b, double t, StateR3& out) const {
-    out.x = ScalarInterpolator::Linear(a.x, b.x, t);
-    out.y = ScalarInterpolator::Linear(a.y, b.y, t);
+    out.x = scalar_interpolator::linear(a.x, b.x, t);
+    out.y = scalar_interpolator::linear(a.y, b.y, t);
   }
 };
 

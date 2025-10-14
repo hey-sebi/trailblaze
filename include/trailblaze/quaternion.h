@@ -9,15 +9,27 @@
 
 namespace trailblaze {
 
-struct Quaternion {
+/** Quaternion type.
+ *  Imaginary components are x, y, z, the real value component is w.
+ */
+struct quaternion {
+  /// First imaginary component
   double x;
+  /// Second imaginary component
   double y;
+  /// Third imaginary component
   double z;
-  double w; // scalar last
+  /// Real value component.
+  double w;
 };
 
-inline Quaternion operator*(double scalar, const Quaternion& q) {
-  Quaternion result;
+/** Scalar multiplication for quaternions.
+ *  @param scalar The scalar value to multiply the quaternion with.
+ *  @param q The quaternion value to multiply.
+ *  @returns the multiplied quaternion.
+ */
+inline quaternion operator*(double scalar, const quaternion& q) {
+  quaternion result;
   result.x = scalar * q.x;
   result.y = scalar * q.y;
   result.z = scalar * q.z;
@@ -25,29 +37,34 @@ inline Quaternion operator*(double scalar, const Quaternion& q) {
   return result;
 }
 
-inline Quaternion operator*(const Quaternion& q, double scalar) {
+/** Scalar multiplication for quaternions.
+ *  @param scalar The scalar value to multiply the quaternion with.
+ *  @param q The quaternion value to multiply.
+ *  @returns the multiplied quaternion.
+ */
+inline quaternion operator*(const quaternion& q, double scalar) {
   return scalar * q;
 }
 
-inline double SquaredNorm(const Quaternion& q) {
+inline double squared_norm(const quaternion& q) {
   return (q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
 }
 
-inline double Norm(const Quaternion& q) {
-  return std::sqrt(SquaredNorm(q));
+inline double norm(const quaternion& q) {
+  return std::sqrt(squared_norm(q));
 }
 
-inline void Normalize(Quaternion& q) {
-  const double norm = Norm(q);
-  if (norm != 0.) {
-    q = (1. / norm) * q;
+inline void normalize(quaternion& q) {
+  const double q_norm = norm(q);
+  if (q_norm != 0.) {
+    q = (1. / q_norm) * q;
   }
 }
 
-inline Quaternion Normalized(Quaternion q) {
-  Quaternion normalized = q;
-  Normalize(normalized);
-  return normalized;
+inline quaternion normalized(quaternion q) {
+  quaternion q_normalized = q;
+  normalize(q_normalized);
+  return q_normalized;
 }
 
 } // namespace trailblaze

@@ -28,7 +28,7 @@ struct Arrow2D {
 
 struct Text2D {
   std::array<double, 2> p;
-  std::string           text;
+  std::string_view      text;
   double                size{10.0};
 };
 

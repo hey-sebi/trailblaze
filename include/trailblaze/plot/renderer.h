@@ -5,6 +5,8 @@
 #ifndef TRAILBLAZE_PLOT_RENDERER_H_
 #define TRAILBLAZE_PLOT_RENDERER_H_
 
+#include <string_view>
+
 #include "trailblaze/plot/scene.h"
 
 namespace trailblaze {
@@ -25,7 +27,7 @@ public:
   virtual void Draw(const Text2D& t)      = 0;
 
   // View / styling helpers (optional, no-ops by default)
-  virtual void SetTitle(std::string title) {}
+  virtual void SetTitle(std::string_view title) {}
 
   virtual void SetAxisEqual(bool equal = true) {}
 

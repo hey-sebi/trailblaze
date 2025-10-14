@@ -8,14 +8,16 @@
 #include <cmath>
 #include <type_traits>
 
+#include "trailblaze/math/numbers.h"
+
 namespace trailblaze {
 
 /** Converts an angle in degree to radians
  *  @param deg The angle having a value in degrees
  *  @returns The angle having a value in radians
  */
-inline double ToRad(double deg) {
-  return deg / 180. * M_PI;
+inline double to_rad(double deg) {
+  return deg / 180. * numbers::pi;
 }
 
 /** Normalizes an angle to the range [-Pi, Pi).
@@ -24,15 +26,15 @@ inline double ToRad(double deg) {
  *  @returns the normalized angle
  */
 template <typename T>
-inline T NormalizedAngle(const T angle) {
-  static_assert(std::is_floating_point_v<T>, "NormalizedAngle requires floating-point T");
-  constexpr T two_pi = static_cast<T>(2.0) * static_cast<T>(M_PI);
+inline T normalized(const T angle) {
+  static_assert(std::is_floating_point_v<T>, "normalized requires floating-point T");
+  constexpr T two_pi = static_cast<T>(2.0) * static_cast<T>(numbers::pi);
 
-  T x = std::fmod(angle + static_cast<T>(M_PI), two_pi);
+  T x = std::fmod(angle + static_cast<T>(numbers::pi), two_pi);
   if (x < static_cast<T>(0)) {
     x += two_pi; // keep in [0, 2*Pi)
   }
-  return x - static_cast<T>(M_PI);
+  return x - static_cast<T>(numbers::pi);
 }
 
 /** Normalizes an angle to the range [-Pi, Pi)
@@ -40,8 +42,8 @@ inline T NormalizedAngle(const T angle) {
  *  @param angle Angle that is normalized, in [rad]
  */
 template <typename T>
-inline void NormalizeAngle(T& angle) {
-  angle = NormalizedAngle(angle);
+inline void normalize(T& angle) {
+  angle = normalized(angle);
 }
 
 } // namespace trailblaze

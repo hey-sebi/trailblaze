@@ -46,7 +46,7 @@ inline std::vector<StateSe2> YawChord(const std::vector<StateR2>& r2) {
       // backward difference
       yaw = yaw_of(r2[i - 1], r2[i]);
     }
-    out.push_back({r2[i].x, r2[i].y, NormalizedAngle(yaw)});
+    out.push_back({r2[i].x, r2[i].y, normalized(yaw)});
   }
   return out;
 }
@@ -79,7 +79,7 @@ inline std::vector<StateSe2> YawCenteredDiff(const std::vector<StateR2>& r2) {
     } else {
       yaw = yaw_of(r2[i - 1], r2[i + 1]); // centered
     }
-    out.push_back({r2[i].x, r2[i].y, NormalizedAngle(yaw)});
+    out.push_back({r2[i].x, r2[i].y, normalized(yaw)});
   }
   return out;
 }
@@ -96,10 +96,10 @@ YawLerp(const std::vector<StateR2>& r2, double start_yaw, double end_yaw) {
     return out;
 
   // Shortest angular interpolation
-  double d = NormalizedAngle(end_yaw - start_yaw);
+  double d = normalized(end_yaw - start_yaw);
   for (std::size_t i = 0; i < r2.size(); ++i) {
     double t   = (r2.size() == 1) ? 0.0 : static_cast<double>(i) / (r2.size() - 1);
-    double yaw = NormalizedAngle(start_yaw + t * d);
+    double yaw = normalized(start_yaw + t * d);
     out.push_back({r2[i].x, r2[i].y, yaw});
   }
   return out;
@@ -112,7 +112,7 @@ inline std::vector<StateSe2> YawConstant(const std::vector<StateR2>& r2, double 
   std::vector<StateSe2> out;
   out.reserve(r2.size());
   for (const auto& p : r2) {
-    out.push_back({p.x, p.y, NormalizedAngle(yaw)});
+    out.push_back({p.x, p.y, normalized(yaw)});
   }
   return out;
 }

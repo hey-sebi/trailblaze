@@ -29,15 +29,15 @@ inline std::ostream& operator<<(std::ostream& out, const StateSe2& state) {
 
 struct InterpolatePositionSe2 {
   void Apply(const StateSe2& a, const StateSe2& b, double t, StateSe2& out) const {
-    out.x = ScalarInterpolator::Linear(a.x, b.x, t);
-    out.y = ScalarInterpolator::Linear(a.y, b.y, t);
+    out.x = scalar_interpolator::linear(a.x, b.x, t);
+    out.y = scalar_interpolator::linear(a.y, b.y, t);
   }
 };
 
 struct InterpolateOrientationSe2 {
   template <typename StateR3>
   void Apply(const StateR3& a, const StateR3& b, double t, StateR3& out) const {
-    out.yaw = InterpolateAngleShortest(a.yaw, b.yaw, t);
+    out.yaw = interpolate_angle_shortest(a.yaw, b.yaw, t);
   }
 };
 

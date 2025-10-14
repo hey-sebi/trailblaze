@@ -135,18 +135,18 @@ public:
   }
 
   State& at(std::size_t index) {
-    if (pos >= size()) {
-      std::string msg =
-          "pos " + std::to_string(pos) + " is out of range. Path size is " + std::to_string(size());
+    if (index >= size()) {
+      std::string msg = "index " + std::to_string(index) + " is out of range. Path size is " +
+                        std::to_string(size());
       throw std::out_of_range(msg);
     }
     return *(data() + index);
   }
 
   const State& at(std::size_t index) const {
-    if (pos >= size()) {
-      std::string msg =
-          "pos " + std::to_string(pos) + " is out of range. Path size is " + std::to_string(size());
+    if (index >= size()) {
+      std::string msg = "index " + std::to_string(index) + " is out of range. Path size is " +
+                        std::to_string(size());
       throw std::out_of_range(msg);
     }
     return *(data() + index);
