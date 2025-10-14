@@ -60,8 +60,13 @@ inline quaternion interpolate_quaternion(const quaternion& a, quaternion b, doub
     dot = -dot;
   }
 
+  // TODO: kEps should be moved to constants.h or so.
   constexpr double kEps = 1e-6;
-  double           sx, sy, sz, sw;
+  double           sx   = 0.;
+  double           sy   = 0.;
+  double           sz   = 0.;
+  double           sw   = 0.;
+
   if (dot > 1.0 - kEps) {
     sx = a.x + (b.x - a.x) * t;
     sy = a.y + (b.y - a.y) * t;
@@ -72,10 +77,11 @@ inline quaternion interpolate_quaternion(const quaternion& a, quaternion b, doub
     const double s     = std::sin(theta);
     const double w1    = std::sin((1.0 - t) * theta) / s;
     const double w2    = std::sin(t * theta) / s;
-    sx                 = a.x * w1 + b.x * w2;
-    sy                 = a.y * w1 + b.y * w2;
-    sz                 = a.z * w1 + b.z * w2;
-    sw                 = a.w * w1 + b.w * w2;
+
+    sx = a.x * w1 + b.x * w2;
+    sy = a.y * w1 + b.y * w2;
+    sz = a.z * w1 + b.z * w2;
+    sw = a.w * w1 + b.w * w2;
   }
   const double n = std::sqrt(sx * sx + sy * sy + sz * sz + sw * sw);
 

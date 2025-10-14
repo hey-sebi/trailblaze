@@ -13,49 +13,50 @@
 namespace trailblaze {
 
 TEST(StateSpaces, SpaceSE2Accessors) {
-  StateSe2 state;
+  state_se2 state;
   state.x   = 10;
   state.y   = 20;
   state.yaw = 0.1234;
 
   // read access
-  EXPECT_EQ(comp::X(state), state.x);
-  EXPECT_EQ(comp::Y(state), state.y);
-  EXPECT_EQ(comp::Yaw(state), state.yaw);
+  EXPECT_EQ(comp::x(state), state.x);
+  EXPECT_EQ(comp::y(state), state.y);
+  EXPECT_EQ(comp::yaw(state), state.yaw);
 
   // write access
-  comp::X(state)   = 40;
-  comp::Y(state)   = 50;
-  comp::Yaw(state) = 1.;
+  comp::x(state)   = 40;
+  comp::y(state)   = 50;
+  comp::yaw(state) = 1.;
   EXPECT_EQ(40., state.x);
   EXPECT_EQ(50., state.y);
   EXPECT_EQ(1., state.yaw);
 }
 
 TEST(StateSpaces, SpaceSE2Metric) {
-  typename StateSpace<StateSe2>::Metric dist;
+  typename state_space<state_se2>::metric_type dist;
 
-  StateSe2 zero = {0., 0., 0.};
+  state_se2 zero = {0., 0., 0.};
 
-  StateSe2 state1 = {1., 0., 0.};
+  state_se2 state1 = {1., 0., 0.};
   EXPECT_DOUBLE_EQ(dist(zero, state1), 1.);
 
-  StateSe2 state2{2., 0., 0.};
+  state_se2 state2{2., 0., 0.};
   EXPECT_DOUBLE_EQ(dist(state2, state1), 1.);
 
-  StateSe2 state3{3., 4., 0.12};
+  state_se2 state3{3., 4., 0.12};
   EXPECT_DOUBLE_EQ(dist(zero, state3), 5.);
 }
 
 TEST(StateSpaces, SpaceSE2LinearInterpolation) {
   using test::kLinearInterpolationAccuracy;
-  typename StateSpace<StateSe2>::Interpolation Interpolator;
-  StateSe2                                     zero{0., 0., 0.};
-  StateSe2                                     state1{10., 20., 1.};
-  StateSe2                                     result = Interpolator(zero, state1, 0.5);
-  EXPECT_NEAR(comp::X(result), 5., kLinearInterpolationAccuracy);
-  EXPECT_NEAR(comp::Y(result), 10., kLinearInterpolationAccuracy);
-  EXPECT_NEAR(comp::Yaw(result), .5, kLinearInterpolationAccuracy);
+  typename state_space<state_se2>::interpolation_type Interpolator;
+
+  state_se2 zero{0., 0., 0.};
+  state_se2 state1{10., 20., 1.};
+  state_se2 result = Interpolator(zero, state1, 0.5);
+  EXPECT_NEAR(comp::x(result), 5., kLinearInterpolationAccuracy);
+  EXPECT_NEAR(comp::y(result), 10., kLinearInterpolationAccuracy);
+  EXPECT_NEAR(comp::yaw(result), .5, kLinearInterpolationAccuracy);
 }
 
 } // namespace trailblaze

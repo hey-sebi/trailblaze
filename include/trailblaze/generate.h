@@ -17,11 +17,11 @@
 namespace trailblaze {
 namespace gen {
 
-/** @brief Generate a straight line in StateR2 between two points.
+/** @brief Generate a straight line in state_r2 between two points.
  *
  */
-inline Path<StateR2> LineR2(const StateR2& start, const StateR2& goal, sampling::ByCount policy) {
-  Path<StateR2> out;
+inline Path<state_r2> LineR2(const state_r2& start, const state_r2& goal, sampling::ByCount policy) {
+  Path<state_r2> out;
   if (policy.n == 0) {
     return out;
   }
@@ -34,11 +34,11 @@ inline Path<StateR2> LineR2(const StateR2& start, const StateR2& goal, sampling:
   return out;
 }
 
-/** @brief Generate a straight line in StateR2 from start with direction and approx length.
+/** @brief Generate a straight line in state_r2 from start with direction and approx length.
  *
  */
-inline std::vector<StateR2>
-LineR2(const StateR2& start, const StateR2& direction, double length, sampling::ByStep policy) {
+inline std::vector<state_r2>
+LineR2(const state_r2& start, const state_r2& direction, double length, sampling::ByStep policy) {
   // note: direction is not necessarily normalized
   const double dx  = direction.x;
   const double dy  = direction.y;
@@ -51,7 +51,7 @@ LineR2(const StateR2& start, const StateR2& direction, double length, sampling::
   const double      uy = dy / mag;
   const std::size_t n  = static_cast<std::size_t>(std::floor(length / policy.step)) + 1;
 
-  std::vector<StateR2> out;
+  std::vector<state_r2> out;
   out.reserve(n + 1);
   for (std::size_t i = 0; i < n; ++i) {
     double s = std::min(static_cast<double>(i) * policy.step, length);
@@ -68,12 +68,12 @@ LineR2(const StateR2& start, const StateR2& direction, double length, sampling::
 /** @brief Generate states along a circle arc in R2.
  *
  */
-inline std::vector<StateR2> CircleArcR2(const StateR2&    center,
+inline std::vector<state_r2> CircleArcR2(const state_r2&    center,
                                         double            radius,
                                         double            theta0, // start angle (rad)
                                         double            sweep,  // signed sweep (rad)
                                         sampling::ByCount policy) {
-  std::vector<StateR2> out;
+  std::vector<state_r2> out;
   if (policy.n == 0) {
     return out;
   }
@@ -87,13 +87,13 @@ inline std::vector<StateR2> CircleArcR2(const StateR2&    center,
   return out;
 }
 
-/** @brief Generate a path in R2 from any parametric curve P:[t0,t1] --> StateR2.
+/** @brief Generate a path in R2 from any parametric curve P:[t0,t1] --> state_r2.
  *
  */
 template <typename Curve>
-inline std::vector<StateR2>
+inline std::vector<state_r2>
 ParametricR2(const Curve& curve, double t0, double t1, sampling::ByCount policy) {
-  std::vector<StateR2> out;
+  std::vector<state_r2> out;
   if (policy.n == 0) {
     return out;
   }

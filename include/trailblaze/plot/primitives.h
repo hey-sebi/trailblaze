@@ -12,21 +12,21 @@ namespace trailblaze {
 namespace plot {
 
 /// Sequence of lines connecting 2-dim points
-struct Polyline2D {
+struct polyline_2d {
   std::vector<std::array<double, 2>> pts;
 };
 
 /// Collection of points that form a polygon.
-struct Polygon2D {
+struct polygon_2d {
   std::vector<std::array<double, 2>> pts;
 };
 
-struct Arrow2D {
+struct arrow_2d {
   std::array<double, 2> p, q;
   double                head_len{0.1};
 };
 
-struct Text2D {
+struct text_2d {
   std::array<double, 2> p;
   std::string_view      text;
   double                size{10.0};

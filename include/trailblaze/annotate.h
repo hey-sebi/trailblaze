@@ -21,14 +21,14 @@ namespace annotate {
  *  With this, orientations follow an approximative pseudo-tangent on the path. The
  *  orientations will be more exact for paths that are dense.
  */
-inline std::vector<StateSe2> YawChord(const std::vector<StateR2>& r2) {
-  std::vector<StateSe2> out;
+inline std::vector<state_se2> yaw_chord(const std::vector<state_r2>& r2) {
+  std::vector<state_se2> out;
   if (r2.empty()) {
     return out;
   }
   out.reserve(r2.size());
 
-  const auto yaw_of = [](const StateR2& a, const StateR2& b) {
+  const auto yaw_of = [](const state_r2& a, const state_r2& b) {
     return std::atan2(b.y - a.y, b.x - a.x);
   };
 
@@ -55,8 +55,8 @@ inline std::vector<StateSe2> YawChord(const std::vector<StateR2>& r2) {
  *
  *
  */
-inline std::vector<StateSe2> YawCenteredDiff(const std::vector<StateR2>& r2) {
-  std::vector<StateSe2> out;
+inline std::vector<state_se2> yaw_centered_diff(const std::vector<state_r2>& r2) {
+  std::vector<state_se2> out;
   if (r2.empty()) {
     return out;
   }
@@ -66,7 +66,7 @@ inline std::vector<StateSe2> YawCenteredDiff(const std::vector<StateR2>& r2) {
   }
   out.reserve(r2.size());
 
-  const auto yaw_of = [](const StateR2& a, const StateR2& b) {
+  const auto yaw_of = [](const state_r2& a, const state_r2& b) {
     return std::atan2(b.y - a.y, b.x - a.x);
   };
 
@@ -88,9 +88,9 @@ inline std::vector<StateSe2> YawCenteredDiff(const std::vector<StateR2>& r2) {
  *
  *
  */
-inline std::vector<StateSe2>
-YawLerp(const std::vector<StateR2>& r2, double start_yaw, double end_yaw) {
-  std::vector<StateSe2> out;
+inline std::vector<state_se2>
+yaw_lerp(const std::vector<state_r2>& r2, double start_yaw, double end_yaw) {
+  std::vector<state_se2> out;
   out.reserve(r2.size());
   if (r2.empty())
     return out;
@@ -108,8 +108,8 @@ YawLerp(const std::vector<StateR2>& r2, double start_yaw, double end_yaw) {
 /** @brief Attach a constant yaw.
  *
  */
-inline std::vector<StateSe2> YawConstant(const std::vector<StateR2>& r2, double yaw) {
-  std::vector<StateSe2> out;
+inline std::vector<state_se2> yaw_constant(const std::vector<state_r2>& r2, double yaw) {
+  std::vector<state_se2> out;
   out.reserve(r2.size());
   for (const auto& p : r2) {
     out.push_back({p.x, p.y, normalized(yaw)});

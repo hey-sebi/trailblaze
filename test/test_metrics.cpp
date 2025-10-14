@@ -33,12 +33,12 @@ void TestMetric(const std::vector<TestParameters<TState>>& test_params,
   }
 }
 
-TEST(Metric, EuclideanDistance2D) {
+TEST(Metric, euclidean_distance_2d) {
   std::vector<TestParameters<TestStateXy>> test_params = {
       {TestStateXy{0., 0.}, TestStateXy{0., 0.}, 0.},
       {TestStateXy{1., 1.}, TestStateXy{0., 0.}, std::sqrt(2.)}};
 
-  TestMetric<EuclideanDistance2D>(test_params);
+  TestMetric<euclidean_distance_2d>(test_params);
 }
 
 } // namespace trailblaze

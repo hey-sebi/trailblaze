@@ -14,11 +14,11 @@
 namespace trailblaze {
 namespace plot {
 
-class MatplotlibRenderer final : public Renderer {
+class MatplotlibRenderer final : public renderer {
 public:
   explicit MatplotlibRenderer(std::filesystem::path out_py) : out_py_(std::move(out_py)) {}
 
-  void BeginFigure(int w, int h) override {
+  void begin_figure(int w, int h) override {
     ss_.str({});
     ss_.clear();
     ss_ << "import matplotlib.pyplot as plt\n"
@@ -28,22 +28,22 @@ public:
            "ax = fig.add_subplot(111)\n";
   }
 
-  void EndFigure() override {
+  void end_figure() override {
     ss_ << "ax.grid(True)\nplt.show()\n";
     std::ofstream f(out_py_);
     f << ss_.str();
   }
 
-  void SetTitle(std::string_view title) override {
-    ss_ << "ax.set_title(" << PyStr(title) << ")\n";
+  void set_title(std::string_view title) override {
+    ss_ << "ax.set_title(" << py_str(title) << ")\n";
   }
 
-  void SetAxisEqual(bool equal = true) override {
+  void set_axis_equal(bool equal = true) override {
     if (equal)
       ss_ << "ax.set_aspect('equal', adjustable='box')\n";
   }
 
-  void Draw(const Polyline2D& pl) override {
+  void draw(const polyline_2d& pl) override {
     ss_ << "ax.plot([";
     for (std::size_t i = 0; i < pl.pts.size(); ++i) {
       if (i)
@@ -59,7 +59,7 @@ public:
     ss_ << "])\n";
   }
 
-  void Draw(const Polygon2D& pg) override {
+  void draw(const polygon_2d& pg) override {
     ss_ << "ax.fill([";
     for (std::size_t i = 0; i < pg.pts.size(); ++i) {
       if (i)
@@ -75,19 +75,19 @@ public:
     ss_ << "], alpha=0.2)\n";
   }
 
-  void Draw(const Arrow2D& ar) override {
+  void draw(const arrow_2d& ar) override {
     ss_ << "ax.arrow(" << ar.p[0] << "," << ar.p[1] << "," << (ar.q[0] - ar.p[0]) << ","
         << (ar.q[1] - ar.p[1]) << ", length_includes_head=True, head_width=" << ar.head_len
         << ", head_length=" << ar.head_len << ")\n";
   }
 
-  void Draw(const Text2D& t) override {
-    ss_ << "ax.text(" << t.p[0] << "," << t.p[1] << "," << PyStr(t.text) << ", fontsize=" << t.size
+  void draw(const text_2d& t) override {
+    ss_ << "ax.text(" << t.p[0] << "," << t.p[1] << "," << py_str(t.text) << ", fontsize=" << t.size
         << ")\n";
   }
 
 private:
-  static std::string PyStr(std::string_view s) {
+  static std::string py_str(std::string_view s) {
     std::string q = "'";
     for (char c : s)
       q += (c == '\'' ? "\\'" : std::string(1, c));
@@ -96,7 +96,8 @@ private:
   }
 
   std::filesystem::path out_py_;
-  std::ostringstream    ss_;
+
+  std::ostringstream ss_;
 };
 
 } // namespace plot

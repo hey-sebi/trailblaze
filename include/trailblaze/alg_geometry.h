@@ -8,21 +8,22 @@
 #include <cmath>
 
 #include "trailblaze/backport/span.h"
+#include "trailblaze/math/numbers.h"
 #include "trailblaze/state_traits.h"
 
 namespace trailblaze {
 
 /** Computes the length of a path or a path segment.
- *  Considers only X and Y components of the state space.
+ *  Considers only X and y components of the state space.
  *
- *  @tparam TState State that has X and Y components.
+ *  @tparam TState State that has X and y components.
  *
  *  @param path_span Path or path segment for which to compute the length.
  *  @returns the length.
  */
 template <typename TState>
-double LengthXy(span<const TState> path_span) {
-  static_assert(StateTraits<TState>::kHasXy, "LengthXy: TState must have components x & y");
+double length_xy(span<const TState> path_span) {
+  static_assert(StateTraits<TState>::kHasXy, "length_xy: TState must have components x & y");
   if (path_span.size() < 2) {
     return 0.0;
   }
@@ -36,18 +37,18 @@ double LengthXy(span<const TState> path_span) {
 }
 
 template <typename Logger, typename StateR3>
-void NormalizeYaw(span<StateR3> p) {
-  static_assert(StateTraits<StateR3>::kHasYaw, "NormalizeYaw: S must have member yaw");
-  TRAILBLAZE_LOG_DBG(Logger, ("NormalizeYaw: N=", p.size()));
-  constexpr double kPi    = 3.141592653589793238462643383279502884;
-  constexpr double kTwoPi = 2.0 * kPi;
+void normalize_yaw(span<StateR3> p) {
+  static_assert(StateTraits<StateR3>::kHasYaw, "normalize_yaw: S must have member yaw");
+  TRAILBLAZE_LOG_DBG(Logger, ("normalize_yaw: N=", p.size()));
+  using numbers::pi;
+  using numbers::two_pi;
   for (auto& s : p) {
     double y = s.yaw;
-    if (y >= kPi || y < -kPi) {
-      y = std::fmod(y + kPi, kTwoPi);
+    if (y >= pi || y < -pi) {
+      y = std::fmod(y + pi, two_pi);
       if (y < 0)
-        y += kTwoPi;
-      y -= kPi;
+        y += pi;
+      y -= pi;
       s.yaw = y;
     }
   }

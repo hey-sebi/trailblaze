@@ -6,34 +6,35 @@
 #define TRAILBLAZE_METRICS_EUCLIDEAN_DISTANCE_H_
 // STL
 #include <cmath>
-// This library
-#include <trailblaze/component_access.h>
-#include <trailblaze/state_traits.h>
+
+#include "trailblaze/component_access.h"
+#include "trailblaze/state_traits.h"
 
 namespace trailblaze {
 
 /// Trait for Euclidean distance calculation in the 2D space.
-struct EuclideanDistance2D {
+struct euclidean_distance_2d {
   /** Calculates the Euclidean distance in the 2D space between two states.
-   *  @tparam TState A state that has at least X and Y components.
+   *  @tparam TState A state that has at least x and y components.
    *  @param lhs The first state.
    *  @param rhs The second state.
    *  @returns The distance value.
    */
   template <typename TState>
   double operator()(const TState& lhs, const TState& rhs) const {
-    static_assert(has_xy_v<TState>, "EuclideanDistance2D: state needs to have X and Y components");
+    static_assert(has_xy_v<TState>,
+                  "euclidean_distance_2d: state needs to have X and y components");
 
-    const double dx = comp::X(lhs) - comp::X(rhs);
-    const double dy = comp::Y(lhs) - comp::Y(rhs);
+    const double dx = comp::x(lhs) - comp::x(rhs);
+    const double dy = comp::y(lhs) - comp::y(rhs);
     return std::hypot(dx, dy);
   }
 };
 
 /// Trait for Euclidean distance calculation in the 3D space.
-struct EuclideanDistance3D {
+struct euclidean_distance_3d {
   /** Calculates the Euclidean distance in the 3D space between two states.
-   *  @tparam TState A state that has at least X, Y and Z components.
+   *  @tparam TState A state that has at least x, y and z components.
    *  @param lhs The first state.
    *  @param rhs The second state.
    *  @returns The distance value.
@@ -41,14 +42,15 @@ struct EuclideanDistance3D {
   template <typename TState>
   double operator()(const TState& lhs, const TState& rhs) const {
     static_assert(has_xyz_v<TState>,
-                  "EuclideanDistance3D: state needs to have X, Y and Z components");
+                  "euclidean_distance_3d: state needs to have X, y and z components");
 
-    const double dx = comp::X(lhs) - comp::X(rhs);
-    const double dy = comp::Y(lhs) - comp::Y(rhs);
-    const double dz = comp::Z(lhs) - comp::Z(rhs);
+    const double dx = comp::x(lhs) - comp::x(rhs);
+    const double dy = comp::y(lhs) - comp::y(rhs);
+    const double dz = comp::z(lhs) - comp::z(rhs);
     return std::hypot(dx, dy, dz);
   }
 };
+
 } // namespace trailblaze
 
 #endif

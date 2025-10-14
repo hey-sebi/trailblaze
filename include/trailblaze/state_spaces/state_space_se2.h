@@ -16,38 +16,38 @@
 namespace trailblaze {
 
 /// Models a state belonging to the StateSpaceSe2
-struct StateSe2 {
+struct state_se2 {
   double x;
   double y;
   double yaw; // radians
 };
 
-inline std::ostream& operator<<(std::ostream& out, const StateSe2& state) {
+inline std::ostream& operator<<(std::ostream& out, const state_se2& state) {
   out << "(" << state.x << ", " << state.y << " | " << state.yaw << ")";
   return out;
 }
 
-struct InterpolatePositionSe2 {
-  void Apply(const StateSe2& a, const StateSe2& b, double t, StateSe2& out) const {
+struct interpolate_position_se2 {
+  void apply(const state_se2& a, const state_se2& b, double t, state_se2& out) const {
     out.x = scalar_interpolator::linear(a.x, b.x, t);
     out.y = scalar_interpolator::linear(a.y, b.y, t);
   }
 };
 
-struct InterpolateOrientationSe2 {
-  template <typename StateR3>
-  void Apply(const StateR3& a, const StateR3& b, double t, StateR3& out) const {
+struct interpolate_orientation_se2 {
+  void apply(const state_se2& a, const state_se2& b, double t, state_se2& out) const {
     out.yaw = interpolate_angle_shortest(a.yaw, b.yaw, t);
   }
 };
 
 template <typename TState>
-struct StateSpace; // NOLINT
+struct state_space; // NOLINT // TODO: remove?
 
 template <>
-struct StateSpace<StateSe2> {
-  using Metric        = EuclideanDistance2D; // TODO: only considers translation for now
-  using Interpolation = InterpolationComposition<InterpolatePositionSe2, InterpolateOrientationSe2>;
+struct state_space<state_se2> {
+  using metric_type = euclidean_distance_2d; // TODO: only considers translation for now
+  using interpolation_type =
+      interpolation_composition<interpolate_position_se2, interpolate_orientation_se2>;
 };
 
 } // namespace trailblaze

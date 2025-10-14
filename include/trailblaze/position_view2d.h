@@ -17,18 +17,18 @@ public:
   using pointer    = T*;
 
   /** Constructor
-   *  @param x X-component of the position.
-   *  @param y Y-component of the position.
+   *  @param x x-component of the position.
+   *  @param y y-component of the position.
    */
   PositionView2D(T& x, T& y) : x_(&x), y_(&y) {}
 
-  /// Access to the X component of the position
-  reference X() const noexcept {
+  /// Access to the x component of the position
+  reference x() const noexcept {
     return *x_;
   }
 
-  /// Access to the Y component of the position
-  reference Y() const noexcept {
+  /// Access to the y component of the position
+  reference y() const noexcept {
     return *y_;
   }
 

@@ -12,28 +12,33 @@
 namespace trailblaze {
 namespace plot {
 
-class Renderer {
+class renderer {
 public:
-  virtual ~Renderer() = default;
+  virtual ~renderer() = default;
 
-  // Lifecycle
-  virtual void BeginFigure(int width_px = 1000, int height_px = 800) = 0;
-  virtual void EndFigure()                                           = 0;
+  /** Starts a figure
+   *  @param width_px Canvas width in pixel
+   *  @param height_px Canvas height in pixel
+   */
+  virtual void begin_figure(int width_px = 1000, int height_px = 800) = 0;
+
+  /// Ends a figure
+  virtual void end_figure() = 0;
 
   // Drawing
-  virtual void Draw(const Polyline2D& pl) = 0;
-  virtual void Draw(const Polygon2D& pg)  = 0;
-  virtual void Draw(const Arrow2D& ar)    = 0;
-  virtual void Draw(const Text2D& t)      = 0;
+  virtual void draw(const polyline_2d& pl) = 0;
+  virtual void draw(const polygon_2d& pg)  = 0;
+  virtual void draw(const arrow_2d& ar)    = 0;
+  virtual void draw(const text_2d& t)      = 0;
 
   // View / styling helpers (optional, no-ops by default)
-  virtual void SetTitle(std::string_view title) {}
+  virtual void set_title(std::string_view title) {}
 
-  virtual void SetAxisEqual(bool equal = true) {}
+  virtual void set_axis_equal(bool equal = true) {}
 
-  virtual void SetXlim(double min_x, double max_x) {}
+  virtual void set_x_lim(double min_x, double max_x) {}
 
-  virtual void SetYlim(double min_y, double max_y) {}
+  virtual void set_y_lim(double min_y, double max_y) {}
 };
 
 } // namespace plot

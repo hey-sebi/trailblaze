@@ -9,7 +9,7 @@
 namespace trailblaze {
 
 /// Trait for quaternion distance calculation.
-struct QuaternionDistance {
+struct quaternion_distance {
   /** Calculates the quaternion distance between two states.
    *  @tparam TState A state that has at least an quaternion orientation component.
    *  @param lhs The first state.
@@ -19,13 +19,13 @@ struct QuaternionDistance {
   template <typename TState>
   double operator()(const TState& lhs, const TState& rhs) const {
     static_assert(has_quat_v<TState>,
-                  "QuaternionDistance: state needs to have a quaternion component");
+                  "quaternion_distance: state needs to have a quaternion component");
 
-    Quaternion diff;
-    diff.x = comp::Qx(lhs) - comp::Qx(rhs);
-    diff.y = comp::Qy(lhs) - comp::Qy(rhs);
-    diff.z = comp::Qz(lhs) - comp::Qz(rhs);
-    diff.w = comp::Qw(lhs) - comp::Qw(rhs);
+    quaternion diff;
+    diff.x = comp::qx(lhs) - comp::qx(rhs);
+    diff.y = comp::qy(lhs) - comp::qy(rhs);
+    diff.z = comp::qz(lhs) - comp::qz(rhs);
+    diff.w = comp::qw(lhs) - comp::qw(rhs);
     return norm(diff);
   }
 };

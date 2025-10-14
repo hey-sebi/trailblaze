@@ -13,9 +13,9 @@ namespace trailblaze {
  * @tparam TState the state type belonging to the state space
  */
 template <typename TState>
-struct StateSpace {
-  // using Metric = ...;
-  // using Interpolation = ...;
+struct state_space {
+  // using metric_type = ...;
+  // using interpolation_type = ...;
 };
 
 } // namespace trailblaze
