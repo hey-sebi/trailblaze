@@ -69,10 +69,10 @@ line_r2(const state_r2& start, const state_r2& direction, double length, samplin
 /** @brief Generate states along a circle arc in R2.
  *
  */
-inline std::vector<state_r2> circle_arc_r2(const state_r2&   center,
-                                           double            radius,
-                                           double            theta0, // start angle (rad)
-                                           double            sweep,  // signed sweep (rad)
+inline std::vector<state_r2> circle_arc_r2(const state_r2&    center,
+                                           double             radius,
+                                           double             theta0, // start angle (rad)
+                                           double             sweep,  // signed sweep (rad)
                                            sampling::by_count policy) {
   std::vector<state_r2> out;
   if (policy.n == 0) {

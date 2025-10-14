@@ -10,7 +10,7 @@
 namespace trailblaze {
 namespace numbers {
 /// PI divided by 2
-inline constexpr double pi_2   = 0.5 * pi;
+inline constexpr double pi_2 = 0.5 * pi;
 /// PI multiplied by 2
 inline constexpr double two_pi = 2 * pi;
 

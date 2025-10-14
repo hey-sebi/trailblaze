@@ -41,9 +41,9 @@ typename std::enable_if<trailblaze::has_xy_v<TState>, void>::type build_scene_fr
 template <typename TState>
 typename std::enable_if<trailblaze::has_xy_v<TState> && trailblaze::has_yaw_v<TState>, void>::type
 build_scene_from_path_se2(const trailblaze::path<TState>& path,
-                          scene*                         scene,
-                          double                         arrow_len = 0.25,
-                          std::size_t                    every_n   = 10) {
+                          scene*                          scene,
+                          double                          arrow_len = 0.25,
+                          std::size_t                     every_n   = 10) {
   // reuse the R^2 polyline
   build_scene_from_path(path, scene);
 
