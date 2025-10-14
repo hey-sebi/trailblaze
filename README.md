@@ -4,20 +4,34 @@
 ![trailblaze logo](/docs/images/trailblaze_logo.png)
 
 > A C++ library for modeling and analyzing paths (SE(2) and beyond) for robotics.
+## Dependencies
+
+Trailblaze has some optional dependencies depending on activated features. The features can individually be activated (`=ON`) or disabled (`=OFF`) during cmake invokation.
+
+For unit test support, [GTest](https://github.com/google/googletest) is required. You can choose to use trailblaze's bundled or an external GTest installation.
+
+* Enable unit tests: `-DTRAILBLAZE_ENABLE_TESTING=ON`
+* Use external GTest: `-DTRAILBLAZE_USE_EXTERNAL_GTEST=ON`
+
+
+To enable [CCache](https://ccache.dev/):
+* Dependency: ccache
+* Activate feature with `-DTRAILBLAZE_ENABLE_CCACHE=ON`
+
+
+To enable [clang-tidy](https://clang.llvm.org/extra/clang-tidy/) linter:
+* Dependency: clang-tidy
+* Activate feature with `-DTRAILBLAZE_ENABLE_DOXYGEN=ON`
+
+
+To generate [Doxygen](https://www.doxygen.nl/) documentation:
+* Dependency: doxygen
+* Activate feature with `-DTRAILBLAZE_ENABLE_DOXYGEN=ON`
 
 ## Getting started
-
+TODO ...
 - **Headers:** `#include <trailblaze/...>`
 - **Docs build:** `cmake --build build --target doc` → open `build/docs/html/index.html`.
-
-
-
-
-
-
-
-
-
 
 
 
