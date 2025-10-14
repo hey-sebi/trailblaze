@@ -147,8 +147,10 @@ endif()
 if (MSVC)
   add_compile_options(/W4 /permissive- /Zc:preprocessor /EHsc)
 else()
+  # By default we want the most strict settings to find all errors early on
   add_compile_options(-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Werror )
-  # Consider leaving -Werror for CI only
+  # Some exceptions
+  add_compile_options(-Wno-unused-parameter)
 endif()
 
 option(ENABLE_ASAN "Enable AddressSanitizer" OFF)
