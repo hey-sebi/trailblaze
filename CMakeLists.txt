@@ -19,17 +19,19 @@ project(trailblaze
 #   In general those can be overwritten by cmake invokation with -D command
 #   line options.
 #
-#   Example: -DENABLE_TESTING=off will overwrite the value configured here
+#   Example:
+#     -DTRAILBLAZE_ENABLE_TESTING=off
+#     will overwrite the value configured here
 #
 # ---------------------------------------------------------------------------
 
 option(ENABLE_INSTALL "Activates support for installing the project" OFF)
-option(ENABLE_TESTING "Activates support for unit tests" ON)
+option(TRAILBLAZE_ENABLE_TESTING "Activates support for unit tests" ON)
 # If unit test support is ON: decide if you want provided or external GTest
-option(USE_EXTERNAL_GTEST "Use preinstalled/externally provided GTest" OFF)
-option(ENABLE_CCACHE "Enables CCache integration" ON)
-option(ENABLE_CLANG_TIDY "Enables Clang-Tidy integration" ON)
-option(ENABLE_DOXYGEN "Enables doxygen documentation generation" ON)
+option(TRAILBLAZE_USE_EXTERNAL_GTEST "Use preinstalled/externally provided GTest" OFF)
+option(TRAILBLAZE_ENABLE_CCACHE "Enables CCache integration" ON)
+option(TRAILBLAZE_ENABLE_CLANG_TIDY "Enables Clang-Tidy integration" ON)
+option(TRAILBLAZE_ENABLE_DOXYGEN "Enables doxygen documentation generation" ON)
 
 # Set the project wide C++ standard.
 set(CMAKE_CXX_STANDARD 17)
@@ -41,8 +43,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 #  Setup for clang-tidy
 # ---------------------------------------------------------------------------
 
-if (ENABLE_CLANG_TIDY)
-  # CMake integration
+if (TRAILBLAZE_ENABLE_CLANG_TIDY)
+  # CMake integratioL
   find_program(CLANG_TIDY_EXE NAMES clang-tidy REQUIRED)
   if(CLANG_TIDY_EXE)
     set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE};-p=${CMAKE_BINARY_DIR};-format-style=file")
@@ -62,7 +64,7 @@ endif()
 #  Setup for Doxygen
 # ---------------------------------------------------------------------------
 
-if(ENABLE_DOXYGEN)
+if(TRAILBLAZE_ENABLE_DOXYGEN)
   find_package(Doxygen REQUIRED)
 
   include(FetchContent)
@@ -107,9 +109,9 @@ if(ENABLE_INSTALL)
 endif()
 
 # Unit testing
-if(ENABLE_TESTING)
+if(TRAILBLAZE_ENABLE_TESTING)
   include(CTest)
-  if(USE_EXTERNAL_GTEST)
+  if(TRAILBLAZE_USE_EXTERNAL_GTEST)
     # Prefer config package first; fall back to module if needed.
     find_package(GTest CONFIG QUIET)
     if(NOT GTest_FOUND)
@@ -127,17 +129,38 @@ if(ENABLE_TESTING)
     # Either use an internal or external package
     FetchContent_MakeAvailable(googletest)
   endif()
-  enable_testing()
+  TRAILBLAZE_ENABLE_TESTING()
 endif()
 
 # CCache integration
-if(ENABLE_CCACHE)
+if(TRAILBLAZE_ENABLE_CCACHE)
   find_program(CCACHE_FOUND ccache REQUIRED)
   if(CCACHE_FOUND)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
   endif()
 endif()
 
+# ---------------------------------------------------------------------------
+#  Compiler settings
+# ---------------------------------------------------------------------------
+
+if (MSVC)
+  add_compile_options(/W4 /permissive- /Zc:preprocessor /EHsc)
+else()
+  add_compile_options(-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Werror )
+  # Consider leaving -Werror for CI only
+endif()
+
+option(ENABLE_ASAN "Enable AddressSanitizer" OFF)
+option(ENABLE_UBSAN "Enable UBSanitizer" OFF)
+if (ENABLE_ASAN AND NOT MSVC)
+  add_compile_options(-fsanitize=address)
+  add_link_options(-fsanitize=address)
+endif()
+if (ENABLE_UBSAN AND NOT MSVC)
+  add_compile_options(-fsanitize=undefined)
+  add_link_options(-fsanitize=undefined)
+endif()
 
 # ---------------------------------------------------------------------------
 #  Setup summary
@@ -147,10 +170,10 @@ message(STATUS "----------------------------------------------------------------
 message(STATUS "Building ${CMAKE_PROJECT_NAME} in version ${CMAKE_PROJECT_VERSION}")
 message(STATUS " C++ standard:       ${CMAKE_CXX_STANDARD}")
 message(STATUS " Installing enabled: ${ENABLE_INSTALL}")
-message(STATUS " Unit tests enabled: ${ENABLE_TESTING}")
-message(STATUS " Use external GTest: ${USE_EXTERNAL_GTEST}")
-message(STATUS " CCache enabled:     ${ENABLE_CCACHE}")
-message(STATUS " Clang-Tidy enabled: ${ENABLE_CLANG_TIDY}")
+message(STATUS " Unit tests enabled: ${TRAILBLAZE_ENABLE_TESTING}")
+message(STATUS " Use external GTest: ${TRAILBLAZE_USE_EXTERNAL_GTEST}")
+message(STATUS " CCache enabled:     ${TRAILBLAZE_ENABLE_CCACHE}")
+message(STATUS " Clang-Tidy enabled: ${TRAILBLAZE_ENABLE_CLANG_TIDY}")
 message(STATUS "----------------------------------------------------------------------")
 
 
@@ -179,7 +202,7 @@ add_subdirectory(example)
 #  Unit tests
 # ===========================================================================
 
-if(ENABLE_TESTING)
+if(TRAILBLAZE_ENABLE_TESTING)
   add_subdirectory(test)
 endif()
 
@@ -226,7 +249,7 @@ if(ENABLE_INSTALL)
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/trailblaze
   )
 
-  if(ENABLE_DOXYGEN)
+  if(TRAILBLAZE_ENABLE_DOXYGEN)
     install(DIRECTORY "${DOXYGEN_OUTPUT_DIR}/html"
         DESTINATION "share/trailblaze/docs"
         OPTIONAL)
