@@ -13,16 +13,16 @@
 namespace trailblaze {
 
 // Range over consecutive pairs (safe segment iteration).
-template <typename S>
-class SegmentsView {
+template <typename T>
+class segments_view {
 public:
-  explicit SegmentsView(span<S> s) : s_(s) {}
+  explicit segments_view(span<T> s) : s_(s) {}
 
-  struct Iterator {
-    S*          p;
+  struct iterator {
+    T*          p;
     std::size_t i;
 
-    bool operator!=(const Iterator& o) const {
+    bool operator!=(const iterator& o) const {
       return i != o.i;
     }
 
@@ -30,26 +30,26 @@ public:
       ++i;
     }
 
-    std::pair<S&, S&> operator*() const {
+    std::pair<T&, T&> operator*() const {
       return {p[i], p[i + 1]};
     }
   };
 
-  Iterator begin() const {
+  iterator begin() const {
     return {s_.data(), s_.size() >= 2 ? 0u : end().i};
   }
 
-  Iterator end() const {
+  iterator end() const {
     return {s_.data(), s_.size() >= 2 ? static_cast<std::size_t>(s_.size() - 1) : 0u};
   }
 
 private:
-  span<S> s_;
+  span<T> s_;
 };
 
-template <typename S>
-inline SegmentsView<S> Segments(span<S> s) {
-  return SegmentsView<S>(s);
+template <typename T>
+inline segments_view<T> segments(span<T> s) {
+  return segments_view<T>(s);
 }
 
 } // namespace trailblaze

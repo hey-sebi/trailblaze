@@ -12,7 +12,7 @@
 int main(int argc, char const* argv[]) {
   using trailblaze::state_se2;
 
-  trailblaze::Path<state_se2> p3;
+  trailblaze::path<state_se2> p3;
   p3.push_back({0, 0, 0});
   p3.push_back({1, 0.3, 0.2});
   p3.push_back({2, 0.8, 0.4});

@@ -36,18 +36,18 @@ constexpr bool has_quat_v = detail::has_quat<T>::value;
  *      double y;
  *    };
  *
- *    if constexpr (StateTraits<SomeState>::kHasXy)
+ *    if constexpr (state_traits<SomeState>::has_xy)
  *    {
  *       // handle components
  *    }
  *  @endcode
  */
 template <typename T>
-struct StateTraits {
-  static constexpr bool kHasXy   = has_xy_v<T>;
-  static constexpr bool kHasYaw  = has_yaw_v<T>;
-  static constexpr bool kHasXyz  = has_xyz_v<T>;
-  static constexpr bool kHasQuat = has_quat_v<T>;
+struct state_traits {
+  static constexpr bool has_xy         = has_xy_v<T>;
+  static constexpr bool has_yaw        = has_yaw_v<T>;
+  static constexpr bool has_xyz        = has_xyz_v<T>;
+  static constexpr bool has_quaternion = has_quat_v<T>;
 };
 
 } // namespace trailblaze

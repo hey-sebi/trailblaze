@@ -10,7 +10,7 @@ namespace trailblaze {
 
 /// Provides a view onto a position in 2D space
 template <class T>
-class PositionView2D {
+class position_view_2d {
 public:
   using value_type = std::remove_const_t<T>;
   using reference  = T&;
@@ -20,7 +20,7 @@ public:
    *  @param x x-component of the position.
    *  @param y y-component of the position.
    */
-  PositionView2D(T& x, T& y) : x_(&x), y_(&y) {}
+  position_view_2d(T& x, T& y) : x_(&x), y_(&y) {}
 
   /// Access to the x component of the position
   reference x() const noexcept {
@@ -39,10 +39,10 @@ private:
   pointer y_;
 };
 
-/// Factory function to create a @see PositionView2D
-template <class U>
-auto MakePositionView2D(U& x, U& y) -> PositionView2D<U> {
-  return PositionView2D<U>(x, y);
+/// Factory function to create a @see position_view_2d
+template <class T>
+auto make_position_view_2d(T& x, T& y) -> position_view_2d<T> {
+  return position_view_2d<T>(x, y);
 }
 
 } // namespace trailblaze

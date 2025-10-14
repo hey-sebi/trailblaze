@@ -18,123 +18,124 @@
 namespace trailblaze {
 
 // Default AoS storage (allocator-aware).
-template <typename S, typename Allocator>
-struct AoSStorage {
-  using Container = std::vector<S, Allocator>;
+template <typename T, typename Allocator>
+struct array_of_struct_storage {
+  using container_type = std::vector<T, Allocator>;
 
-  explicit AoSStorage(const Allocator& a = Allocator()) : data_(a) {}
+  explicit array_of_struct_storage(const Allocator& allocator = Allocator()) : data_(allocator) {}
 
-  S* DataPtr() noexcept {
+  T* data() noexcept {
     return data_.data();
   }
 
-  const S* DataPtr() const noexcept {
+  const T* data() const noexcept {
     return data_.data();
   }
 
-  std::size_t Size() const noexcept {
+  std::size_t size() const noexcept {
     return data_.size();
   }
 
-  void Reserve(std::size_t n) {
+  void reserve(std::size_t n) {
     data_.reserve(n);
   }
 
-  void Resize(std::size_t n) {
+  void resize(std::size_t n) {
     data_.resize(n);
   }
 
-  void PushBack(const S& v) {
+  void push_back(const T& v) {
     data_.push_back(v);
   }
 
-  void Clear() noexcept {
+  void clear() noexcept {
     data_.clear();
   }
 
-  Container data_;
+  /// Where the data is stored
+  container_type data_;
 };
 
 // Vector-like contiguous path container.
-template <typename State,
-          template <typename, typename> class Storage = AoSStorage,
-          typename Allocator                          = std::allocator<State>>
-class Path {
+template <typename TState,
+          template <typename, typename> class Storage = array_of_struct_storage,
+          typename Allocator                          = std::allocator<TState>>
+class path {
 public:
-  using value_type     = State;
+  using value_type     = TState;
   using allocator_type = Allocator;
 
-  explicit Path(const Allocator& a = Allocator()) : storage_(a) {}
+  explicit path(const Allocator& allocator = Allocator()) : storage_(allocator) {}
 
   std::size_t size() const noexcept {
-    return storage_.Size();
+    return storage_.size();
   }
 
   bool empty() const noexcept {
     return size() == 0;
   }
 
-  State* data() noexcept {
-    return storage_.DataPtr();
+  TState* data() noexcept {
+    return storage_.data();
   }
 
-  const State* data() const noexcept {
-    return storage_.DataPtr();
+  const TState* data() const noexcept {
+    return storage_.data();
   }
 
-  span<State> states() noexcept {
+  span<TState> states() noexcept {
     return {data(), size()};
   }
 
-  span<const State> states() const noexcept {
+  span<const TState> states() const noexcept {
     return {data(), size()};
   }
 
   void reserve(std::size_t n) {
-    storage_.Reserve(n);
+    storage_.reserve(n);
   }
 
   void resize(std::size_t n) {
-    storage_.Resize(n);
+    storage_.resize(n);
   }
 
-  void push_back(const State& s) {
-    storage_.PushBack(s);
+  void push_back(const TState& s) {
+    storage_.push_back(s);
   }
 
   void clear() noexcept {
     storage_.Clear();
   }
 
-  State& start() {
+  TState& start() {
     assert(!empty());
     return *data();
   }
 
-  const State& start() const {
+  const TState& start() const {
     assert(!empty());
     return *data();
   }
 
-  State& goal() {
+  TState& goal() {
     assert(!empty());
     return *(data() + (size() - 1));
   }
 
-  const State& goal() const {
+  const TState& goal() const {
     assert(!empty());
     return *(data() + (size() - 1));
   }
 
-  State& operator[](std::size_t index) {
+  TState& operator[](std::size_t index) {
     return *(data() + index);
   }
 
-  const State& operator[](std::size_t index) const {
+  const TState& operator[](std::size_t index) const {
     return *(data() + index);
   }
 
-  State& at(std::size_t index) {
+  TState& at(std::size_t index) {
     if (index >= size()) {
       std::string msg = "index " + std::to_string(index) + " is out of range. Path size is " +
                         std::to_string(size());
@@ -143,7 +144,7 @@ public:
     return *(data() + index);
   }
 
-  const State& at(std::size_t index) const {
+  const TState& at(std::size_t index) const {
     if (index >= size()) {
       std::string msg = "index " + std::to_string(index) + " is out of range. Path size is " +
                         std::to_string(size());
@@ -153,23 +154,23 @@ public:
   }
 
 private:
-  Storage<State, Allocator> storage_;
+  Storage<TState, Allocator> storage_;
 };
 
-// PMR convenience alias.
-template <typename S>
-using PmrPath = Path<S, AoSStorage, std::pmr::polymorphic_allocator<S>>;
+// Polymorphic memory resource (PMR) alias.
+template <typename TState>
+using pmr_path = path<TState, array_of_struct_storage, std::pmr::polymorphic_allocator<TState>>;
 
 /** Puts each state in a path onto an output stream.
  *
  *  TODO
  *
  */
-template <typename State,
-          template <typename, typename> class Storage = AoSStorage,
-          typename Allocator                          = std::allocator<State>>
-inline std::ostream& operator<<(std::ostream& os, const Path<State>& path) {
-  static_assert(is_ostream_insertable_v<State>,
+template <typename TState,
+          template <typename, typename> class Storage = array_of_struct_storage,
+          typename Allocator                          = std::allocator<TState>>
+inline std::ostream& operator<<(std::ostream& os, const path<TState>& path) {
+  static_assert(is_ostream_insertable_v<TState>,
                 "Requires that State is stream-insertable (has operator<<(ostream&, "
                 "const State&)).");
 

@@ -36,20 +36,20 @@ inline void render_scene(const scene& sc,
   r.end_figure();
 }
 
-template <typename State>
+template <typename TState>
 inline void
-plot_r2_path(const trailblaze::Path<State>& path, renderer& r, std::string title = "Path (R^2)") {
-  static_assert(trailblaze::has_xy_v<State>, "plot_r2_path requires a state with members x and y.");
+plot_r2_path(const trailblaze::path<TState>& path, renderer& r, std::string title = "Path (R^2)") {
+  static_assert(trailblaze::has_xy_v<TState>, "plot_r2_path requires a state with members x and y.");
   scene sc;
   build_scene_from_path(path, &sc);
   render_scene(sc, r, 1000, 800, std::move(title));
 }
 
-template <typename State>
-inline void plot_se2_path(const trailblaze::Path<State>& path,
+template <typename TState>
+inline void plot_se2_path(const trailblaze::path<TState>& path,
                           renderer&                      r,
                           std::string                    title = "Path (SE(2))") {
-  static_assert(trailblaze::has_xy_v<State> && trailblaze::has_yaw_v<State>,
+  static_assert(trailblaze::has_xy_v<TState> && trailblaze::has_yaw_v<TState>,
                 "plot_se2_path requires a state with x, y, yaw.");
   scene sc;
   build_scene_from_path_se2(path, &sc);

@@ -20,8 +20,9 @@ namespace gen {
 /** @brief Generate a straight line in state_r2 between two points.
  *
  */
-inline Path<state_r2> LineR2(const state_r2& start, const state_r2& goal, sampling::ByCount policy) {
-  Path<state_r2> out;
+inline path<state_r2>
+line_r2(const state_r2& start, const state_r2& goal, sampling::by_count policy) {
+  path<state_r2> out;
   if (policy.n == 0) {
     return out;
   }
@@ -38,7 +39,7 @@ inline Path<state_r2> LineR2(const state_r2& start, const state_r2& goal, sampli
  *
  */
 inline std::vector<state_r2>
-LineR2(const state_r2& start, const state_r2& direction, double length, sampling::ByStep policy) {
+line_r2(const state_r2& start, const state_r2& direction, double length, sampling::by_step policy) {
   // note: direction is not necessarily normalized
   const double dx  = direction.x;
   const double dy  = direction.y;
@@ -68,11 +69,11 @@ LineR2(const state_r2& start, const state_r2& direction, double length, sampling
 /** @brief Generate states along a circle arc in R2.
  *
  */
-inline std::vector<state_r2> CircleArcR2(const state_r2&    center,
-                                        double            radius,
-                                        double            theta0, // start angle (rad)
-                                        double            sweep,  // signed sweep (rad)
-                                        sampling::ByCount policy) {
+inline std::vector<state_r2> circle_arc_r2(const state_r2&   center,
+                                           double            radius,
+                                           double            theta0, // start angle (rad)
+                                           double            sweep,  // signed sweep (rad)
+                                           sampling::by_count policy) {
   std::vector<state_r2> out;
   if (policy.n == 0) {
     return out;
@@ -92,7 +93,7 @@ inline std::vector<state_r2> CircleArcR2(const state_r2&    center,
  */
 template <typename Curve>
 inline std::vector<state_r2>
-ParametricR2(const Curve& curve, double t0, double t1, sampling::ByCount policy) {
+parametric_r2(const Curve& curve, double t0, double t1, sampling::by_count policy) {
   std::vector<state_r2> out;
   if (policy.n == 0) {
     return out;

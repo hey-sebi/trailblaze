@@ -10,7 +10,7 @@
 #include "trailblaze/state_spaces/state_space_se2.h"
 
 void Example() {
-  trailblaze::Path<trailblaze::state_se2> path;
+  trailblaze::path<trailblaze::state_se2> path;
   // ... fill the path ...
   path.reserve(5);
   path.push_back({0., 0., 0.});
@@ -23,7 +23,7 @@ void Example() {
   out.reserve(path.size() * 2);
   auto it = std::back_inserter(out);
 
-  trailblaze::resample<trailblaze::NullLogger>(path.states(), /*ds=*/0.1, it);
+  trailblaze::resample<trailblaze::null_logger>(path.states(), /*ds=*/0.1, it);
 }
 
 int main(int argc, char const* argv[]) {

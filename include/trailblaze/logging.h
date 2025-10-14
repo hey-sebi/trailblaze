@@ -11,12 +11,12 @@
 namespace trailblaze {
 
 // Null logger: compiles away completely.
-struct NullLogger {
-  static constexpr bool kEnabledTrace = false;
-  static constexpr bool kEnabledDebug = false;
-  static constexpr bool kEnabledInfo  = false;
-  static constexpr bool kEnabledWarn  = false;
-  static constexpr bool kEnabledError = false;
+struct null_logger {
+  static constexpr bool level_trace_enabled   = false;
+  static constexpr bool level_debug_enabled   = false;
+  static constexpr bool level_info_enabled    = false;
+  static constexpr bool level_warning_enabled = false;
+  static constexpr bool level_error_enabled   = false;
 
   template <typename... A>
   static void Trace(A&&...) noexcept {}
@@ -36,47 +36,46 @@ struct NullLogger {
 
 // Example adapter that writes to a provided ostream.
 struct OstreamLogger {
-  static constexpr bool kEnabledTrace = true;
-  static constexpr bool kEnabledDebug = true;
-  static constexpr bool kEnabledInfo  = true;
-  static constexpr bool kEnabledWarn  = true;
-  static constexpr bool kEnabledError = true;
+  static constexpr bool level_trace_enabled   = true;
+  static constexpr bool level_debug_enabled   = true;
+  static constexpr bool level_info_enabled    = true;
+  static constexpr bool level_warning_enabled = true;
+  static constexpr bool level_error_enabled   = true;
 
   static void SetOut(std::ostream* os) {
     out_ = os;
   }
 
   template <typename... A>
+  static void Trace(A&&... a) {
+    (*out_) << "[  trace] ";
+    (void)std::initializer_list<int>{(int((*out_) << a), 0)...};
+    (*out_) << '\n';
+  }
+  template <typename... A>
   static void Debug(A&&... a) {
-    (*out_) << "[DBG] ";
+    (*out_) << "[  debug] ";
     (void)std::initializer_list<int>{(int((*out_) << a), 0)...};
     (*out_) << '\n';
   }
 
   template <typename... A>
   static void Info(A&&... a) {
-    (*out_) << "[INF] ";
+    (*out_) << "[   info] ";
     (void)std::initializer_list<int>{(int((*out_) << a), 0)...};
     (*out_) << '\n';
   }
 
   template <typename... A>
   static void Warn(A&&... a) {
-    (*out_) << "[WRN] ";
+    (*out_) << "[warning] ";
     (void)std::initializer_list<int>{(int((*out_) << a), 0)...};
     (*out_) << '\n';
   }
 
   template <typename... A>
   static void Error(A&&... a) {
-    (*out_) << "[ERR] ";
-    (void)std::initializer_list<int>{(int((*out_) << a), 0)...};
-    (*out_) << '\n';
-  }
-
-  template <typename... A>
-  static void Trace(A&&... a) {
-    (*out_) << "[TRC] ";
+    (*out_) << "[  error] ";
     (void)std::initializer_list<int>{(int((*out_) << a), 0)...};
     (*out_) << '\n';
   }
@@ -87,10 +86,10 @@ private:
 
 inline std::ostream* OstreamLogger::out_ = nullptr;
 
-// Zero-cost compile-time elision of message construction.
+// Compile-time elision of message construction.
 #define TRAILBLAZE_LOG_DBG(Logger, EXPR_STREAM)                                                    \
   do {                                                                                             \
-    if constexpr (Logger::kEnabledDebug) {                                                         \
+    if constexpr (Logger::level_debug_enabled) {                                                   \
       Logger::Debug EXPR_STREAM;                                                                   \
     }                                                                                              \
   } while (0)

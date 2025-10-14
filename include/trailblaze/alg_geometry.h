@@ -23,7 +23,7 @@ namespace trailblaze {
  */
 template <typename TState>
 double length_xy(span<const TState> path_span) {
-  static_assert(StateTraits<TState>::kHasXy, "length_xy: TState must have components x & y");
+  static_assert(state_traits<TState>::has_xy, "length_xy: TState must have components x & y");
   if (path_span.size() < 2) {
     return 0.0;
   }
@@ -38,7 +38,7 @@ double length_xy(span<const TState> path_span) {
 
 template <typename Logger, typename StateR3>
 void normalize_yaw(span<StateR3> p) {
-  static_assert(StateTraits<StateR3>::kHasYaw, "normalize_yaw: S must have member yaw");
+  static_assert(state_traits<StateR3>::has_yaw, "normalize_yaw: S must have member yaw");
   TRAILBLAZE_LOG_DBG(Logger, ("normalize_yaw: N=", p.size()));
   using numbers::pi;
   using numbers::two_pi;

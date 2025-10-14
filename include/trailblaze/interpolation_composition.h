@@ -19,10 +19,10 @@ namespace trailblaze {
  */
 template <typename... Pieces>
 struct interpolation_composition {
-  template <typename S>
-  S operator()(const S& a, const S& b, double t) const {
+  template <typename T>
+  T operator()(const T& a, const T& b, double t) const {
     // copy target layout, then overwrite touched components
-    S out = b;
+    T out = b;
     (Pieces{}.apply(a, b, t, out), ...);
     return out;
   }

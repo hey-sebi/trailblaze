@@ -18,9 +18,9 @@ namespace plot {
 
 // ----- R^2: requires x,y -----------------------------------------------------
 
-template <typename State>
-typename std::enable_if<trailblaze::has_xy_v<State>, void>::type build_scene_from_path(
-    const Path<State>& path, scene* scene, double arrow_len = 0.25, std::size_t every_n = 10) {
+template <typename TState>
+typename std::enable_if<trailblaze::has_xy_v<TState>, void>::type build_scene_from_path(
+    const path<TState>& path, scene* scene, double arrow_len = 0.25, std::size_t every_n = 10) {
   polyline_2d polyline;
   polyline.pts.reserve(path.size());
   if (every_n == 0) {
@@ -38,9 +38,9 @@ typename std::enable_if<trailblaze::has_xy_v<State>, void>::type build_scene_fro
 
 // ----- SE(2): requires x,y,yaw  ----------------------------------------------
 
-template <typename State>
-typename std::enable_if<trailblaze::has_xy_v<State> && trailblaze::has_yaw_v<State>, void>::type
-build_scene_from_path_se2(const trailblaze::Path<State>& path,
+template <typename TState>
+typename std::enable_if<trailblaze::has_xy_v<TState> && trailblaze::has_yaw_v<TState>, void>::type
+build_scene_from_path_se2(const trailblaze::path<TState>& path,
                           scene*                         scene,
                           double                         arrow_len = 0.25,
                           std::size_t                    every_n   = 10) {

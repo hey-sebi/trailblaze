@@ -10,12 +10,12 @@
 namespace trailblaze {
 namespace sampling {
 
-struct ByCount {
+struct by_count {
   // number of states (>= 2 recommended)
   std::size_t n;
 };
 
-struct ByStep {
+struct by_step {
   // desired spacing (meters or param delta)
   double step;
   // Note: generators will cap with total length/range.
