@@ -30,8 +30,7 @@ namespace comp {
  *  @returns the x component of @p s.
  */
 template <typename TState>
-double X(const TState& s) noexcept
-{
+double X(const TState& s) noexcept {
   return s.x;
 }
 
@@ -41,8 +40,7 @@ double X(const TState& s) noexcept
  *  @returns the x component of @p s.
  */
 template <typename TState>
-double& X(TState& s) noexcept
-{
+double& X(TState& s) noexcept {
   return s.x;
 }
 
@@ -54,8 +52,7 @@ double& X(TState& s) noexcept
  *  @returns the y component of @p s.
  */
 template <typename TState>
-double Y(const TState& s) noexcept
-{
+double Y(const TState& s) noexcept {
   return s.y;
 }
 
@@ -65,8 +62,7 @@ double Y(const TState& s) noexcept
  *  @returns the y component of @p s.
  */
 template <typename TState>
-double& Y(TState& s) noexcept
-{
+double& Y(TState& s) noexcept {
   return s.y;
 }
 
@@ -78,8 +74,7 @@ double& Y(TState& s) noexcept
  *  @returns the z component of @p s.
  */
 template <typename TState>
-double Z(const TState& s) noexcept
-{
+double Z(const TState& s) noexcept {
   return s.z;
 }
 
@@ -89,8 +84,7 @@ double Z(const TState& s) noexcept
  *  @returns the z component of @p s.
  */
 template <typename TState>
-double& Z(TState& s) noexcept
-{
+double& Z(TState& s) noexcept {
   return s.z;
 }
 
@@ -102,8 +96,7 @@ double& Z(TState& s) noexcept
  *  @returns the yaw component of @p s.
  */
 template <typename TState>
-double Yaw(const TState& s) noexcept
-{
+double Yaw(const TState& s) noexcept {
   return s.yaw;
 }
 
@@ -113,8 +106,7 @@ double Yaw(const TState& s) noexcept
  *  @returns the yaw component of @p s.
  */
 template <typename TState>
-double& Yaw(TState& s) noexcept
-{
+double& Yaw(TState& s) noexcept {
   return s.yaw;
 }
 
@@ -128,8 +120,7 @@ double& Yaw(TState& s) noexcept
  *  @returns the orientation component of @p s.
  */
 template <typename TState>
-Quaternion Orientation(const TState& s) noexcept
-{
+Quaternion Orientation(const TState& s) noexcept {
   return s.orientation;
 }
 
@@ -141,8 +132,7 @@ Quaternion Orientation(const TState& s) noexcept
  *  @returns the orientation component of @p s.
  */
 template <typename TState>
-Quaternion& Orientation(TState& s) noexcept
-{
+Quaternion& Orientation(TState& s) noexcept {
   return s.orientation;
 }
 
@@ -156,8 +146,7 @@ Quaternion& Orientation(TState& s) noexcept
  *  @returns the orientation x-component of @p s.
  */
 template <typename TState>
-double Qx(const TState& s) noexcept
-{
+double Qx(const TState& s) noexcept {
   return Orientation(s).x;
 }
 
@@ -169,8 +158,7 @@ double Qx(const TState& s) noexcept
  *  @returns the orientation x-component of @p s.
  */
 template <typename TState>
-double& Qx(TState& s) noexcept
-{
+double& Qx(TState& s) noexcept {
   return Orientation(s).x;
 }
 
@@ -184,8 +172,7 @@ double& Qx(TState& s) noexcept
  *  @returns the orientation x-component of @p s.
  */
 template <typename TState>
-double Qy(const TState& s) noexcept
-{
+double Qy(const TState& s) noexcept {
   return Orientation(s).x;
 }
 
@@ -197,8 +184,7 @@ double Qy(const TState& s) noexcept
  *  @returns the orientation y-component of @p s.
  */
 template <typename TState>
-double& Qy(TState& s) noexcept
-{
+double& Qy(TState& s) noexcept {
   return Orientation(s).y;
 }
 
@@ -212,8 +198,7 @@ double& Qy(TState& s) noexcept
  *  @returns the orientation z-component of @p s.
  */
 template <typename TState>
-double Qz(const TState& s) noexcept
-{
+double Qz(const TState& s) noexcept {
   return Orientation(s).z;
 }
 
@@ -225,8 +210,7 @@ double Qz(const TState& s) noexcept
  *  @returns the orientation z-component of @p s.
  */
 template <typename TState>
-double& Qz(TState& s) noexcept
-{
+double& Qz(TState& s) noexcept {
   return Orientation(s).z;
 }
 
@@ -240,8 +224,7 @@ double& Qz(TState& s) noexcept
  *  @returns the orientation z-component of @p s.
  */
 template <typename TState>
-double Qw(const TState& s) noexcept
-{
+double Qw(const TState& s) noexcept {
   return Orientation(s).w;
 }
 
@@ -253,12 +236,11 @@ double Qw(const TState& s) noexcept
  *  @returns the orientation w-component of @p s.
  */
 template <typename TState>
-double& Qw(TState& s) noexcept
-{
+double& Qw(TState& s) noexcept {
   return Orientation(s).w;
 }
 
-}  // namespace comp
-}  // namespace trailblaze
+} // namespace comp
+} // namespace trailblaze
 
 #endif

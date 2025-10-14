@@ -13,8 +13,7 @@ namespace trailblaze {
 
 using test::kLinearInterpolationAccuracy;
 
-TEST(Interpolation, LinearScalarInterpolation)
-{
+TEST(Interpolation, LinearScalarInterpolation) {
   EXPECT_NEAR(ScalarInterpolator::Linear(0., 1., 0.5), 0.5, kLinearInterpolationAccuracy);
   EXPECT_NEAR(ScalarInterpolator::Linear(1., 2., 0.5), 1.5, kLinearInterpolationAccuracy);
   EXPECT_NEAR(ScalarInterpolator::Linear(0., 10., 0.5), 5, kLinearInterpolationAccuracy);
@@ -25,17 +24,20 @@ TEST(Interpolation, LinearScalarInterpolation)
   EXPECT_NEAR(ScalarInterpolator::Linear(0., 1., -0.3), -0.3, kLinearInterpolationAccuracy);
 }
 
-TEST(Interpolation, LinearAngleInterpolation)
-{
-  EXPECT_NEAR(InterpolateAngleShortest(ToRad(0.), ToRad(100.), 0.5), ToRad(50),
+TEST(Interpolation, LinearAngleInterpolation) {
+  EXPECT_NEAR(InterpolateAngleShortest(ToRad(0.), ToRad(100.), 0.5),
+              ToRad(50),
               kLinearInterpolationAccuracy);
-  EXPECT_NEAR(InterpolateAngleShortest(ToRad(1.), ToRad(2.), 0.5), ToRad(1.5),
+  EXPECT_NEAR(InterpolateAngleShortest(ToRad(1.), ToRad(2.), 0.5),
+              ToRad(1.5),
               kLinearInterpolationAccuracy);
   // angle normalization is to range [-Pi, Pi)
-  EXPECT_NEAR(InterpolateAngleShortest(ToRad(0.), ToRad(180.), 0.5), ToRad(-90),
+  EXPECT_NEAR(InterpolateAngleShortest(ToRad(0.), ToRad(180.), 0.5),
+              ToRad(-90),
               kLinearInterpolationAccuracy);
-  EXPECT_NEAR(InterpolateAngleShortest(ToRad(-179.), ToRad(179.), 0.5), -M_PI,
+  EXPECT_NEAR(InterpolateAngleShortest(ToRad(-179.), ToRad(179.), 0.5),
+              -M_PI,
               kLinearInterpolationAccuracy);
 }
 
-}  // namespace trailblaze
+} // namespace trailblaze

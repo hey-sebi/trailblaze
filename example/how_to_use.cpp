@@ -9,8 +9,7 @@
 #include "trailblaze/path.h"
 #include "trailblaze/state_spaces/state_space_se2.h"
 
-void Example()
-{
+void Example() {
   trailblaze::Path<trailblaze::StateSe2> path;
   // ... fill the path ...
   path.reserve(5);
@@ -27,8 +26,7 @@ void Example()
   trailblaze::Resample<trailblaze::NullLogger>(path.states(), /*ds=*/0.1, it);
 }
 
-int main(int argc, char const* argv[])
-{
+int main(int argc, char const* argv[]) {
   Example();
   return 0;
 }

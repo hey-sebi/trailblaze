@@ -13,8 +13,7 @@
 namespace trailblaze {
 
 /// Trait for Euclidean distance calculation in the 2D space.
-struct EuclideanDistance2D
-{
+struct EuclideanDistance2D {
   /** Calculates the Euclidean distance in the 2D space between two states.
    *  @tparam TState A state that has at least X and Y components.
    *  @param lhs The first state.
@@ -22,10 +21,8 @@ struct EuclideanDistance2D
    *  @returns The distance value.
    */
   template <typename TState>
-  double operator()(const TState& lhs, const TState& rhs) const
-  {
-    static_assert(has_xy_v<TState>,
-                  "EuclideanDistance2D: state needs to have X and Y components");
+  double operator()(const TState& lhs, const TState& rhs) const {
+    static_assert(has_xy_v<TState>, "EuclideanDistance2D: state needs to have X and Y components");
 
     const double dx = comp::X(lhs) - comp::X(rhs);
     const double dy = comp::Y(lhs) - comp::Y(rhs);
@@ -34,8 +31,7 @@ struct EuclideanDistance2D
 };
 
 /// Trait for Euclidean distance calculation in the 3D space.
-struct EuclideanDistance3D
-{
+struct EuclideanDistance3D {
   /** Calculates the Euclidean distance in the 3D space between two states.
    *  @tparam TState A state that has at least X, Y and Z components.
    *  @param lhs The first state.
@@ -43,8 +39,7 @@ struct EuclideanDistance3D
    *  @returns The distance value.
    */
   template <typename TState>
-  double operator()(const TState& lhs, const TState& rhs) const
-  {
+  double operator()(const TState& lhs, const TState& rhs) const {
     static_assert(has_xyz_v<TState>,
                   "EuclideanDistance3D: state needs to have X, Y and Z components");
 
@@ -54,6 +49,6 @@ struct EuclideanDistance3D
     return std::hypot(dx, dy, dz);
   }
 };
-}  // namespace trailblaze
+} // namespace trailblaze
 
 #endif

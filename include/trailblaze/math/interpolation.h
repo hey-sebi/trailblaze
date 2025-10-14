@@ -23,11 +23,9 @@ namespace trailblaze {
  *         All other values extrapolate.
  *  @returns the interpolated value.
  */
-struct ScalarInterpolator
-{
+struct ScalarInterpolator {
   template <typename T>
-  static T Linear(const T& a, const T& b, double t)
-  {
+  static T Linear(const T& a, const T& b, double t) {
     static_assert(std::is_floating_point_v<T>,
                   "Linear scalar interpolation requires floating-point T");
     return a + t * (b - a);
@@ -45,19 +43,15 @@ struct ScalarInterpolator
  *  @returns the interpolated value.
  */
 template <typename T>
-T InterpolateAngleShortest(T a, T b, double t)
-{
-  static_assert(std::is_floating_point_v<T>,
-                "InterpolateAngleShortest requires floating-point T");
+T InterpolateAngleShortest(T a, T b, double t) {
+  static_assert(std::is_floating_point_v<T>, "InterpolateAngleShortest requires floating-point T");
   double dist = NormalizedAngle(b - a);
   return NormalizedAngle(a + t * dist);
 }
 
-inline Quaternion InterpolateQuaternion(const Quaternion& a, Quaternion b, double t)
-{
+inline Quaternion InterpolateQuaternion(const Quaternion& a, Quaternion b, double t) {
   double dot = a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
-  if (dot < 0.0)
-  {
+  if (dot < 0.0) {
     b.x = -b.x;
     b.y = -b.y;
     b.z = -b.z;
@@ -66,24 +60,21 @@ inline Quaternion InterpolateQuaternion(const Quaternion& a, Quaternion b, doubl
   }
 
   constexpr double kEps = 1e-6;
-  double sx, sy, sz, sw;
-  if (dot > 1.0 - kEps)
-  {
+  double           sx, sy, sz, sw;
+  if (dot > 1.0 - kEps) {
     sx = a.x + (b.x - a.x) * t;
     sy = a.y + (b.y - a.y) * t;
     sz = a.z + (b.z - a.z) * t;
     sw = a.w + (b.w - a.w) * t;
-  }
-  else
-  {
+  } else {
     const double theta = std::acos(std::max(-1.0, std::min(1.0, dot)));
-    const double s = std::sin(theta);
-    const double w1 = std::sin((1.0 - t) * theta) / s;
-    const double w2 = std::sin(t * theta) / s;
-    sx = a.x * w1 + b.x * w2;
-    sy = a.y * w1 + b.y * w2;
-    sz = a.z * w1 + b.z * w2;
-    sw = a.w * w1 + b.w * w2;
+    const double s     = std::sin(theta);
+    const double w1    = std::sin((1.0 - t) * theta) / s;
+    const double w2    = std::sin(t * theta) / s;
+    sx                 = a.x * w1 + b.x * w2;
+    sy                 = a.y * w1 + b.y * w2;
+    sz                 = a.z * w1 + b.z * w2;
+    sw                 = a.w * w1 + b.w * w2;
   }
   const double n = std::sqrt(sx * sx + sy * sy + sz * sz + sw * sw);
 
@@ -94,6 +85,6 @@ inline Quaternion InterpolateQuaternion(const Quaternion& a, Quaternion b, doubl
   out.w = sw / n;
 }
 
-}  // namespace trailblaze
+} // namespace trailblaze
 
 #endif

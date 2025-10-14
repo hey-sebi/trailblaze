@@ -12,11 +12,10 @@
 
 namespace trailblaze {
 
-TEST(StateSpaces, SpaceSE2Accessors)
-{
+TEST(StateSpaces, SpaceSE2Accessors) {
   StateSe2 state;
-  state.x = 10;
-  state.y = 20;
+  state.x   = 10;
+  state.y   = 20;
   state.yaw = 0.1234;
 
   // read access
@@ -25,16 +24,15 @@ TEST(StateSpaces, SpaceSE2Accessors)
   EXPECT_EQ(comp::Yaw(state), state.yaw);
 
   // write access
-  comp::X(state) = 40;
-  comp::Y(state) = 50;
+  comp::X(state)   = 40;
+  comp::Y(state)   = 50;
   comp::Yaw(state) = 1.;
   EXPECT_EQ(40., state.x);
   EXPECT_EQ(50., state.y);
   EXPECT_EQ(1., state.yaw);
 }
 
-TEST(StateSpaces, SpaceSE2Metric)
-{
+TEST(StateSpaces, SpaceSE2Metric) {
   typename StateSpace<StateSe2>::Metric dist;
 
   StateSe2 zero = {0., 0., 0.};
@@ -49,16 +47,15 @@ TEST(StateSpaces, SpaceSE2Metric)
   EXPECT_DOUBLE_EQ(dist(zero, state3), 5.);
 }
 
-TEST(StateSpaces, SpaceSE2LinearInterpolation)
-{
+TEST(StateSpaces, SpaceSE2LinearInterpolation) {
   using test::kLinearInterpolationAccuracy;
   typename StateSpace<StateSe2>::Interpolation Interpolator;
-  StateSe2 zero{0., 0., 0.};
-  StateSe2 state1{10., 20., 1.};
-  StateSe2 result = Interpolator(zero, state1, 0.5);
+  StateSe2                                     zero{0., 0., 0.};
+  StateSe2                                     state1{10., 20., 1.};
+  StateSe2                                     result = Interpolator(zero, state1, 0.5);
   EXPECT_NEAR(comp::X(result), 5., kLinearInterpolationAccuracy);
   EXPECT_NEAR(comp::Y(result), 10., kLinearInterpolationAccuracy);
   EXPECT_NEAR(comp::Yaw(result), .5, kLinearInterpolationAccuracy);
 }
 
-}  // namespace trailblaze
+} // namespace trailblaze

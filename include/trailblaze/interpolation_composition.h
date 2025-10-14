@@ -18,11 +18,9 @@ namespace trailblaze {
  *  @endcode
  */
 template <typename... Pieces>
-struct InterpolationComposition
-{
+struct InterpolationComposition {
   template <typename S>
-  S operator()(const S& a, const S& b, double t) const
-  {
+  S operator()(const S& a, const S& b, double t) const {
     // copy target layout, then overwrite touched components
     S out = b;
     (Pieces{}.Apply(a, b, t, out), ...);
@@ -30,6 +28,6 @@ struct InterpolationComposition
   }
 };
 
-}  // namespace trailblaze
+} // namespace trailblaze
 
 #endif

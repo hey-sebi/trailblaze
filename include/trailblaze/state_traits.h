@@ -43,14 +43,13 @@ constexpr bool has_quat_v = detail::has_quat<T>::value;
  *  @endcode
  */
 template <typename T>
-struct StateTraits
-{
-  static constexpr bool kHasXy = has_xy_v<T>;
-  static constexpr bool kHasYaw = has_yaw_v<T>;
-  static constexpr bool kHasXyz = has_xyz_v<T>;
+struct StateTraits {
+  static constexpr bool kHasXy   = has_xy_v<T>;
+  static constexpr bool kHasYaw  = has_yaw_v<T>;
+  static constexpr bool kHasXyz  = has_xyz_v<T>;
   static constexpr bool kHasQuat = has_quat_v<T>;
 };
 
-}  // namespace trailblaze
+} // namespace trailblaze
 
 #endif

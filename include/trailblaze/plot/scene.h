@@ -10,16 +10,15 @@
 namespace trailblaze {
 namespace plot {
 
-struct Scene
-{
+struct Scene {
   std::vector<Polyline2D> polylines;
-  std::vector<Polygon2D> polygons;
-  std::vector<Arrow2D> arrows;
-  std::vector<Text2D> texts;
+  std::vector<Polygon2D>  polygons;
+  std::vector<Arrow2D>    arrows;
+  std::vector<Text2D>     texts;
   // Optional: view box, styles, layers, palette, grid, etc.
 };
 
-}  // namespace plot
-}  // namespace trailblaze
+} // namespace plot
+} // namespace trailblaze
 
 #endif

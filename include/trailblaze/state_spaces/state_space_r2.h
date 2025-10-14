@@ -15,38 +15,33 @@
 namespace trailblaze {
 
 /// Models a state belonging to the StateSpaceR2
-struct StateR2
-{
+struct StateR2 {
   double x;
   double y;
 };
 
-inline std::ostream& operator<<(std::ostream& out, const StateR2& state)
-{
+inline std::ostream& operator<<(std::ostream& out, const StateR2& state) {
   out << "(" << state.x << ", " << state.y << ")";
   return out;
 }
 
-struct InterpolateR2
-{
+struct InterpolateR2 {
   template <typename StateR3>
-  void Apply(const StateR3& a, const StateR3& b, double t, StateR3& out) const
-  {
+  void Apply(const StateR3& a, const StateR3& b, double t, StateR3& out) const {
     out.x = ScalarInterpolator::Linear(a.x, b.x, t);
     out.y = ScalarInterpolator::Linear(a.y, b.y, t);
   }
 };
 
 template <typename TState>
-struct StateSpace;  // NOLINT(readability/identifier_naming)
+struct StateSpace; // NOLINT(readability/identifier_naming)
 
 template <>
-struct StateSpace<StateR2>
-{
-  using Metric = EuclideanDistance2D;
+struct StateSpace<StateR2> {
+  using Metric        = EuclideanDistance2D;
   using Interpolation = InterpolationComposition<InterpolateR2>;
 };
 
-}  // namespace trailblaze
+} // namespace trailblaze
 
 #endif

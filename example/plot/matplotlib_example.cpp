@@ -9,8 +9,7 @@
 #include "trailblaze/plot/matplotlib_renderer.h"
 #include "trailblaze/plot/plot_api.h"
 
-int main(int argc, char const* argv[])
-{
+int main(int argc, char const* argv[]) {
   using trailblaze::StateSe2;
 
   trailblaze::Path<StateSe2> p3;

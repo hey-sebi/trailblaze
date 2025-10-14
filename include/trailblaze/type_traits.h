@@ -16,6 +16,6 @@ namespace trailblaze {
 template <typename T>
 inline constexpr bool is_ostream_insertable_v = detail::is_ostream_insertable<T>::value;
 
-}  // namespace trailblaze
+} // namespace trailblaze
 
 #endif
