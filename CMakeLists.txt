@@ -129,7 +129,7 @@ if(TRAILBLAZE_ENABLE_TESTING)
     # Either use an internal or external package
     FetchContent_MakeAvailable(googletest)
   endif()
-  TRAILBLAZE_ENABLE_TESTING()
+  enable_testing()
 endif()
 
 # CCache integration
