@@ -22,7 +22,7 @@
 
 namespace trailblaze {
 
-#if PATH_HAS_STD_SPAN
+#if TRAILBLAZE_HAS_STD_SPAN
 
 template <typename T>
 using Span = std::span<T>;
