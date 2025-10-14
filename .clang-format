@@ -1,32 +1,42 @@
 ---
 Language: Cpp
 Standard: c++17
-BasedOnStyle: Google
-AllowShortBlocksOnASingleLine: false
-AllowShortCaseLabelsOnASingleLine: true
-AllowShortFunctionsOnASingleLine: None
-AllowShortIfStatementsOnASingleLine: false
-SeparateDefinitionBlocks: Always
-BreakBeforeBraces: Custom
-BraceWrapping:
-  AfterCaseLabel: true
-  AfterClass: true
-  AfterControlStatement: true
-  AfterEnum: true
-  AfterFunction: true
-  AfterNamespace: false
-  AfterStruct: true
-  AfterUnion: true
-  AfterExternBlock: true
-  BeforeCatch: true
-  BeforeElse: true
-  IndentBraces: false
-  SplitEmptyFunction: true
-  SplitEmptyRecord: true
-  SplitEmptyNamespace: true
-ColumnLimit: 90
-ReflowComments: false
-DerivePointerAlignment: false
+BasedOnStyle: LLVM
+IndentWidth: 2
+TabWidth: 2
+UseTab: Never
+ColumnLimit: 100
+BreakBeforeBraces: Attach
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+SpaceBeforeParens: ControlStatements
 PointerAlignment: Left
+ReferenceAlignment: Left
+AlignConsecutiveAssignments: Consecutive
+AlignConsecutiveDeclarations: Consecutive
+AlignOperands: Align
+AlwaysBreakTemplateDeclarations: Yes
+BinPackArguments: false
+BinPackParameters: false
+Cpp11BracedListStyle: true
+KeepEmptyLinesAtTheStartOfBlocks: false
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+BreakConstructorInitializers: BeforeColon
+
+# Includes: keep deterministic grouping and sorting
 SortIncludes: true
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: '^<.*>$'
+    Priority: 1        # Standard library & system headers first
+  - Regex: '^(<|").*/third_party/.*(>|")$'
+    Priority: 2        # External / third-party libs next
+  - Regex: '^"[^/]+\.h(pp)?"$'
+    Priority: 3        # project headers
+  - Regex: '.*'
+    Priority: 4        # Anything else (fallback)
+NamespaceIndentation: None
+EmptyLineBeforeAccessModifier: LogicalBlock
+IncludeIsMainRegex: '([-_](test|unittest))?$'
 ...
