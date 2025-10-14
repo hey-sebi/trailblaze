@@ -82,11 +82,11 @@ public:
     return storage_.DataPtr();
   }
 
-  Span<State> states() noexcept {
+  span<State> states() noexcept {
     return {data(), size()};
   }
 
-  Span<const State> states() const noexcept {
+  span<const State> states() const noexcept {
     return {data(), size()};
   }
 

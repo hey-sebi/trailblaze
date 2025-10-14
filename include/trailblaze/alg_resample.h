@@ -24,7 +24,7 @@ template <typename TLogger,
           typename TInterpolation,
           typename OutIt>
 std::size_t
-Resample(Span<const TState> p, double ds, OutIt out, TMetric metric, TInterpolation interpolator) {
+Resample(span<const TState> p, double ds, OutIt out, TMetric metric, TInterpolation interpolator) {
   if (p.size() == 0) {
     return 0;
   }
@@ -74,23 +74,23 @@ Resample(Span<const TState> p, double ds, OutIt out, TMetric metric, TInterpolat
 
 // Sugar: use defaults provided by StateSpace<S>.
 template <typename TLogger, typename TState, typename OutIt>
-std::size_t Resample(Span<const TState> p, double ds, OutIt out) {
+std::size_t Resample(span<const TState> p, double ds, OutIt out) {
   using TMetric        = typename StateSpace<TState>::TMetric;
   using TInterpolation = typename StateSpace<TState>::TInterpolation;
   return Resample<TLogger>(p, ds, out, TMetric{}, TInterpolation{});
 }
 
-// forwarding overload to help template deduction when caller has Span<TState>.
+// forwarding overload to help template deduction when caller has span<TState>.
 template <typename TLogger,
           typename TState,
           typename TMetric,
           typename TInterpolation,
           typename OutIt>
 std::size_t
-Resample(Span<TState> p, double ds, OutIt out, TMetric metric, TInterpolation interpolator) {
+Resample(span<TState> p, double ds, OutIt out, TMetric metric, TInterpolation interpolator) {
   using Base = std::remove_const_t<TState>;
-  // Build a Span<const Base> from pointer+size (works with your minimal Span)
-  return Resample<TLogger>(Span<const Base>(static_cast<const Base*>(p.data()), p.size()),
+  // Build a span<const Base> from pointer+size (works with your minimal span)
+  return Resample<TLogger>(span<const Base>(static_cast<const Base*>(p.data()), p.size()),
                            ds,
                            out,
                            metric,
@@ -99,12 +99,12 @@ Resample(Span<TState> p, double ds, OutIt out, TMetric metric, TInterpolation in
 
 // forwarding overload using StateSpace Metric and Interpolation
 template <typename TLogger, typename TState, typename OutIt>
-std::size_t Resample(Span<TState> path_span, double ds, OutIt out) {
+std::size_t Resample(span<TState> path_span, double ds, OutIt out) {
   using StateBase      = std::remove_const_t<TState>;
   using TMetric        = typename StateSpace<StateBase>::Metric;
   using TInterpolation = typename StateSpace<StateBase>::Interpolation;
   return Resample<TLogger>(
-      Span<const StateBase>(static_cast<const StateBase*>(path_span.data()), path_span.size()),
+      span<const StateBase>(static_cast<const StateBase*>(path_span.data()), path_span.size()),
       ds,
       out,
       TMetric{},

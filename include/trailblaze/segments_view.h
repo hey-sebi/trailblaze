@@ -16,7 +16,7 @@ namespace trailblaze {
 template <typename S>
 class SegmentsView {
 public:
-  explicit SegmentsView(Span<S> s) : s_(s) {}
+  explicit SegmentsView(span<S> s) : s_(s) {}
 
   struct Iterator {
     S*          p;
@@ -44,11 +44,11 @@ public:
   }
 
 private:
-  Span<S> s_;
+  span<S> s_;
 };
 
 template <typename S>
-inline SegmentsView<S> Segments(Span<S> s) {
+inline SegmentsView<S> Segments(span<S> s) {
   return SegmentsView<S>(s);
 }
 

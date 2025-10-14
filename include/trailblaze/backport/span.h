@@ -25,12 +25,16 @@ namespace trailblaze {
 #if TRAILBLAZE_HAS_STD_SPAN
 
 template <typename T>
-using Span = std::span<T>;
+using span = std::span<T>;
 
-#else // Minimal C++17 substitute
+#else // C++17 substitute
 
+/** Minimal substitute for @see std::span.
+ *
+ *  @note This backport implementation does not have all features of the original class.
+ */
 template <typename T>
-class Span {
+class span {
 public:
   using element_type = T;
   using size_type    = std::size_t;
@@ -38,19 +42,19 @@ public:
   using reference    = T&;
   using iterator     = T*;
 
-  constexpr Span() noexcept : ptr_(nullptr), len_(0) {}
+  constexpr span() noexcept : ptr_(nullptr), len_(0) {}
 
-  constexpr Span(pointer p, size_type n) noexcept : ptr_(p), len_(n) {}
+  constexpr span(pointer p, size_type n) noexcept : ptr_(p), len_(n) {}
 
   template <typename C,
             typename = decltype(std::declval<C&>().data()),
             typename = decltype(std::declval<C&>().size())>
-  explicit constexpr Span(C& c) noexcept : ptr_(c.data()), len_(static_cast<size_type>(c.size())) {}
+  explicit constexpr span(C& c) noexcept : ptr_(c.data()), len_(static_cast<size_type>(c.size())) {}
 
   template <typename C,
             typename = decltype(std::declval<const C&>().data()),
             typename = decltype(std::declval<const C&>().size())>
-  explicit constexpr Span(const C& c) noexcept
+  explicit constexpr span(const C& c) noexcept
       : ptr_(c.data()), len_(static_cast<size_type>(c.size())) {}
 
   constexpr pointer data() const noexcept {
@@ -85,9 +89,9 @@ public:
     return *(ptr_ + (len_ - 1));
   }
 
-  constexpr Span subspan(size_type offset, size_type count = size_type(-1)) const noexcept {
+  constexpr span subspan(size_type offset, size_type count = size_type(-1)) const noexcept {
     const size_type n = (count == size_type(-1) || offset + count > len_) ? (len_ - offset) : count;
-    return Span(ptr_ + offset, n);
+    return span(ptr_ + offset, n);
   }
 
 private:
