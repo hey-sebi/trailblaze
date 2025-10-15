@@ -6,13 +6,19 @@
 
 #include <string_view>
 
+#include "trailblaze/interval.h"
 #include "trailblaze/plot/scene.h"
 
 namespace trailblaze::plot {
 
 class renderer {
 public:
+  renderer() = default;
+  renderer(const renderer& other) = default;
+  renderer(renderer&& other) = default;
   virtual ~renderer() = default;
+  renderer& operator=(const renderer& other) = default;
+  renderer& operator=(renderer&& other) = default;
 
   /** Starts a figure
    *  @param width_px Canvas width in pixel
@@ -34,9 +40,9 @@ public:
 
   virtual void set_axis_equal(bool equal = true) {}
 
-  virtual void set_x_lim(double min_x, double max_x) {}
+  virtual void set_x_lim(const interval<double>& x_range) {}
 
-  virtual void set_y_lim(double min_y, double max_y) {}
+  virtual void set_y_lim(const interval<double>& y_range) {}
 };
 
 } // namespace trailblaze::plot

@@ -28,62 +28,64 @@ void expect_quat_near(const trailblaze::quaternion& a, const trailblaze::quatern
 namespace trailblaze {
 
 TEST(QuaternionBasics, SquaredNormAndNorm) {
-  const quaternion q{1.0, 2.0, 3.0, 4.0};
-  const double sq = squared_norm(q);
-  EXPECT_DOUBLE_EQ(sq, 1.0 + 4.0 + 9.0 + 16.0); // 30
-  const double n = norm(q);
-  EXPECT_TRUE(nearly_equal(n, std::sqrt(30.0)));
+  const quaternion quat{1.0, 2.0, 3.0, 4.0};
+  const double sq_quat_norm = squared_norm(quat);
+  EXPECT_DOUBLE_EQ(sq_quat_norm, 1.0 + 4.0 + 9.0 + 16.0); // 30
+  const double quat_norm = norm(quat);
+  EXPECT_TRUE(nearly_equal(quat_norm, std::sqrt(30.0)));
 }
 
 TEST(QuaternionBasics, ScalingOperators) {
-  const quaternion q{1.0, -2.0, 0.5, 3.0};
-  const double s = 2.5;
+  const quaternion quat{1.0, -2.0, 0.5, 3.0};
+  const double scalar = 2.5;
 
-  const quaternion left = s * q;
-  const quaternion right = q * s;
+  const quaternion left = scalar * quat;
+  const quaternion right = quat * scalar;
 
-  expect_quat_near(left, quaternion{s * q.x, s * q.y, s * q.z, s * q.w});
+  expect_quat_near(left,
+                   quaternion{scalar * quat.x, scalar * quat.y, scalar * quat.z, scalar * quat.w});
   expect_quat_near(right, left);
 }
 
 TEST(QuaternionNormalize, NormalizesToUnitLength) {
-  quaternion q{1.0, 2.0, 3.0, 4.0};
-  const double n = norm(q);
-  ASSERT_GT(n, 0.0);
+  quaternion quat{1.0, 2.0, 3.0, 4.0};
+  const double quat_norm = norm(quat);
+  ASSERT_GT(quat_norm, 0.0);
 
-  quaternion expected{q.x / n, q.y / n, q.z / n, q.w / n};
-  normalize(q);
+  quaternion expected{quat.x / quat_norm, quat.y / quat_norm, quat.z / quat_norm,
+                      quat.w / quat_norm};
+  normalize(quat);
 
   // Length is ~1
-  EXPECT_TRUE(nearly_equal(norm(q), 1.0, 1e-12));
-  // Direction preserved
-  expect_quat_near(q, expected, 1e-12);
+  EXPECT_TRUE(nearly_equal(norm(quat), 1.0, 1e-12));
+  // Direction is preserved
+  expect_quat_near(quat, expected, 1e-12);
 }
 
 TEST(QuaternionNormalize, NoopOnZeroQuaternion) {
-  quaternion q{0.0, 0.0, 0.0, 0.0};
-  normalize(q);
-  expect_quat_near(q, quaternion{0.0, 0.0, 0.0, 0.0});
-  EXPECT_DOUBLE_EQ(squared_norm(q), 0.0);
+  quaternion quat{0.0, 0.0, 0.0, 0.0};
+  normalize(quat);
+  expect_quat_near(quat, quaternion{0.0, 0.0, 0.0, 0.0});
+  EXPECT_DOUBLE_EQ(squared_norm(quat), 0.0);
 }
 
 TEST(QuaternionNormalize, StableForVerySmallMagnitude) {
   // Tiny values that would underflow if dividing by squared norm.
-  quaternion q{1e-20, -1e-20, 2e-20, -2e-20};
+  quaternion quat{1e-20, -1e-20, 2e-20, -2e-20};
   // Ensure it doesn't produce inf/NaN and ends up unit-length.
-  normalize(q);
-  EXPECT_TRUE(std::isfinite(q.x));
-  EXPECT_TRUE(std::isfinite(q.y));
-  EXPECT_TRUE(std::isfinite(q.z));
-  EXPECT_TRUE(std::isfinite(q.w));
-  EXPECT_TRUE(nearly_equal(norm(q), 1.0, 1e-12));
+  normalize(quat);
+  EXPECT_TRUE(std::isfinite(quat.x));
+  EXPECT_TRUE(std::isfinite(quat.y));
+  EXPECT_TRUE(std::isfinite(quat.z));
+  EXPECT_TRUE(std::isfinite(quat.w));
+  EXPECT_TRUE(nearly_equal(norm(quat), 1.0, 1e-12));
 }
 
 TEST(QuaternionNormalize, AlreadyUnitIsStable) {
-  quaternion q{0.0, 0.0, 0.0, 1.0};
-  normalize(q);
-  expect_quat_near(q, quaternion{0.0, 0.0, 0.0, 1.0});
-  EXPECT_TRUE(nearly_equal(norm(q), 1.0));
+  quaternion quat{0.0, 0.0, 0.0, 1.0};
+  normalize(quat);
+  expect_quat_near(quat, quaternion{0.0, 0.0, 0.0, 1.0});
+  EXPECT_TRUE(nearly_equal(norm(quat), 1.0));
 }
 
 } // namespace trailblaze

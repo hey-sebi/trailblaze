@@ -14,22 +14,23 @@ namespace trailblaze::plot {
 
 class matplotlib_renderer final : public renderer {
 public:
-  explicit matplotlib_renderer(std::filesystem::path out_py) : out_py_(std::move(out_py)) {}
+  explicit matplotlib_renderer(std::filesystem::path out_filepath)
+      : out_filepath_(std::move(out_filepath)) {}
 
-  void begin_figure(int w, int h) override {
+  void begin_figure(int width, int height) override {
     ss_.str({});
     ss_.clear();
     ss_ << "import matplotlib.pyplot as plt\n"
            "fig = plt.figure(figsize=("
-        << (w / 100.0) << ", " << (h / 100.0)
+        << (width / 100.0) << ", " << (height / 100.0)
         << "))\n"
            "ax = fig.add_subplot(111)\n";
   }
 
   void end_figure() override {
     ss_ << "ax.grid(True)\nplt.show()\n";
-    std::ofstream f(out_py_);
-    f << ss_.str();
+    std::ofstream file(out_filepath_);
+    file << ss_.str();
   }
 
   void set_title(std::string_view title) override {
@@ -37,64 +38,69 @@ public:
   }
 
   void set_axis_equal(bool equal = true) override {
-    if (equal)
+    if (equal) {
       ss_ << "ax.set_aspect('equal', adjustable='box')\n";
+    }
   }
 
-  void draw(const polyline_2d& pl) override {
+  void draw(const polyline_2d& polyline) override {
     ss_ << "ax.plot([";
-    for (std::size_t i = 0; i < pl.pts.size(); ++i) {
-      if (i)
+    for (std::size_t i = 0; i < polyline.pts.size(); ++i) {
+      if (i != 0) {
         ss_ << ",";
-      ss_ << pl.pts[i][0];
+      }
+      ss_ << polyline.pts[i][0];
     }
     ss_ << "],[";
-    for (std::size_t i = 0; i < pl.pts.size(); ++i) {
-      if (i)
+    for (std::size_t i = 0; i < polyline.pts.size(); ++i) {
+      if (i != 0) {
         ss_ << ",";
-      ss_ << pl.pts[i][1];
+      }
+      ss_ << polyline.pts[i][1];
     }
     ss_ << "])\n";
   }
 
-  void draw(const polygon_2d& pg) override {
+  void draw(const polygon_2d& polygon) override {
     ss_ << "ax.fill([";
-    for (std::size_t i = 0; i < pg.pts.size(); ++i) {
+    for (std::size_t i = 0; i < polygon.pts.size(); ++i) {
       if (i)
         ss_ << ",";
-      ss_ << pg.pts[i][0];
+      ss_ << polygon.pts[i][0];
     }
     ss_ << "],[";
-    for (std::size_t i = 0; i < pg.pts.size(); ++i) {
+    for (std::size_t i = 0; i < polygon.pts.size(); ++i) {
       if (i)
         ss_ << ",";
-      ss_ << pg.pts[i][1];
+      ss_ << polygon.pts[i][1];
     }
     ss_ << "], alpha=0.2)\n";
   }
 
-  void draw(const arrow_2d& ar) override {
-    ss_ << "ax.arrow(" << ar.p[0] << "," << ar.p[1] << "," << (ar.q[0] - ar.p[0]) << ","
-        << (ar.q[1] - ar.p[1]) << ", length_includes_head=True, head_width=" << ar.head_len
-        << ", head_length=" << ar.head_len << ")\n";
+  void draw(const arrow_2d& arrow) override {
+    ss_ << "ax.arrow(" << arrow.p[0] << "," << arrow.p[1] << "," << (arrow.q[0] - arrow.p[0]) << ","
+        << (arrow.q[1] - arrow.p[1]) << ", length_includes_head=True, head_width=" << arrow.head_len
+        << ", head_length=" << arrow.head_len << ")\n";
   }
 
-  void draw(const text_2d& t) override {
-    ss_ << "ax.text(" << t.p[0] << "," << t.p[1] << "," << py_str(t.text) << ", fontsize=" << t.size
-        << ")\n";
+  void draw(const text_2d& text) override {
+    ss_ << "ax.text(" << text.p[0] << "," << text.p[1] << "," << py_str(text.text)
+        << ", fontsize=" << text.size << ")\n";
   }
 
 private:
-  static std::string py_str(std::string_view s) {
+  static std::string py_str(std::string_view str) {
     std::string q = "'";
-    for (char c : s)
+    for (char c : str) {
       q += (c == '\'' ? "\\'" : std::string(1, c));
+    }
     q += "'";
     return q;
   }
 
-  std::filesystem::path out_py_;
-
+  /// Path where the resulting file is written to
+  std::filesystem::path out_filepath_;
+  /// Stream where all plot commands are written to
   std::ostringstream ss_;
 };
 

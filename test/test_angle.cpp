@@ -19,9 +19,9 @@ TEST(Angle, DegToRadConversion) {
 }
 
 // Fixture for parameterized normalization test
-class AngleNormalization : public ::testing::TestWithParam<double> {};
+class angle_normalization : public ::testing::TestWithParam<double> {};
 
-TEST_P(AngleNormalization, NormalizedAngleIsInTargetRange) {
+TEST_P(angle_normalization, NormalizedAngleIsInTargetRange) {
   double angle = GetParam();
   double normalized_angle = normalized(angle);
 
@@ -29,7 +29,7 @@ TEST_P(AngleNormalization, NormalizedAngleIsInTargetRange) {
   EXPECT_LT(normalized_angle, numbers::pi);
 }
 
-INSTANTIATE_TEST_SUITE_P(RadianSamples, AngleNormalization,
+INSTANTIATE_TEST_SUITE_P(RadianSamples, angle_normalization,
                          ::testing::Values(-100.0, -3.14, -1.57, 0.0, 1.0, 1.57, 3.14, 42.0,
                                            100.0));
 

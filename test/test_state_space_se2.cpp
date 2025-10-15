@@ -48,15 +48,15 @@ TEST(StateSpaces, SpaceSE2Metric) {
 }
 
 TEST(StateSpaces, SpaceSE2LinearInterpolation) {
-  using test::kLinearInterpolationAccuracy;
+  using test::linear_interpolation_accuracy;
   typename state_space<state_se2>::interpolation_type interpolation;
 
   state_se2 zero{0., 0., 0.};
   state_se2 state1{10., 20., 1.};
   state_se2 result = interpolation(zero, state1, 0.5);
-  EXPECT_NEAR(comp::x(result), 5., kLinearInterpolationAccuracy);
-  EXPECT_NEAR(comp::y(result), 10., kLinearInterpolationAccuracy);
-  EXPECT_NEAR(comp::yaw(result), .5, kLinearInterpolationAccuracy);
+  EXPECT_NEAR(comp::x(result), 5., linear_interpolation_accuracy);
+  EXPECT_NEAR(comp::y(result), 10., linear_interpolation_accuracy);
+  EXPECT_NEAR(comp::yaw(result), .5, linear_interpolation_accuracy);
 }
 
 } // namespace trailblaze

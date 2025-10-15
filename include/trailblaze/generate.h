@@ -12,8 +12,7 @@
 #include "trailblaze/state_spaces/state_space_r2.h"
 #include "trailblaze/state_spaces/state_space_se2.h"
 
-namespace trailblaze {
-namespace gen {
+namespace trailblaze::gen {
 
 /** @brief Generate a straight line in state_r2 between two points.
  *
@@ -104,5 +103,4 @@ inline std::vector<state_r2> parametric_r2(const Curve& curve, double t0, double
   return out;
 }
 
-} // namespace gen
-} // namespace trailblaze
+} // namespace trailblaze::gen

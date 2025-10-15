@@ -30,14 +30,14 @@ build_scene_from_path(const path<TState>& path, scene* scene, double arrow_len =
   for (std::size_t i = 0; i < path.size(); i += every_n) {
     const auto& state = path[i];
     polyline.pts.push_back({state.x, state.y});
-    scene->polylines.push_back(std::move(polyline));
   }
+  scene->polylines.push_back(std::move(polyline));
 }
 
 // ----- SE(2): requires x,y,yaw  ----------------------------------------------
 
 template <typename TState>
-typename std::enable_if<trailblaze::has_xy_v<TState> && trailblaze::has_yaw_v<TState>, void>::type
+typename std::enable_if_t<trailblaze::has_xy_v<TState> && trailblaze::has_yaw_v<TState>, void>
 build_scene_from_path_se2(const trailblaze::path<TState>& path, scene* scene,
                           double arrow_len = 0.25, std::size_t every_n = 10) {
   // reuse the R^2 polyline

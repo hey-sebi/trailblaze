@@ -4,6 +4,7 @@
  * ------------------------------------------------------------------------- */
 #include <gtest/gtest.h>
 
+#include "trailblaze/component_access.h"
 #include "trailblaze/state_spaces/state_space_r2.h"
 // related to testing
 #include "common.h"
@@ -42,14 +43,14 @@ TEST(StateSpaces, SpaceR2Metric) {
 }
 
 TEST(StateSpaces, SpaceR2LinearInterpolation) {
-  using test::kLinearInterpolationAccuracy;
-  typename state_space<state_r2>::interpolation_type Interpolator;
+  using test::linear_interpolation_accuracy;
+  typename state_space<state_r2>::interpolation_type interpolator;
 
   state_r2 zero{0., 0.};
   state_r2 state1{10., 20.};
-  state_r2 result = Interpolator(zero, state1, 0.5);
-  EXPECT_NEAR(comp::x(result), 5., kLinearInterpolationAccuracy);
-  EXPECT_NEAR(comp::y(result), 10., kLinearInterpolationAccuracy);
+  state_r2 result = interpolator(zero, state1, 0.5);
+  EXPECT_NEAR(comp::x(result), 5., linear_interpolation_accuracy);
+  EXPECT_NEAR(comp::y(result), 10., linear_interpolation_accuracy);
 }
 
 } // namespace trailblaze

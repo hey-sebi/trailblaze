@@ -1,13 +1,17 @@
+
 /* ------------------------------------------------------------------------
  * Copyright(c) 2024-present, Sebastian Klemm & contributors.
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  * ------------------------------------------------------------------------- */
 #pragma once
+
 namespace trailblaze {
-namespace test {
 
-/// Accuracy that we expect when running linear interpolation on double values
-constexpr double linear_interpolation_accuracy = 0.000001;
+template <typename T>
+struct interval {
+  interval(const T& lower, const T& upper) : lower_bound(lower), upper_bound(upper) {}
+  T lower_bound;
+  T upper_bound;
+};
 
-} // namespace test
 } // namespace trailblaze
