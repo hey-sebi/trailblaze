@@ -44,20 +44,32 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # ---------------------------------------------------------------------------
 
 if (TRAILBLAZE_ENABLE_CLANG_TIDY)
-  # CMake integratioL
+  # CMake integration
   find_program(CLANG_TIDY_EXE NAMES clang-tidy REQUIRED)
   if(CLANG_TIDY_EXE)
     set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE};-p=${CMAKE_BINARY_DIR};-format-style=file")
   endif()
 
-  # Custom arget for manual runs
-  find_program(RUN_CLANG_TIDY NAMES run-clang-tidy run-clang-tidy.py)
-  if(RUN_CLANG_TIDY)
-    add_custom_target(tidy
-      COMMAND "${RUN_CLANG_TIDY}" -p "${CMAKE_BINARY_DIR}" -format-style=file
-      COMMENT "Running clang-tidy over the whole project"
-    )
-  endif()
+#  # Custom target for manual runs.
+#  find_program(RUN_CLANG_TIDY NAMES run-clang-tidy run-clang-tidy.py)
+#  if(RUN_CLANG_TIDY)
+#    file(GLOB_RECURSE TIDY_SOURCES
+#      "${CMAKE_SOURCE_DIR}/example/*.cpp"
+#      "${CMAKE_SOURCE_DIR}/test/*.cpp"
+#    )
+#    file(TO_CMAKE_PATH "${CMAKE_SOURCE_DIR}" SRC_ROOT)
+#    set(TIDY_HEADER_FILTER [=[^]=]${SRC_ROOT}[=[/(include|example|test)/]=])
+#
+#    add_custom_target(tidy
+#      COMMAND "${RUN_CLANG_TIDY}"
+#              -p "${CMAKE_BINARY_DIR}"
+#              -style=file
+#              -header-filter=${TIDY_HEADER_FILTER}
+#              ${TIDY_SOURCES}
+#      WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+#      COMMENT "Running clang-tidy"
+#    )
+#  endif()
 endif()
 
 # ---------------------------------------------------------------------------

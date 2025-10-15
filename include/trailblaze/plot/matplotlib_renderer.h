@@ -2,8 +2,7 @@
  * Copyright(c) 2024-present, Sebastian Klemm & contributors.
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  * ------------------------------------------------------------------------- */
-#ifndef TRAILBAZE_MATPLOTLIB_RENDERER_H_
-#define TRAILBAZE_MATPLOTLIB_RENDERER_H_
+#pragma once
 
 #include <filesystem>
 #include <fstream>
@@ -11,12 +10,11 @@
 
 #include "trailblaze/plot/renderer.h"
 
-namespace trailblaze {
-namespace plot {
+namespace trailblaze::plot {
 
-class MatplotlibRenderer final : public renderer {
+class matplotlib_renderer final : public renderer {
 public:
-  explicit MatplotlibRenderer(std::filesystem::path out_py) : out_py_(std::move(out_py)) {}
+  explicit matplotlib_renderer(std::filesystem::path out_py) : out_py_(std::move(out_py)) {}
 
   void begin_figure(int w, int h) override {
     ss_.str({});
@@ -100,7 +98,4 @@ private:
   std::ostringstream ss_;
 };
 
-} // namespace plot
-} // namespace trailblaze
-
-#endif
+} // namespace trailblaze::plot

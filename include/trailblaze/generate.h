@@ -2,9 +2,7 @@
  * Copyright(c) 2024-present, Sebastian Klemm & contributors.
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  * ------------------------------------------------------------------------- */
-#ifndef TRAILBLAZE_GENERATE_H_
-#define TRAILBLAZE_GENERATE_H_
-
+#pragma once
 #include <algorithm>
 #include <cmath>
 #include <vector>
@@ -20,8 +18,8 @@ namespace gen {
 /** @brief Generate a straight line in state_r2 between two points.
  *
  */
-inline path<state_r2>
-line_r2(const state_r2& start, const state_r2& goal, sampling::by_count policy) {
+inline path<state_r2> line_r2(const state_r2& start, const state_r2& goal,
+                              sampling::by_count policy) {
   path<state_r2> out;
   if (policy.n == 0) {
     return out;
@@ -38,19 +36,19 @@ line_r2(const state_r2& start, const state_r2& goal, sampling::by_count policy) 
 /** @brief Generate a straight line in state_r2 from start with direction and approx length.
  *
  */
-inline std::vector<state_r2>
-line_r2(const state_r2& start, const state_r2& direction, double length, sampling::by_step policy) {
+inline std::vector<state_r2> line_r2(const state_r2& start, const state_r2& direction,
+                                     double length, sampling::by_step policy) {
   // note: direction is not necessarily normalized
-  const double dx  = direction.x;
-  const double dy  = direction.y;
+  const double dx = direction.x;
+  const double dy = direction.y;
   const double mag = std::hypot(dx, dy);
   if (mag == 0.0 || length <= 0.0 || policy.step <= 0.0) {
     return {start};
   }
 
-  const double      ux = dx / mag;
-  const double      uy = dy / mag;
-  const std::size_t n  = static_cast<std::size_t>(std::floor(length / policy.step)) + 1;
+  const double ux = dx / mag;
+  const double uy = dy / mag;
+  const std::size_t n = static_cast<std::size_t>(std::floor(length / policy.step)) + 1;
 
   std::vector<state_r2> out;
   out.reserve(n + 1);
@@ -69,10 +67,9 @@ line_r2(const state_r2& start, const state_r2& direction, double length, samplin
 /** @brief Generate states along a circle arc in R2.
  *
  */
-inline std::vector<state_r2> circle_arc_r2(const state_r2&    center,
-                                           double             radius,
-                                           double             theta0, // start angle (rad)
-                                           double             sweep,  // signed sweep (rad)
+inline std::vector<state_r2> circle_arc_r2(const state_r2& center, double radius,
+                                           double theta0, // start angle (rad)
+                                           double sweep,  // signed sweep (rad)
                                            sampling::by_count policy) {
   std::vector<state_r2> out;
   if (policy.n == 0) {
@@ -92,8 +89,8 @@ inline std::vector<state_r2> circle_arc_r2(const state_r2&    center,
  *
  */
 template <typename Curve>
-inline std::vector<state_r2>
-parametric_r2(const Curve& curve, double t0, double t1, sampling::by_count policy) {
+inline std::vector<state_r2> parametric_r2(const Curve& curve, double t0, double t1,
+                                           sampling::by_count policy) {
   std::vector<state_r2> out;
   if (policy.n == 0) {
     return out;
@@ -102,12 +99,10 @@ parametric_r2(const Curve& curve, double t0, double t1, sampling::by_count polic
   for (std::size_t i = 0; i < policy.n; ++i) {
     double u = (policy.n == 1) ? 0.0 : static_cast<double>(i) / (policy.n - 1);
     double t = (1.0 - u) * t0 + u * t1;
-    out[i]   = curve(t);
+    out[i] = curve(t);
   }
   return out;
 }
 
 } // namespace gen
 } // namespace trailblaze
-
-#endif

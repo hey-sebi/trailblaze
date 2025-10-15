@@ -2,10 +2,10 @@
  * Copyright(c) 2024-present, Sebastian Klemm & contributors.
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  * ------------------------------------------------------------------------- */
-#ifndef TRAILBLAZE_QUATERNION_H_
-#define TRAILBLAZE_QUATERNION_H_
-
+#pragma once
 #include <cmath>
+
+#include "trailblaze/math/util.h"
 
 namespace trailblaze {
 
@@ -14,40 +14,40 @@ namespace trailblaze {
  */
 struct quaternion {
   /// First imaginary component
-  double x;
+  double x{0.};
   /// Second imaginary component
-  double y;
+  double y{0.};
   /// Third imaginary component
-  double z;
+  double z{0.};
   /// Real value component.
-  double w;
+  double w{1.};
 };
 
 /** Scalar multiplication for quaternions.
- *  @param scalar The scalar value to multiply the quaternion with.
- *  @param q The quaternion value to multiply.
+ *  @param lhs The scalar value to multiply the quaternion with.
+ *  @param rhs The quaternion value to multiply.
  *  @returns the multiplied quaternion.
  */
-inline quaternion operator*(double scalar, const quaternion& q) {
+inline quaternion operator*(double lhs, const quaternion& rhs) {
   quaternion result;
-  result.x = scalar * q.x;
-  result.y = scalar * q.y;
-  result.z = scalar * q.z;
-  result.w = scalar * q.w;
+  result.x = lhs * rhs.x;
+  result.y = lhs * rhs.y;
+  result.z = lhs * rhs.z;
+  result.w = lhs * rhs.w;
   return result;
 }
 
 /** Scalar multiplication for quaternions.
- *  @param scalar The scalar value to multiply the quaternion with.
- *  @param q The quaternion value to multiply.
+ *  @param lhs The quaternion value to multiply.
+ *  @param rhs The scalar value to multiply the quaternion with.
  *  @returns the multiplied quaternion.
  */
-inline quaternion operator*(const quaternion& q, double scalar) {
-  return scalar * q;
+inline quaternion operator*(const quaternion& lhs, double rhs) {
+  return rhs * lhs;
 }
 
 inline double squared_norm(const quaternion& q) {
-  return (q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
+  return square(q.x) + square(q.y) + square(q.z) + square(q.w);
 }
 
 inline double norm(const quaternion& q) {
@@ -61,12 +61,10 @@ inline void normalize(quaternion& q) {
   }
 }
 
-inline quaternion normalized(quaternion q) {
+inline quaternion normalized(const quaternion& q) {
   quaternion q_normalized = q;
   normalize(q_normalized);
   return q_normalized;
 }
 
 } // namespace trailblaze
-
-#endif

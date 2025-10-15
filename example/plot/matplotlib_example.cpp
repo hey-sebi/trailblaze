@@ -12,12 +12,12 @@
 int main(int argc, char const* argv[]) {
   using trailblaze::state_se2;
 
-  trailblaze::path<state_se2> p3;
-  p3.push_back({0, 0, 0});
-  p3.push_back({1, 0.3, 0.2});
-  p3.push_back({2, 0.8, 0.4});
+  trailblaze::path<state_se2> path;
+  path.push_back({0, 0, 0});
+  path.push_back({1, 0.3, 0.2});
+  path.push_back({2, 0.8, 0.4});
 
-  trailblaze::plot::MatplotlibRenderer mpl("plot_path.py");
-  trailblaze::plot::plot_se2_path(p3, mpl);
+  trailblaze::plot::matplotlib_renderer mpl("plot_path.py");
+  trailblaze::plot::plot_se2_path(path, mpl);
   return 0;
 }

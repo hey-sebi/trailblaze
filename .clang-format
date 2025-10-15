@@ -13,12 +13,12 @@ AllowShortLoopsOnASingleLine: false
 SpaceBeforeParens: ControlStatements
 PointerAlignment: Left
 ReferenceAlignment: Left
-AlignConsecutiveAssignments: Consecutive
-AlignConsecutiveDeclarations: Consecutive
+AlignConsecutiveAssignments: None
+AlignConsecutiveDeclarations: None
 AlignOperands: Align
 AlwaysBreakTemplateDeclarations: Yes
-BinPackArguments: false
-BinPackParameters: false
+BinPackArguments: true
+BinPackParameters: true
 Cpp11BracedListStyle: true
 KeepEmptyLinesAtTheStartOfBlocks: false
 ConstructorInitializerAllOnOneLineOrOnePerLine: true

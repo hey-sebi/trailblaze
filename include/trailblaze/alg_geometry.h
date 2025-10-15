@@ -2,9 +2,7 @@
  * Copyright(c) 2024-present, Sebastian Klemm & contributors.
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  * ------------------------------------------------------------------------- */
-#ifndef TRAILBLAZE_ALG_GEOMETRY_H_
-#define TRAILBLAZE_ALG_GEOMETRY_H_
-
+#pragma once
 #include <cmath>
 
 #include "trailblaze/backport/span.h"
@@ -55,5 +53,3 @@ void normalize_yaw(span<StateR3> p) {
 }
 
 } // namespace trailblaze
-
-#endif

@@ -2,8 +2,7 @@
  * Copyright(c) 2024-present, Sebastian Klemm & contributors.
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  * ------------------------------------------------------------------------- */
-#ifndef TRAILBLAZE_METRICS_EUCLIDEAN_DISTANCE_H_
-#define TRAILBLAZE_METRICS_EUCLIDEAN_DISTANCE_H_
+#pragma once
 // STL
 #include <cmath>
 
@@ -52,5 +51,3 @@ struct euclidean_distance_3d {
 };
 
 } // namespace trailblaze
-
-#endif

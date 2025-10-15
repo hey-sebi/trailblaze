@@ -2,13 +2,14 @@
  * Copyright(c) 2024-present, Sebastian Klemm & contributors.
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  * ------------------------------------------------------------------------- */
-#ifndef TRAILBLAZE_MATH_INTERPOLATION_H_
-#define TRAILBLAZE_MATH_INTERPOLATION_H_
+#pragma once
 
 #include <algorithm>
 #include <cmath>
 
+#include "trailblaze/constants.h"
 #include "trailblaze/math/angle.h"
+#include "trailblaze/math/util.h"
 #include "trailblaze/quaternion.h"
 
 namespace trailblaze {
@@ -60,39 +61,36 @@ inline quaternion interpolate_quaternion(const quaternion& a, quaternion b, doub
     dot = -dot;
   }
 
-  // TODO: kEps should be moved to constants.h or so.
-  constexpr double kEps = 1e-6;
-  double           sx   = 0.;
-  double           sy   = 0.;
-  double           sz   = 0.;
-  double           sw   = 0.;
+  double interpol_x = 0.;
+  double interpol_y = 0.;
+  double interpol_z = 0.;
+  double interpol_w = 0.;
 
-  if (dot > 1.0 - kEps) {
-    sx = a.x + (b.x - a.x) * t;
-    sy = a.y + (b.y - a.y) * t;
-    sz = a.z + (b.z - a.z) * t;
-    sw = a.w + (b.w - a.w) * t;
+  if (dot > 1.0 - constants::quaternion_interpolation_epsilon) {
+    interpol_x = a.x + (b.x - a.x) * t;
+    interpol_y = a.y + (b.y - a.y) * t;
+    interpol_z = a.z + (b.z - a.z) * t;
+    interpol_w = a.w + (b.w - a.w) * t;
   } else {
     const double theta = std::acos(std::max(-1.0, std::min(1.0, dot)));
-    const double s     = std::sin(theta);
-    const double w1    = std::sin((1.0 - t) * theta) / s;
-    const double w2    = std::sin(t * theta) / s;
+    const double sin_theta = std::sin(theta);
+    const double weight1 = std::sin((1.0 - t) * theta) / sin_theta;
+    const double weight2 = std::sin(t * theta) / sin_theta;
 
-    sx = a.x * w1 + b.x * w2;
-    sy = a.y * w1 + b.y * w2;
-    sz = a.z * w1 + b.z * w2;
-    sw = a.w * w1 + b.w * w2;
+    interpol_x = a.x * weight1 + b.x * weight2;
+    interpol_y = a.y * weight1 + b.y * weight2;
+    interpol_z = a.z * weight1 + b.z * weight2;
+    interpol_w = a.w * weight1 + b.w * weight2;
   }
-  const double n = std::sqrt(sx * sx + sy * sy + sz * sz + sw * sw);
+  const double n =
+      std::sqrt(square(interpol_x) + square(interpol_y) + square(interpol_z) + square(interpol_w));
 
   quaternion out;
-  out.x = sx / n;
-  out.y = sy / n;
-  out.z = sz / n;
-  out.w = sw / n;
+  out.x = interpol_x / n;
+  out.y = interpol_y / n;
+  out.z = interpol_z / n;
+  out.w = interpol_w / n;
   return out;
 }
 
 } // namespace trailblaze
-
-#endif

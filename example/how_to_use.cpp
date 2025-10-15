@@ -2,6 +2,7 @@
  * Copyright(c) 2024-present, Sebastian Klemm & contributors.
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  * ------------------------------------------------------------------------- */
+#include <iterator>
 #include <vector>
 
 #include "trailblaze/alg_resample.h"
@@ -9,7 +10,7 @@
 #include "trailblaze/path.h"
 #include "trailblaze/state_spaces/state_space_se2.h"
 
-void Example() {
+void run_example() {
   trailblaze::path<trailblaze::state_se2> path;
   // ... fill the path ...
   path.reserve(5);
@@ -21,12 +22,12 @@ void Example() {
 
   std::vector<trailblaze::state_se2> out;
   out.reserve(path.size() * 2);
-  auto it = std::back_inserter(out);
-
-  trailblaze::resample<trailblaze::null_logger>(path.states(), /*ds=*/0.1, it);
+  auto insert_it = std::back_inserter(out);
+  const double sample_density = 0.1;
+  trailblaze::resample<trailblaze::null_logger>(path.states(), sample_density, insert_it);
 }
 
 int main(int argc, char const* argv[]) {
-  Example();
+  run_example();
   return 0;
 }

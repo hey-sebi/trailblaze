@@ -5,6 +5,7 @@
 // external
 #include <gtest/gtest.h>
 
+#include "trailblaze/backport/numbers.h"
 #include "trailblaze/math/angle.h"
 #include "trailblaze/math/numbers.h"
 
@@ -21,16 +22,15 @@ TEST(Angle, DegToRadConversion) {
 class AngleNormalization : public ::testing::TestWithParam<double> {};
 
 TEST_P(AngleNormalization, NormalizedAngleIsInTargetRange) {
-  double angle            = GetParam();
+  double angle = GetParam();
   double normalized_angle = normalized(angle);
 
   EXPECT_GE(normalized_angle, -numbers::pi);
   EXPECT_LT(normalized_angle, numbers::pi);
 }
 
-INSTANTIATE_TEST_SUITE_P(
-    RadianSamples,
-    AngleNormalization,
-    ::testing::Values(-100.0, -3.14, -1.57, 0.0, 1.0, 1.57, 3.14, 42.0, 100.0));
+INSTANTIATE_TEST_SUITE_P(RadianSamples, AngleNormalization,
+                         ::testing::Values(-100.0, -3.14, -1.57, 0.0, 1.0, 1.57, 3.14, 42.0,
+                                           100.0));
 
 } // namespace trailblaze

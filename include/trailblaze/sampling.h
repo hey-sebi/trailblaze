@@ -2,17 +2,14 @@
  * Copyright(c) 2024-present, Sebastian Klemm & contributors.
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  * ------------------------------------------------------------------------- */
-#ifndef TRAILBLAZE_SAMPLING_H_
-#define TRAILBLAZE_SAMPLING_H_
-
+#pragma once
 #include <cstddef>
 
-namespace trailblaze {
-namespace sampling {
+namespace trailblaze::sampling {
 
 struct by_count {
   // number of states (>= 2 recommended)
-  std::size_t n;
+  std::size_t n{2};
 };
 
 struct by_step {
@@ -21,7 +18,4 @@ struct by_step {
   // Note: generators will cap with total length/range.
 };
 
-} // namespace sampling
-} // namespace trailblaze
-
-#endif
+} // namespace trailblaze::sampling

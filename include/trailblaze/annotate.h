@@ -2,9 +2,7 @@
  * Copyright(c) 2024-present, Sebastian Klemm & contributors.
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  * ------------------------------------------------------------------------- */
-#ifndef TRAILBLAZE_ANNOTATE_H_
-#define TRAILBLAZE_ANNOTATE_H_
-
+#pragma once
 #include <algorithm>
 #include <cmath>
 #include <vector>
@@ -88,8 +86,8 @@ inline std::vector<state_se2> yaw_centered_diff(const std::vector<state_r2>& r2)
  *
  *
  */
-inline std::vector<state_se2>
-yaw_lerp(const std::vector<state_r2>& r2, double start_yaw, double end_yaw) {
+inline std::vector<state_se2> yaw_lerp(const std::vector<state_r2>& r2, double start_yaw,
+                                       double end_yaw) {
   std::vector<state_se2> out;
   out.reserve(r2.size());
   if (r2.empty())
@@ -98,7 +96,7 @@ yaw_lerp(const std::vector<state_r2>& r2, double start_yaw, double end_yaw) {
   // Shortest angular interpolation
   double d = normalized(end_yaw - start_yaw);
   for (std::size_t i = 0; i < r2.size(); ++i) {
-    double t   = (r2.size() == 1) ? 0.0 : static_cast<double>(i) / (r2.size() - 1);
+    double t = (r2.size() == 1) ? 0.0 : static_cast<double>(i) / (r2.size() - 1);
     double yaw = normalized(start_yaw + t * d);
     out.push_back({r2[i].x, r2[i].y, yaw});
   }
@@ -119,5 +117,3 @@ inline std::vector<state_se2> yaw_constant(const std::vector<state_r2>& r2, doub
 
 } // namespace annotate
 } // namespace trailblaze
-
-#endif

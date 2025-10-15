@@ -2,8 +2,7 @@
  * Copyright(c) 2024-present, Sebastian Klemm & contributors.
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  * ------------------------------------------------------------------------- */
-#ifndef TRAILBLAZE_POSITION_VIEW_3D_H_
-#define TRAILBLAZE_POSITION_VIEW_3D_H_
+#pragma once
 #include <type_traits>
 
 namespace trailblaze {
@@ -13,8 +12,8 @@ template <class T>
 class position_view_3d {
 public:
   using value_type = std::remove_const_t<T>;
-  using reference  = T&;
-  using pointer    = T*;
+  using reference = T&;
+  using pointer = T*;
 
   /** Constructor
    *  @param x x-component of the position.
@@ -49,10 +48,8 @@ private:
 
 /// Factory function to create a @see position_view_3d
 template <class T>
-auto make_position_view_3d(T& x, T& y) -> position_view_3d<T> {
+position_view_3d<T> make_position_view_3d(T& x, T& y) {
   return position_view_3d<T>(x, y);
 }
 
 } // namespace trailblaze
-
-#endif

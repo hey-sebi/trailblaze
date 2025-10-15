@@ -3,11 +3,19 @@
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  * ------------------------------------------------------------------------- */
 #pragma once
+
 namespace trailblaze {
-namespace test {
+/** Calculates a squared value.
+ *
+ *  This is a utility function mostly to avoid clutter like having to write x * x and
+ *  similar.
+ *
+ *  @param value The value to multiply with itself
+ *  @returns the squared value.
+ */
+template <typename T>
+inline T square(const T& value) {
+  return value * value;
+}
 
-/// Accuracy that we expect when running linear interpolation on double values
-constexpr double kLinearInterpolationAccuracy = 0.000001;
-
-} // namespace test
 } // namespace trailblaze

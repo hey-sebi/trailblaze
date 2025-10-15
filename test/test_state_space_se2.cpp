@@ -14,8 +14,8 @@ namespace trailblaze {
 
 TEST(StateSpaces, SpaceSE2Accessors) {
   state_se2 state;
-  state.x   = 10;
-  state.y   = 20;
+  state.x = 10;
+  state.y = 20;
   state.yaw = 0.1234;
 
   // read access
@@ -24,8 +24,8 @@ TEST(StateSpaces, SpaceSE2Accessors) {
   EXPECT_EQ(comp::yaw(state), state.yaw);
 
   // write access
-  comp::x(state)   = 40;
-  comp::y(state)   = 50;
+  comp::x(state) = 40;
+  comp::y(state) = 50;
   comp::yaw(state) = 1.;
   EXPECT_EQ(40., state.x);
   EXPECT_EQ(50., state.y);
@@ -49,11 +49,11 @@ TEST(StateSpaces, SpaceSE2Metric) {
 
 TEST(StateSpaces, SpaceSE2LinearInterpolation) {
   using test::kLinearInterpolationAccuracy;
-  typename state_space<state_se2>::interpolation_type Interpolator;
+  typename state_space<state_se2>::interpolation_type interpolation;
 
   state_se2 zero{0., 0., 0.};
   state_se2 state1{10., 20., 1.};
-  state_se2 result = Interpolator(zero, state1, 0.5);
+  state_se2 result = interpolation(zero, state1, 0.5);
   EXPECT_NEAR(comp::x(result), 5., kLinearInterpolationAccuracy);
   EXPECT_NEAR(comp::y(result), 10., kLinearInterpolationAccuracy);
   EXPECT_NEAR(comp::yaw(result), .5, kLinearInterpolationAccuracy);

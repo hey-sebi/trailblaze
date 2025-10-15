@@ -2,8 +2,7 @@
  * Copyright(c) 2024-present, Sebastian Klemm & contributors.
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  * ------------------------------------------------------------------------- */
-#ifndef TRAILBLAZE_STATE_TRAITS_H_
-#define TRAILBLAZE_STATE_TRAITS_H_
+#pragma once
 
 #include "trailblaze/detail/state_traits.h"
 
@@ -44,12 +43,10 @@ constexpr bool has_quat_v = detail::has_quat<T>::value;
  */
 template <typename T>
 struct state_traits {
-  static constexpr bool has_xy         = has_xy_v<T>;
-  static constexpr bool has_yaw        = has_yaw_v<T>;
-  static constexpr bool has_xyz        = has_xyz_v<T>;
+  static constexpr bool has_xy = has_xy_v<T>;
+  static constexpr bool has_yaw = has_yaw_v<T>;
+  static constexpr bool has_xyz = has_xyz_v<T>;
   static constexpr bool has_quaternion = has_quat_v<T>;
 };
 
 } // namespace trailblaze
-
-#endif

@@ -2,8 +2,7 @@
  * Copyright(c) 2024-present, Sebastian Klemm & contributors.
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  * ------------------------------------------------------------------------- */
-#ifndef TRAILBLAZE_PLOT_PLOT_API_H_
-#define TRAILBLAZE_PLOT_PLOT_API_H_
+#pragma once
 
 #include "trailblaze/path.h"
 #include "trailblaze/state_traits.h"
@@ -12,14 +11,10 @@
 #include "trailblaze/plot/renderer.h"
 #include "trailblaze/plot/scene_builders.h"
 
-namespace trailblaze {
-namespace plot {
+namespace trailblaze::plot {
 
-inline void render_scene(const scene& sc,
-                         renderer&    r,
-                         int          width_px  = 1000,
-                         int          height_px = 800,
-                         std::string  title     = {}) {
+inline void render_scene(const scene& sc, renderer& r, int width_px = 1000, int height_px = 800,
+                         std::string title = {}) {
   r.begin_figure(width_px, height_px);
   if (!title.empty()) {
     r.set_title(title);
@@ -37,8 +32,8 @@ inline void render_scene(const scene& sc,
 }
 
 template <typename TState>
-inline void
-plot_r2_path(const trailblaze::path<TState>& path, renderer& r, std::string title = "Path (R^2)") {
+inline void plot_r2_path(const trailblaze::path<TState>& path, renderer& r,
+                         std::string title = "Path (R^2)") {
   static_assert(trailblaze::has_xy_v<TState>,
                 "plot_r2_path requires a state with members x and y.");
   scene sc;
@@ -47,9 +42,8 @@ plot_r2_path(const trailblaze::path<TState>& path, renderer& r, std::string titl
 }
 
 template <typename TState>
-inline void plot_se2_path(const trailblaze::path<TState>& path,
-                          renderer&                       r,
-                          std::string                     title = "Path (SE(2))") {
+inline void plot_se2_path(const trailblaze::path<TState>& path, renderer& r,
+                          std::string title = "Path (SE(2))") {
   static_assert(trailblaze::has_xy_v<TState> && trailblaze::has_yaw_v<TState>,
                 "plot_se2_path requires a state with x, y, yaw.");
   scene sc;
@@ -57,7 +51,4 @@ inline void plot_se2_path(const trailblaze::path<TState>& path,
   render_scene(sc, r, 1000, 800, std::move(title));
 }
 
-} // namespace plot
-} // namespace trailblaze
-
-#endif
+} // namespace trailblaze::plot

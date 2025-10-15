@@ -2,9 +2,7 @@
  * Copyright(c) 2024-present, Sebastian Klemm & contributors.
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  * ------------------------------------------------------------------------- */
-#ifndef TRAILBLAZE_PATH_H_
-#define TRAILBLAZE_PATH_H_
-
+#pragma once
 #include <cassert>
 #include <iostream>
 #include <memory_resource>
@@ -12,82 +10,46 @@
 #include <string>
 #include <vector>
 
+#include "trailblaze/array_of_struct_storage.h"
 #include "trailblaze/backport/span.h"
 #include "trailblaze/type_traits.h"
 
 namespace trailblaze {
 
-// Default AoS storage (allocator-aware).
-template <typename T, typename Allocator>
-struct array_of_struct_storage {
-  using container_type = std::vector<T, Allocator>;
-
-  explicit array_of_struct_storage(const Allocator& allocator = Allocator()) : data_(allocator) {}
-
-  T* data() noexcept {
-    return data_.data();
-  }
-
-  const T* data() const noexcept {
-    return data_.data();
-  }
-
-  std::size_t size() const noexcept {
-    return data_.size();
-  }
-
-  void reserve(std::size_t n) {
-    data_.reserve(n);
-  }
-
-  void resize(std::size_t n) {
-    data_.resize(n);
-  }
-
-  void push_back(const T& v) {
-    data_.push_back(v);
-  }
-
-  void clear() noexcept {
-    data_.clear();
-  }
-
-  /// Where the data is stored
-  container_type data_;
-};
-
-// Vector-like contiguous path container.
-template <typename TState,
-          template <typename, typename> class Storage = array_of_struct_storage,
-          typename Allocator                          = std::allocator<TState>>
+/** A path is a container that holds an ordered sequence of states.
+ *  This implementation abstracts the state type so that any state can be used.
+ *  Also, the way the states are stored is determined by an underlying container.
+ */
+template <typename TState, template <typename, typename> class Storage = array_of_struct_storage,
+          typename Allocator = std::allocator<TState>>
 class path {
 public:
-  using value_type     = TState;
+  using value_type = TState;
   using allocator_type = Allocator;
 
   explicit path(const Allocator& allocator = Allocator()) : storage_(allocator) {}
 
-  std::size_t size() const noexcept {
+  [[__nodiscard__]] std::size_t size() const noexcept {
     return storage_.size();
   }
 
-  bool empty() const noexcept {
+  [[__nodiscard__]] bool empty() const noexcept {
     return size() == 0;
   }
 
-  TState* data() noexcept {
+  [[__nodiscard__]] TState* data() noexcept {
     return storage_.data();
   }
 
-  const TState* data() const noexcept {
+  [[__nodiscard__]] const TState* data() const noexcept {
     return storage_.data();
   }
 
-  span<TState> states() noexcept {
+  [[__nodiscard__]] span<TState> states() noexcept {
     return {data(), size()};
   }
 
-  span<const TState> states() const noexcept {
+  [[__nodiscard__]] span<const TState> states() const noexcept {
     return {data(), size()};
   }
 
@@ -99,61 +61,62 @@ public:
     storage_.resize(n);
   }
 
-  void push_back(const TState& s) {
-    storage_.push_back(s);
+  void push_back(const TState& state) {
+    storage_.push_back(state);
   }
 
   void clear() noexcept {
     storage_.Clear();
   }
 
-  TState& start() {
+  [[__nodiscard__]] TState& start() {
     assert(!empty());
     return *data();
   }
 
-  const TState& start() const {
+  [[__nodiscard__]] const TState& start() const {
     assert(!empty());
     return *data();
   }
 
-  TState& goal() {
+  [[__nodiscard__]] TState& goal() {
     assert(!empty());
     return *(data() + (size() - 1));
   }
 
-  const TState& goal() const {
+  [[__nodiscard__]] const TState& goal() const {
     assert(!empty());
     return *(data() + (size() - 1));
   }
 
-  TState& operator[](std::size_t index) {
-    return *(data() + index);
+  [[__nodiscard__]] TState& operator[](std::size_t index) {
+    return storage_[index];
   }
 
-  const TState& operator[](std::size_t index) const {
-    return *(data() + index);
+  [[__nodiscard__]] const TState& operator[](std::size_t index) const {
+    return storage_[index];
   }
 
-  TState& at(std::size_t index) {
+  [[__nodiscard__]] TState& at(std::size_t index) {
     if (index >= size()) {
       std::string msg = "index " + std::to_string(index) + " is out of range. Path size is " +
                         std::to_string(size());
       throw std::out_of_range(msg);
     }
-    return *(data() + index);
+    return storage_[index];
   }
 
-  const TState& at(std::size_t index) const {
+  [[__nodiscard__]] const TState& at(std::size_t index) const {
     if (index >= size()) {
       std::string msg = "index " + std::to_string(index) + " is out of range. Path size is " +
                         std::to_string(size());
       throw std::out_of_range(msg);
     }
-    return *(data() + index);
+    return storage_[index];
   }
 
 private:
+  /// The underlying data storage.
   Storage<TState, Allocator> storage_;
 };
 
@@ -166,9 +129,8 @@ using pmr_path = path<TState, array_of_struct_storage, std::pmr::polymorphic_all
  *  TODO
  *
  */
-template <typename TState,
-          template <typename, typename> class Storage = array_of_struct_storage,
-          typename Allocator                          = std::allocator<TState>>
+template <typename TState, template <typename, typename> class Storage = array_of_struct_storage,
+          typename Allocator = std::allocator<TState>>
 inline std::ostream& operator<<(std::ostream& os, const path<TState>& path) {
   static_assert(is_ostream_insertable_v<TState>,
                 "Requires that State is stream-insertable (has operator<<(ostream&, "
@@ -181,5 +143,3 @@ inline std::ostream& operator<<(std::ostream& os, const path<TState>& path) {
 }
 
 } // namespace trailblaze
-
-#endif

@@ -3,11 +3,10 @@
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  * ------------------------------------------------------------------------- */
 #pragma once
-namespace trailblaze {
-namespace test {
 
-/// Accuracy that we expect when running linear interpolation on double values
-constexpr double kLinearInterpolationAccuracy = 0.000001;
+namespace trailblaze::constants {
 
-} // namespace test
-} // namespace trailblaze
+/// Constant used as threshold in quaternion inpterpolation
+constexpr double quaternion_interpolation_epsilon = 1e-6;
+
+} // namespace trailblaze::constants

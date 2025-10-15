@@ -26,18 +26,14 @@ TEST(Interpolation, LinearScalarInterpolation) {
 }
 
 TEST(Interpolation, LinearAngleInterpolation) {
-  EXPECT_NEAR(interpolate_angle_shortest(to_rad(0.), to_rad(100.), 0.5),
-              to_rad(50),
+  EXPECT_NEAR(interpolate_angle_shortest(to_rad(0.), to_rad(100.), 0.5), to_rad(50),
               kLinearInterpolationAccuracy);
-  EXPECT_NEAR(interpolate_angle_shortest(to_rad(1.), to_rad(2.), 0.5),
-              to_rad(1.5),
+  EXPECT_NEAR(interpolate_angle_shortest(to_rad(1.), to_rad(2.), 0.5), to_rad(1.5),
               kLinearInterpolationAccuracy);
   // angle normalization is to range [-Pi, Pi)
-  EXPECT_NEAR(interpolate_angle_shortest(to_rad(0.), to_rad(180.), 0.5),
-              to_rad(-90),
+  EXPECT_NEAR(interpolate_angle_shortest(to_rad(0.), to_rad(180.), 0.5), to_rad(-90),
               kLinearInterpolationAccuracy);
-  EXPECT_NEAR(interpolate_angle_shortest(to_rad(-179.), to_rad(179.), 0.5),
-              -numbers::pi,
+  EXPECT_NEAR(interpolate_angle_shortest(to_rad(-179.), to_rad(179.), 0.5), -numbers::pi,
               kLinearInterpolationAccuracy);
 }
 

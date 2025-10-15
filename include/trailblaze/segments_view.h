@@ -2,9 +2,7 @@
  * Copyright(c) 2024-present, Sebastian Klemm & contributors.
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  * ------------------------------------------------------------------------- */
-#ifndef TRAILBLAZE_SEGMENTS_VIEW_H_
-#define TRAILBLAZE_SEGMENTS_VIEW_H_
-
+#pragma once
 #include <cstddef>
 #include <utility>
 
@@ -19,7 +17,7 @@ public:
   explicit segments_view(span<T> s) : s_(s) {}
 
   struct iterator {
-    T*          p;
+    T* p;
     std::size_t i;
 
     bool operator!=(const iterator& o) const {
@@ -53,5 +51,3 @@ inline segments_view<T> segments(span<T> s) {
 }
 
 } // namespace trailblaze
-
-#endif
