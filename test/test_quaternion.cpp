@@ -3,6 +3,7 @@
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  * ------------------------------------------------------------------------- */
 // STL
+#include <algorithm>
 #include <cmath>
 // external
 #include <gtest/gtest.h>

@@ -5,10 +5,13 @@
 #pragma once
 #include <initializer_list>
 #include <ostream>
+#include <utility>
 
 namespace trailblaze {
 
 // Null logger: compiles away completely.
+
+/// Logger that discards all messages at compile time.
 struct null_logger {
   static constexpr bool level_trace_enabled = false;
   static constexpr bool level_debug_enabled = false;
@@ -16,20 +19,50 @@ struct null_logger {
   static constexpr bool level_warning_enabled = false;
   static constexpr bool level_error_enabled = false;
 
-  template <typename... A>
-  static void trace(A&&...) noexcept {}
+  /** Discard a trace message and its arguments.
+   *  @tparam Args Argument types, perfectly forwarded.
+   *  @param args Message arguments.
+   */
+  template <typename... Args>
+  static constexpr void trace(Args&&... args) noexcept {
+    ((void)std::forward<Args>(args), ...);
+  }
 
-  template <typename... A>
-  static void debug(A&&...) noexcept {}
+  /** Discard a debug message and its arguments.
+   *  @tparam Args Argument types, perfectly forwarded.
+   *  @param args Message arguments.
+   */
+  template <typename... Args>
+  static constexpr void debug(Args&&... args) noexcept {
+    ((void)std::forward<Args>(args), ...);
+  }
 
-  template <typename... A>
-  static void info(A&&...) noexcept {}
+  /** Discard a info message and its arguments.
+   *  @tparam Args Argument types, perfectly forwarded.
+   *  @param args Message arguments.
+   */
+  template <typename... Args>
+  static constexpr void info(Args&&... args) noexcept {
+    ((void)std::forward<Args>(args), ...);
+  }
 
-  template <typename... A>
-  static void warn(A&&...) noexcept {}
+  /** Discard a warn message and its arguments.
+   *  @tparam Args Argument types, perfectly forwarded.
+   *  @param args Message arguments.
+   */
+  template <typename... Args>
+  static constexpr void warn(Args&&... args) noexcept {
+    ((void)std::forward<Args>(args), ...);
+  }
 
-  template <typename... A>
-  static void error(A&&...) noexcept {}
+  /** Discard a erro message and its arguments.
+   *  @tparam Args Argument types, perfectly forwarded.
+   *  @param args Message arguments.
+   */
+  template <typename... Args>
+  static constexpr void error(Args&&... args) noexcept {
+    ((void)std::forward<Args>(args), ...);
+  }
 };
 
 // Example adapter that writes to a provided ostream.
@@ -40,10 +73,11 @@ class ostream_logger {
   static constexpr bool level_warning_enabled = true;
   static constexpr bool level_error_enabled = true;
 
-  static void set_out(std::ostream* os) {
-    out_ = os;
+  static void set_out(std::ostream* out) {
+    out_ = out;
   }
-
+  // TODO: resolve linter errors
+  // NOLINTBEGIN
   template <typename... A>
   static void trace(A&&... a) {
     (*out_) << "[  trace] ";
@@ -92,5 +126,5 @@ inline std::ostream* ostream_logger::out_ = nullptr;
       logger::debug EXPR_STREAM;                                                                   \
     }                                                                                              \
   } while (0)
-
+// NOLINTEND
 } // namespace trailblaze

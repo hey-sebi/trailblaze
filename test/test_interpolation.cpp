@@ -6,6 +6,7 @@
 #include <gtest/gtest.h>
 
 #include "trailblaze/backport/numbers.h"
+#include "trailblaze/math/angle.h"
 #include "trailblaze/math/interpolation.h"
 // related to testing
 #include "common.h"
