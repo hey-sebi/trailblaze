@@ -38,27 +38,27 @@ inline path<state_r2> line_r2(const state_r2& start, const state_r2& goal,
 inline std::vector<state_r2> line_r2(const state_r2& start, const state_r2& direction,
                                      double length, sampling::by_step policy) {
   // note: direction is not necessarily normalized
-  const double dx = direction.x;
-  const double dy = direction.y;
-  const double mag = std::hypot(dx, dy);
-  if (mag == 0.0 || length <= 0.0 || policy.step <= 0.0) {
+  const double dir_x = direction.x;
+  const double dir_y = direction.y;
+  const double magnitude = std::hypot(dir_x, dir_y);
+  if (magnitude == 0.0 || length <= 0.0 || policy.step <= 0.0) {
     return {start};
   }
 
-  const double ux = dx / mag;
-  const double uy = dy / mag;
+  const double unit_x = dir_x / magnitude;
+  const double unit_y = dir_y / magnitude;
   const std::size_t n = static_cast<std::size_t>(std::floor(length / policy.step)) + 1;
 
   std::vector<state_r2> out;
   out.reserve(n + 1);
   for (std::size_t i = 0; i < n; ++i) {
     double s = std::min(static_cast<double>(i) * policy.step, length);
-    out.push_back({start.x + ux * s, start.y + uy * s});
+    out.push_back({start.x + unit_x * s, start.y + unit_y * s});
   }
   // Ensure we hit the final point at the requested length.
-  if (out.empty() || std::hypot(out.back().x - (start.x + ux * length),
-                                out.back().y - (start.y + uy * length)) > 1e-12) {
-    out.push_back({start.x + ux * length, start.y + uy * length});
+  if (out.empty() || std::hypot(out.back().x - (start.x + unit_x * length),
+                                out.back().y - (start.y + unit_y * length)) > 1e-12) {
+    out.push_back({start.x + unit_x * length, start.y + unit_y * length});
   }
   return out;
 }

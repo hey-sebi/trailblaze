@@ -12,17 +12,23 @@
 
 namespace trailblaze::plot {
 
+/** Implements a renderer backend that generates matplotlib plots.
+ *  @see https://matplotlib.org/
+ */
 class matplotlib_renderer final : public renderer {
 public:
+  /** Constructor
+   *  @param out_filepath Path to the file containing the plot instructions.
+   */
   explicit matplotlib_renderer(std::filesystem::path out_filepath)
       : out_filepath_(std::move(out_filepath)) {}
 
-  void begin_figure(int width, int height) override {
+  void begin_figure(const canvas_dimension& dim) override {
     ss_.str({});
     ss_.clear();
     ss_ << "import matplotlib.pyplot as plt\n"
            "fig = plt.figure(figsize=("
-        << (width / 100.0) << ", " << (height / 100.0)
+        << (dim.width / 100.0) << ", " << (dim.height / 100.0)
         << "))\n"
            "ax = fig.add_subplot(111)\n";
   }
@@ -34,7 +40,9 @@ public:
   }
 
   void set_title(std::string_view title) override {
-    ss_ << "ax.set_title(" << py_str(title) << ")\n";
+    if (title.empty()) {
+      ss_ << "ax.set_title(" << to_python_string_literal(title) << ")\n";
+    }
   }
 
   void set_axis_equal(bool equal = true) override {
@@ -64,14 +72,16 @@ public:
   void draw(const polygon_2d& polygon) override {
     ss_ << "ax.fill([";
     for (std::size_t i = 0; i < polygon.pts.size(); ++i) {
-      if (i)
+      if (i != 0) {
         ss_ << ",";
+      }
       ss_ << polygon.pts[i][0];
     }
     ss_ << "],[";
     for (std::size_t i = 0; i < polygon.pts.size(); ++i) {
-      if (i)
+      if (i != 0) {
         ss_ << ",";
+      }
       ss_ << polygon.pts[i][1];
     }
     ss_ << "], alpha=0.2)\n";
@@ -79,23 +89,38 @@ public:
 
   void draw(const arrow_2d& arrow) override {
     ss_ << "ax.arrow(" << arrow.p[0] << "," << arrow.p[1] << "," << (arrow.q[0] - arrow.p[0]) << ","
-        << (arrow.q[1] - arrow.p[1]) << ", length_includes_head=True, head_width=" << arrow.head_len
-        << ", head_length=" << arrow.head_len << ")\n";
+        << (arrow.q[1] - arrow.p[1])
+        << ", length_includes_head=True, head_width=" << arrow.head_length
+        << ", head_length=" << arrow.head_length << ")\n";
   }
 
   void draw(const text_2d& text) override {
-    ss_ << "ax.text(" << text.p[0] << "," << text.p[1] << "," << py_str(text.text)
+    ss_ << "ax.text(" << text.p[0] << "," << text.p[1] << "," << to_python_string_literal(text.text)
         << ", fontsize=" << text.size << ")\n";
   }
 
 private:
-  static std::string py_str(std::string_view str) {
-    std::string q = "'";
-    for (char c : str) {
-      q += (c == '\'' ? "\\'" : std::string(1, c));
+  /**
+   * Returns a Python-style single-quoted string literal from the given input.
+   *
+   * This function wraps the input string in single quotes ('...') and escapes
+   * any internal single quotes by replacing them with \'.
+   *
+   * Example:
+   * @code
+   * to_python_string_literal("it's ok"); // returns "'it\\'s ok'"
+   * @endcode
+   *
+   * @param str The input string to quote.
+   * @return A string representing the Python-style literal.
+   */
+  static std::string to_python_string_literal(std::string_view str) {
+    std::string out = "'";
+    for (char character : str) {
+      out += (character == '\'' ? "\\'" : std::string(1, character));
     }
-    q += "'";
-    return q;
+    out += "'";
+    return out;
   }
 
   /// Path where the resulting file is written to

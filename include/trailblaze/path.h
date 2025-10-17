@@ -131,15 +131,15 @@ using pmr_path = path<TState, array_of_struct_storage, std::pmr::polymorphic_all
  */
 template <typename TState, template <typename, typename> class Storage = array_of_struct_storage,
           typename Allocator = std::allocator<TState>>
-inline std::ostream& operator<<(std::ostream& os, const path<TState>& path) {
+inline std::ostream& operator<<(std::ostream& out, const path<TState>& path) {
   static_assert(is_ostream_insertable_v<TState>,
                 "Requires that State is stream-insertable (has operator<<(ostream&, "
                 "const State&)).");
 
   for (const auto& state : path.states()) {
-    os << state << '\n';
+    out << state << '\n';
   }
-  return os;
+  return out;
 }
 
 } // namespace trailblaze

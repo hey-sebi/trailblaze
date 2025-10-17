@@ -19,13 +19,15 @@ struct polygon_2d {
   std::vector<std::array<double, 2>> pts;
 };
 
+
 struct arrow_2d {
-  std::array<double, 2> p, q;
-  double head_len{0.1};
+  std::array<double, 2> p{};
+  std::array<double, 2> q{};
+  double head_length{0.1};
 };
 
 struct text_2d {
-  std::array<double, 2> p;
+  std::array<double, 2> p{};
   std::string_view text;
   double size{10.0};
 };

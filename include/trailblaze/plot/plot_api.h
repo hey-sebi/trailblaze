@@ -10,12 +10,21 @@
 #include "trailblaze/plot/primitives.h"
 #include "trailblaze/plot/renderer.h"
 #include "trailblaze/plot/scene_builders.h"
+#include "trailblaze/plot/scene_options.h"
 
 namespace trailblaze::plot {
 
-inline void render_scene(const scene& to_plot, renderer& renderer_backend, int width_px = 1000,
-                         int height_px = 800, std::string title = {}) {
-  renderer_backend.begin_figure(width_px, height_px);
+/** Renders a scene using a certain renderer.
+ *
+ *  @param to_plot The scene to render.
+ *  @param renderer_backend The backend to use (e.g. Matplotlib, GnuPlot, ...).
+ *  @param dim The canvas dimensions.
+ *  @param title The optional title. Only considered if not an empty string.
+ */
+inline void render_scene(const scene& to_plot, renderer& renderer_backend,
+                         canvas_dimension dim = canvas_dimension(1000, 800),
+                         std::string_view title = {}) {
+  renderer_backend.begin_figure(dim);
   if (!title.empty()) {
     renderer_backend.set_title(title);
   }
@@ -37,22 +46,22 @@ inline void render_scene(const scene& to_plot, renderer& renderer_backend, int w
 
 template <typename TState>
 inline void plot_r2_path(const trailblaze::path<TState>& path, renderer& renderer_backend,
-                         std::string title = "Path (R^2)") {
+                         std::string_view title = "Path (R^2)") {
   static_assert(trailblaze::has_xy_v<TState>,
                 "plot_r2_path requires a state with members x and y.");
   scene scene_with_path;
-  build_scene_from_path(path, &scene_with_path);
-  render_scene(scene_with_path, renderer_backend, 1000, 800, std::move(title));
+  build_scene_from_path(path, scene_with_path);
+  render_scene(scene_with_path, renderer_backend, canvas_dimension(1000, 800), title);
 }
 
 template <typename TState>
 inline void plot_se2_path(const trailblaze::path<TState>& path, renderer& renderer_backend,
-                          std::string title = "Path (SE(2))") {
+                          std::string_view title = "Path (SE(2))") {
   static_assert(trailblaze::has_xy_v<TState> && trailblaze::has_yaw_v<TState>,
                 "plot_se2_path requires a state with x, y, yaw.");
   scene scene_with_path;
-  build_scene_from_path_se2(path, &scene_with_path);
-  render_scene(scene_with_path, renderer_backend, 1000, 800, std::move(title));
+  build_scene_from_path_se2(path, scene_with_path);
+  render_scene(scene_with_path, renderer_backend, canvas_dimension(1000, 800), title);
 }
 
 } // namespace trailblaze::plot

@@ -10,54 +10,65 @@
 #include "trailblaze/state_traits.h"
 // plotting related
 #include "trailblaze/plot/scene.h"
+#include "trailblaze/plot/scene_options.h"
 
 namespace trailblaze::plot {
 
-// ----- R^2: requires x,y -----------------------------------------------------
-
+/** Builds a scene containing information from a path.
+ *  @tparam TState The state type which must satisfy trait @e has_xy_v.
+ *  @param path The path to plot
+ *  @param scene The scene to append data to.
+ *  @param arrow_len (Reserved for future use; currently unused.)
+ *  @param stride The sample stride. Only takes every n samples from the path into the
+ *         scene. Values < 1 are treated as 1.
+ */
 template <typename TState>
-typename std::enable_if<trailblaze::has_xy_v<TState>, void>::type
-build_scene_from_path(const path<TState>& path, scene* scene, double arrow_len = 0.25,
-                      std::size_t every_n = 10) {
+typename std::enable_if_t<trailblaze::has_xy_v<TState>, void>
+build_scene_from_path(const path<TState>& path, scene& scene,
+                      arrow_length arrow_len = arrow_length(0.25),
+                      sample_stride stride = sample_stride(10)) {
   polyline_2d polyline;
   polyline.pts.reserve(path.size());
-  if (every_n == 0) {
-    every_n = 1;
+  // Use all samples in case there are too few.
+  if (path.size() < stride.value) {
+    stride.value = 1;
   }
-  if (path.size() < every_n) {
-    every_n = 1;
-  }
-  for (std::size_t i = 0; i < path.size(); i += every_n) {
+  for (std::size_t i = 0; i < path.size(); i += stride.value) {
     const auto& state = path[i];
     polyline.pts.push_back({state.x, state.y});
   }
-  scene->polylines.push_back(std::move(polyline));
+  scene.polylines.push_back(std::move(polyline));
 }
 
-// ----- SE(2): requires x,y,yaw  ----------------------------------------------
-
+/** Builds a scene containing information from a path.
+ *  @tparam TState The state type which must satisfy trait @e has_xy_v and @e has_yaw_v.
+ *  @param path The path to plot
+ *  @param scene The scene to append data to.
+ *  @param arrow_len Length of arrows used to indicate the orientation (from yaw values).
+ *  @param every_n The sample stride. Only takes every n samples from the path into the
+ *         scene. Values < 1 are treated as 1.
+ */
 template <typename TState>
 typename std::enable_if_t<trailblaze::has_xy_v<TState> && trailblaze::has_yaw_v<TState>, void>
-build_scene_from_path_se2(const trailblaze::path<TState>& path, scene* scene,
-                          double arrow_len = 0.25, std::size_t every_n = 10) {
-  // reuse the R^2 polyline
-  build_scene_from_path(path, scene);
-
-  if (every_n == 0) {
-    every_n = 1;
+build_scene_from_path_se2(const trailblaze::path<TState>& path, scene& scene,
+                          arrow_length arrow_len = arrow_length(0.25),
+                          sample_stride stride = sample_stride(10)) {
+  // Use all samples in case there are too few.
+  if (path.size() < stride.value) {
+    stride.value = 1;
   }
-  if (path.size() < every_n) {
-    every_n = 1;
-  }
-  for (std::size_t i = 0; i < path.size(); i += every_n) {
+  // for x & y values
+  build_scene_from_path(path, scene, arrow_len, stride);
+  // for yaw values
+  for (std::size_t i = 0; i < path.size(); i += stride.value) {
     const auto& state = path[i];
     const double cos = std::cos(state.yaw);
     const double sin = std::sin(state.yaw);
     arrow_2d arrow;
     arrow.p = {state.x, state.y};
-    arrow.q = {state.x + arrow_len * cos, state.y + arrow_len * sin};
-    arrow.head_len = arrow_len * 0.25;
-    scene->arrows.push_back(std::move(arrow));
+    arrow.q = {state.x + arrow_len.value * cos, state.y + arrow_len.value * sin};
+    arrow.head_length = arrow_len.value * 0.25;
+    scene.arrows.push_back(arrow);
   }
 }
 

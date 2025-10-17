@@ -8,6 +8,7 @@
 
 #include "trailblaze/interval.h"
 #include "trailblaze/plot/scene.h"
+#include "trailblaze/plot/scene_options.h"
 
 namespace trailblaze::plot {
 
@@ -21,23 +22,54 @@ public:
   renderer& operator=(renderer&& other) = default;
 
   /** Starts a figure
-   *  @param width_px Canvas width in pixel
-   *  @param height_px Canvas height in pixel
+   *  @param dim Canvas dimensions in pixels
    */
-  virtual void begin_figure(int width_px = 1000, int height_px = 800) = 0;
+  virtual void begin_figure(const canvas_dimension& dim = canvas_dimension(1000, 800)) = 0;
 
   /// Ends a figure
   virtual void end_figure() = 0;
 
-  // Drawing
-  virtual void draw(const polyline_2d& pl) = 0;
-  virtual void draw(const polygon_2d& pg) = 0;
-  virtual void draw(const arrow_2d& ar) = 0;
-  virtual void draw(const text_2d& t) = 0;
+  /* --------------------------------------------------------------
+   *  Drawing of primitives
+   * -------------------------------------------------------------- */
 
-  // View / styling helpers (optional, no-ops by default)
+  /** Draws a polyline on the canvas.
+   *  @param polyline The polyline to draw.
+   */
+  virtual void draw(const polyline_2d& polyline) = 0;
+
+  /** Draws a polygon on the canvas.
+   *  @param polygon The polygon to draw.
+   */
+  virtual void draw(const polygon_2d& polygon) = 0;
+
+  /** Draws a arrow on the canvas.
+   *  @param arrow The arrow to draw.
+   */
+  virtual void draw(const arrow_2d& arrow) = 0;
+
+  /** Draws a arrow on the canvas.
+   *  @param arrow The arrow to draw.
+   */
+  virtual void draw(const text_2d& text) = 0;
+
+  /* --------------------------------------------------------------
+   *  View / styling helpers
+   * -------------------------------------------------------------- */
+
+  /** Set the plot title.
+   *
+   *  The title is optional, all backends have to check if the title is an empty string
+   *  and in this case omit title plotting, including related formatting commands.
+   */
   virtual void set_title(std::string_view title) {}
 
+  /** Allows setting the aspect ratio of the axes so that one unit in the y-data
+   *  coordinates is scaled to be the same size as one unit in the x-data coordinates,
+   *  ensuring that shapes like circles appear undistorted.
+   *
+   *  @param equal Enables fix aspect ratio if @c true.
+   */
   virtual void set_axis_equal(bool equal = true) {}
 
   virtual void set_x_lim(const interval<double>& x_range) {}

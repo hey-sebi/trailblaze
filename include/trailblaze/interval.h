@@ -5,12 +5,28 @@
  * ------------------------------------------------------------------------- */
 #pragma once
 
+#include <stdexcept>
+
 namespace trailblaze {
 
+/// Models an interval. Bounds are included.
 template <typename T>
 struct interval {
-  interval(const T& lower, const T& upper) : lower_bound(lower), upper_bound(upper) {}
+  /** Constructor
+   *  @param lower The lower bound of the interval.
+   *  @param upper The upper bound of the interval.
+   *  @throws std::invalid_argument if @p lower > upper.
+   */
+  interval(const T& lower, const T& upper) // NOLINT
+      : lower_bound(lower), upper_bound(upper) {
+    if (lower > upper) {
+      throw std::invalid_argument("lower bound of the interval is greater than the upper bound!");
+    }
+  }
+
+  /// The lower bound of the interval.
   T lower_bound;
+  /// The upper bound of the interval.
   T upper_bound;
 };
 
