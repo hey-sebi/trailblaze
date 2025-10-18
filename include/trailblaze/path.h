@@ -8,10 +8,9 @@
 #include <memory_resource>
 #include <stdexcept>
 #include <string>
-#include <vector>
 
 #include "trailblaze/array_of_struct_storage.h"
-#include "trailblaze/backport/span.h"
+#include "trailblaze/span.h"
 #include "trailblaze/type_traits.h"
 
 namespace trailblaze {
@@ -27,6 +26,12 @@ public:
   using value_type = TState;
   using allocator_type = Allocator;
 
+  /**
+   * @brief Constructor
+   *
+   * @param allocator An allocator that is used to acquire/release memory and to construct/destroy
+   *        the elements in that memory.
+   */
   explicit path(const Allocator& allocator = Allocator()) : storage_(allocator) {}
 
   [[__nodiscard__]] std::size_t size() const noexcept {
@@ -45,6 +50,11 @@ public:
     return storage_.data();
   }
 
+  /**
+   * @brief provides access to the states in the path
+   *
+   * @return a span onto the whole path
+   */
   [[__nodiscard__]] span<TState> states() noexcept {
     return {data(), size()};
   }

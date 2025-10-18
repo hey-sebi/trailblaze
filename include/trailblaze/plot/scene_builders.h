@@ -15,7 +15,7 @@
 namespace trailblaze::plot {
 
 /** Builds a scene containing information from a path.
- *  @tparam TState The state type which must satisfy trait @e has_xy_v.
+ *  @tparam TState The state type which must satisfy the predicate @e has_xy_v.
  *  @param path The path to plot
  *  @param scene The scene to append data to.
  *  @param arrow_len (Reserved for future use; currently unused.)
@@ -41,7 +41,8 @@ build_scene_from_path(const path<TState>& path, scene& scene,
 }
 
 /** Builds a scene containing information from a path.
- *  @tparam TState The state type which must satisfy trait @e has_xy_v and @e has_yaw_v.
+ *  @tparam TState The state type which must satisfy the predicates @e has_xy_v
+ *          and @e has_yaw_v.
  *  @param path The path to plot
  *  @param scene The scene to append data to.
  *  @param arrow_len Length of arrows used to indicate the orientation (from yaw values).

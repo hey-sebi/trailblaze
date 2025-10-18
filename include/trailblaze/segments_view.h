@@ -6,7 +6,7 @@
 #include <cstddef>
 #include <utility>
 
-#include "trailblaze/backport/span.h"
+#include "trailblaze/span.h"
 
 namespace trailblaze {
 

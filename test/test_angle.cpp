@@ -5,7 +5,6 @@
 // external
 #include <gtest/gtest.h>
 
-#include "trailblaze/backport/numbers.h"
 #include "trailblaze/math/angle.h"
 #include "trailblaze/math/numbers.h"
 

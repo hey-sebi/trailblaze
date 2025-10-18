@@ -5,8 +5,8 @@
 #pragma once
 #include <cmath>
 
-#include "trailblaze/backport/span.h"
 #include "trailblaze/math/numbers.h"
+#include "trailblaze/span.h"
 #include "trailblaze/state_traits.h"
 
 namespace trailblaze {
@@ -34,20 +34,25 @@ double length_xy(span<const TState> path_span) {
   return length;
 }
 
-template <typename Logger, typename StateR3>
-void normalize_yaw(span<StateR3> p) {
-  static_assert(state_traits<StateR3>::has_yaw, "normalize_yaw: S must have member yaw");
-  TRAILBLAZE_LOG_DBG(Logger, ("normalize_yaw: N=", p.size()));
+/** Normalizes the yaw values of states.
+ *  @tparam TState State type. Must satisfy the predicate @e has_yaw_v.
+ *  @param path_span The states to work on.
+ */
+template <typename Logger, typename TState>
+void normalize_yaw(span<TState> path_span) {
+  static_assert(state_traits<TState>::has_yaw, "normalize_yaw: S must have member yaw");
+  TRAILBLAZE_LOG_DBG(Logger, ("normalize_yaw: N=", path_span.size()));
   using numbers::pi;
   using numbers::two_pi;
-  for (auto& s : p) {
-    double y = s.yaw;
+  for (auto& state : path_span) {
+    double y = state.yaw;
     if (y >= pi || y < -pi) {
       y = std::fmod(y + pi, two_pi);
-      if (y < 0)
+      if (y < 0) {
         y += pi;
+      }
       y -= pi;
-      s.yaw = y;
+      state.yaw = y;
     }
   }
 }

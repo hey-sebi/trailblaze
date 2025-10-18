@@ -5,7 +5,7 @@
 #include <iterator>
 #include <vector>
 
-#include "trailblaze/alg_resample.h"
+#include "trailblaze/algorithm/resample.h"
 #include "trailblaze/logging.h"
 #include "trailblaze/path.h"
 #include "trailblaze/state_spaces/state_space_se2.h"

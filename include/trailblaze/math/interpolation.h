@@ -22,7 +22,7 @@ namespace trailblaze {
  *         For t = 0, interpolation returns a.
  *         For t = 1, interpolation returns b.
  *         All other values extrapolate.
- *  @returns the interpolated value.
+ *  @return the interpolated value.
  */
 struct scalar_interpolator {
   template <typename T>
