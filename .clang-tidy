@@ -17,7 +17,8 @@ Checks: >
 WarningsAsErrors: ''
 HeaderFilterRegex: '(^|.*/)(src/|include/)'
 FormatStyle: none
-
+# exclude 3rd party fetch_content libraries
+ExcludeHeaderFilterRegex: '(^|.*/)_deps/'
 CheckOptions:
   # ===== Parameters & variables: allow some 1-char and 2-char names =====
   - key: readability-identifier-length.MinimumParameterNameLength
@@ -61,4 +62,3 @@ CheckOptions:
   # ===== Include cleaner (clang-tidy) =====
   - { key: misc-include-cleaner.UnusedIncludes,  value: 'true' }
   - { key: misc-include-cleaner.MissingIncludes, value: 'true' }
-  # - { key: misc-include-cleaner.IgnoreHeaders, value: 'third_party/.*;_deps/.*' }  # optional
