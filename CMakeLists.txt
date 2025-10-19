@@ -30,8 +30,10 @@ option(TRAILBLAZE_ENABLE_TESTING "Activates support for unit tests" ON)
 # If unit test support is ON: decide if you want provided or external GTest
 option(TRAILBLAZE_USE_EXTERNAL_GTEST "Use preinstalled/externally provided GTest" OFF)
 option(TRAILBLAZE_ENABLE_CCACHE "Enables CCache integration" ON)
-option(TRAILBLAZE_ENABLE_CLANG_TIDY "Enables Clang-Tidy integration" ON)
+option(TRAILBLAZE_ENABLE_CLANG_TIDY "Enables Clang-Tidy integration" OFF)
 option(TRAILBLAZE_ENABLE_DOXYGEN "Enables doxygen documentation generation" ON)
+option(TRAILBLAZE_WITH_FMT "Enable fmt-based logging API" ON)
+option(TRAILBLAZE_USE_EXTERNAL_FMT "Use preinstalled/externally provided fmt" OFF)
 
 # Set the project wide C++ standard.
 set(CMAKE_CXX_STANDARD 17)
@@ -153,6 +155,24 @@ if(TRAILBLAZE_ENABLE_CCACHE)
 endif()
 
 # ---------------------------------------------------------------------------
+#  Setup for FMT
+# ---------------------------------------------------------------------------
+if (TRAILBLAZE_WITH_FMT)
+  if (TRAILBLAZE_USE_SYSTEM_FMT)
+    find_package(fmt REQUIRED)
+  else()
+    include(FetchContent)
+    FetchContent_Declare(
+      fmt
+      GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+      GIT_TAG        11.0.2
+      GIT_SHALLOW    TRUE
+    )
+    FetchContent_MakeAvailable(fmt)
+  endif()
+endif()
+
+# ---------------------------------------------------------------------------
 #  Compiler settings
 # ---------------------------------------------------------------------------
 
@@ -206,8 +226,16 @@ target_include_directories(trailblaze
 target_compile_definitions(trailblaze
   INTERFACE
   $<$<CXX_COMPILER_ID:MSVC>:_USE_MATH_DEFINES > # TODO: move to MSVC toolchain
+  $<$<BOOL:${TRAILBLAZE_WITH_FMT}>:TRAILBLAZE_WITH_FMT=1>
+  $<$<NOT:$<BOOL:${TRAILBLAZE_WITH_FMT}>>:TRAILBLAZE_WITH_FMT=0>
 )
 
+if (TRAILBLAZE_WITH_FMT)
+  target_link_libraries(trailblaze
+    INTERFACE
+    fmt::fmt
+  )
+endif()
 
 # list(APPEND INSTALL_TARGETS todo)
 

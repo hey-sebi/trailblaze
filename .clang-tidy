@@ -18,7 +18,7 @@ WarningsAsErrors: ''
 HeaderFilterRegex: '(^|.*/)(src/|include/)'
 FormatStyle: none
 # exclude 3rd party fetch_content libraries
-ExcludeHeaderFilterRegex: '(^|.*/)_deps/'
+#ExcludeHeaderFilterRegex: '(^|.*/)_deps/'
 CheckOptions:
   # ===== Parameters & variables: allow some 1-char and 2-char names =====
   - key: readability-identifier-length.MinimumParameterNameLength

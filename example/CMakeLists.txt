@@ -7,5 +7,6 @@ target_link_libraries(how_to_use
   PRIVATE trailblaze
 )
 
-add_subdirectory(plot)
 add_subdirectory(generate)
+add_subdirectory(logging)
+add_subdirectory(plot)
