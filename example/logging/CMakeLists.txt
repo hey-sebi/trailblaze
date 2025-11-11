@@ -3,13 +3,13 @@ add_executable(logging_example
 )
 
 # logging with trailblaze's fmt API:
-target_compile_definitions(logging_example 
+target_compile_definitions(logging_example
   PRIVATE 
   # Select the logging style
   TRAILBLAZE_WITH_FMT=1
 )
 
-target_link_libraries(logging_example 
+target_link_libraries(logging_example
   PRIVATE
   trailblaze
   fmt::fmt
@@ -22,10 +22,12 @@ target_include_directories(logging_example
 
 
 # Select the backend type at compile time:
+# You can use this as an example on how to inject your own
+# logging backend into Trailblaze.
 target_compile_definitions(logging_example
   PRIVATE 
   # The header that contains the custom logger adapter
   TRAILBLAZE_LOG_BACKEND_HEADER=\"custom_logger.h\"
   # The fully qualified logger name 
-  TRAILBLAZE_LOG_BACKEND=::app::custom_logger
+  TRAILBLAZE_LOG_BACKEND=::example::custom_logger
 )

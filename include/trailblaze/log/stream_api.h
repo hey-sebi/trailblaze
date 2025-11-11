@@ -27,14 +27,14 @@ struct null_stream_proxy {
 };
 
 /**
- * @brief Streaming proxy that buffers to an ostringstream and flushes on destruction.
+ * @brief Streaming proxy that buffers to an ostringstream.
  *
  * Instantiated only when the requested level is compile-time enabled on the backend.
  * Flush sends the buffered message to the best available backend sink.
  *
- * @tparam B Selected backend type.
+ * @tparam TBackend Selected backend type.
  */
-template <class B>
+template <class TBackend>
 class stream_proxy {
 public:
   explicit stream_proxy(level lvl) : lvl_(lvl) {}
@@ -51,9 +51,9 @@ public:
 
   ~stream_proxy() noexcept {
     const std::string& message = buf_ = oss_.str();
-    if constexpr (detail::has_string_sink_loc_v<B>) {
+    if constexpr (detail::has_string_sink_loc_v<TBackend>) {
       logger().log(lvl_, message, source_location::current());
-    } else if constexpr (detail::has_string_sink_v<B>) {
+    } else if constexpr (detail::has_string_sink_v<TBackend>) {
       logger().log(lvl_, message);
     } else {
       /* No compatible sink available: drop. */
@@ -72,10 +72,11 @@ private:
  * When the backend disables the level at compile time, returns a no-op proxy
  * whose operator<< is compiled out.
  */
-inline auto log_stream(level lvl) {
+template <level LogLevel>
+inline auto log_stream() {
   using logging_backend = ::trailblaze::log_config::backend;
-  if constexpr (detail::level_enabled<logging_backend>(lvl)) {
-    return stream_proxy<logging_backend>(lvl);
+  if constexpr (detail::level_enabled<logging_backend>(LogLevel)) {
+    return stream_proxy<logging_backend>(LogLevel);
   } else {
     return null_stream_proxy{};
   }

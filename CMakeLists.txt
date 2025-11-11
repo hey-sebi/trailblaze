@@ -196,6 +196,7 @@ if (ENABLE_UBSAN AND NOT MSVC)
   add_link_options(-fsanitize=undefined)
 endif()
 
+
 # ---------------------------------------------------------------------------
 #  Setup summary
 # ---------------------------------------------------------------------------
@@ -228,6 +229,13 @@ target_compile_definitions(trailblaze
   $<$<CXX_COMPILER_ID:MSVC>:_USE_MATH_DEFINES > # TODO: move to MSVC toolchain
   $<$<BOOL:${TRAILBLAZE_WITH_FMT}>:TRAILBLAZE_WITH_FMT=1>
   $<$<NOT:$<BOOL:${TRAILBLAZE_WITH_FMT}>>:TRAILBLAZE_WITH_FMT=0>
+)
+
+target_compile_definitions(trailblaze
+  INTERFACE
+  # For logging: source locations are generated based to these directories
+  TRAILBLAZE_SOURCE_DIR="${CMAKE_SOURCE_DIR}/src/"
+  TRAILBLAZE_INCLUDE_DIR="${CMAKE_SOURCE_DIR}/include/"
 )
 
 if (TRAILBLAZE_WITH_FMT)

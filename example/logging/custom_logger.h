@@ -2,19 +2,19 @@
  * Copyright(c) 2024-present, Sebastian Klemm & contributors.
  * Distributed under the MIT License (http://opensource.org/licenses/MIT)
  * ------------------------------------------------------------------------- */
-#include <cstdio>
+#include <iostream>
 #include <string_view>
 
 #include "trailblaze/log/level.h"
 #include "trailblaze/log/source_location.h"
 
-namespace app {
+namespace example {
 
 /**
- * @brief Minimal example logging backend printing to stderr.
+ * @brief Minimal example logging backend printing to std::cout.
  *
- * Enable/disable levels here at compile time. Disabled levels are compiled out
- * from call sites in trailblaze when this backend is active.
+ *  Enable/disable levels here at compile time. Disabled levels are compiled out
+ *  from call sites in trailblaze when this backend is active.
  */
 struct custom_logger {
   static constexpr bool level_trace_enabled = true;
@@ -26,16 +26,13 @@ struct custom_logger {
 
   /// @brief Log a message without source location.
   static void log(::trailblaze::log::level lvl, std::string_view msg) noexcept {
-    std::fputs(prefix(lvl), stderr);
-    std::fwrite(msg.data(), 1, msg.size(), stderr);
-    std::fputc('\n', stderr);
+    std::cout << prefix(lvl) << msg.data() << msg << "\n";
   }
 
   /// @brief Log a message with source location.
   static void log(::trailblaze::log::level lvl, std::string_view msg,
                   ::trailblaze::log::source_location loc) noexcept {
-    std::fprintf(stderr, "%s%s (%s:%u)\n", prefix(lvl), std::string(msg).c_str(), loc.file,
-                 loc.line);
+    std::cout << prefix(lvl) << msg << " (" << loc.file << ":" << loc.line << ")\n";
   }
 
 private:
@@ -66,4 +63,4 @@ private:
   }
 };
 
-} // namespace app
+} // namespace example

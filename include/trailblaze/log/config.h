@@ -4,10 +4,6 @@
  * ------------------------------------------------------------------------- */
 #pragma once
 
-#include "trailblaze/log/null_logger.h" // NOLINT
-
-namespace trailblaze::log_config {
-
 /**
  * @brief Compile-time selection of the active logging backend.
  *
@@ -24,9 +20,14 @@ namespace trailblaze::log_config {
 
 #ifdef TRAILBLAZE_LOG_BACKEND_HEADER
 #include TRAILBLAZE_LOG_BACKEND_HEADER
+#else
+#include "trailblaze/log/null_logger.h"
 #endif
 
+namespace trailblaze::log_config {
+
 #ifndef TRAILBLAZE_LOG_BACKEND
+// By default we use a null logger that is compiled away.
 using backend = ::trailblaze::log::null_logger;
 #else
 using backend = TRAILBLAZE_LOG_BACKEND;

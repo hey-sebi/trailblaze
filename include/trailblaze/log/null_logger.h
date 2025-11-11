@@ -15,7 +15,7 @@ namespace trailblaze::log {
  * @brief Compile-time disabled backend: all levels are off.
  *
  * When this backend is selected, guarded logging sites are
- * not instantiated, yielding true "null overhead".
+ * not instantiated, yielding true null overhead.
  */
 struct null_logger {
   static constexpr bool level_trace_enabled = false;
@@ -25,11 +25,16 @@ struct null_logger {
   static constexpr bool level_error_enabled = false;
   static constexpr bool level_critical_enabled = false;
 
-  /// @brief String sink (never called because all levels are disabled).
-  void log(level log_level, std::string_view message) noexcept {}
+  /** @brief String sink
+   *  @note This function is never actually called because all levels are disabled.
+   */
+  void log(trailblaze::log::level log_level, std::string_view message) noexcept {}
 
-  /// @brief String sink with source location (never called).
-  void log(level log_level, std::string_view message, source_location origin) noexcept {}
+  /** @brief String sink with source location.
+   *  @note This function is never actually called because all levels are disabled.
+   */
+  void log(level log_level, std::string_view message,
+           trailblaze::log::source_location origin) noexcept {}
 };
 
 } // namespace trailblaze::log

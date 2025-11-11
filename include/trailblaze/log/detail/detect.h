@@ -10,6 +10,13 @@
 #include "trailblaze/log/level.h"
 #include "trailblaze/log/source_location.h"
 
+/** @file detect.h
+ *
+ *  Contains traits to detect which logging capabilities exist.
+ *  Depending on the eventually user-supplied logger, we can
+ *  detect different features automatically.
+ */
+
 namespace trailblaze::log::detail {
 
 /**
