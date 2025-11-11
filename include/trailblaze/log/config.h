@@ -7,15 +7,11 @@
 /**
  * @brief Compile-time selection of the active logging backend.
  *
- * You can either:
- *  - Define TRAILBLAZE_LOG_BACKEND to a fully-qualified type (e.g. ::app::my_logger)
- *    and ensure that type is declared before including any Trailblaze log headers, or
- *  - Define TRAILBLAZE_LOG_BACKEND_HEADER to a header path (as a string literal)
- *    so Trailblaze includes it before forming the alias.
+ * In order to integrate a custom logging backend into Trailblaze, you need to specify the
+ * header that contains a backend implementation and the full qualified name of the
+ * logger.
  *
- * Examples:
- *   -DTRAILBLAZE_LOG_BACKEND_HEADER=\"app/my_logger.h\"
- *   -DTRAILBLAZE_LOG_BACKEND=::app::my_logger
+ * See the logging example and the associacted CMakeLists.txt for more information!
  */
 
 #ifdef TRAILBLAZE_LOG_BACKEND_HEADER
