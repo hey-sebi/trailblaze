@@ -7,7 +7,6 @@
 #include <limits>
 #include <type_traits>
 
-#include "trailblaze/logging.h"
 #include "trailblaze/span.h"
 #include "trailblaze/state_space.h"
 
@@ -32,9 +31,6 @@ namespace trailblaze {
  *  The function writes resampled states to the output iterator @p out. The input and
  *  output sequences always include both the first and last states.
  *
- *  Logging (via @p TLogger) can be used for debugging or performance tracing.
- *
- *  @tparam TLogger Logging backend type used with TRAILBLAZE_LOG_DBG.
  *  @tparam TState State type representing an element of the path.
  *  @tparam TMetric Callable type with signature
  *          <tt>double(const TState&, const TState&)</tt>.
@@ -58,8 +54,7 @@ namespace trailblaze {
  *  @warning If @p metric returns zero for consecutive distinct states, no intermediate
  *           samples will be produced for that segment.
  */
-template <typename TLogger, typename TState, typename TMetric, typename TInterpolation,
-          typename OutIt>
+template <typename TState, typename TMetric, typename TInterpolation, typename OutIt>
 std::size_t resample(span<const TState> path_span, double sample_density, OutIt out, TMetric metric,
                      TInterpolation interpolator) {
   if (path_span.empty()) {
@@ -72,7 +67,6 @@ std::size_t resample(span<const TState> path_span, double sample_density, OutIt 
   }
 
   if (sample_density <= 0.0) {
-    TRAILBLAZE_LOG_DBG(TLogger, ("resample: nonpositive sample_density"));
     *out++ = path_span.front();
     *out++ = path_span.back();
     return 2;
@@ -111,10 +105,6 @@ std::size_t resample(span<const TState> path_span, double sample_density, OutIt 
 
   *out++ = path_span.back();
   ++written_count;
-
-  TRAILBLAZE_LOG_DBG(TLogger, ("resample: in=", path_span.size(), " out=", written_count,
-                               " sample_density=", sample_density));
-
   return written_count;
 }
 
@@ -125,7 +115,6 @@ std::size_t resample(span<const TState> path_span, double sample_density, OutIt 
  *  to compute segment lengths and interpolate between states, respectively. See the
  *  primary overload for algorithm details and guarantees.
  *
- *  @tparam TLogger Logger backend used by the primary overload.
  *  @tparam TState State element type of the path.
  *  @tparam OutIt Output iterator receiving resampled states.
  *
@@ -136,31 +125,30 @@ std::size_t resample(span<const TState> path_span, double sample_density, OutIt 
  *
  *  @returns The Number of states written to @p out.
  */
-template <typename TLogger, typename TState, typename OutIt>
+template <typename TState, typename OutIt>
 std::size_t resample(span<const TState> path_span, double sample_density, OutIt out) {
   using metric = typename state_space<TState>::metric_type;
   using iterpolation = typename state_space<TState>::interpolation_type;
-  return resample<TLogger>(path_span, sample_density, out, metric{}, iterpolation{});
+  return resample(path_span, sample_density, out, metric{}, iterpolation{});
 }
 
 // forwarding overload to help template deduction when caller has span<TState>.
-template <typename TLogger, typename TState, typename TMetric, typename TInterpolation,
-          typename OutIt>
+template <typename TState, typename TMetric, typename TInterpolation, typename OutIt>
 std::size_t resample(span<TState> path_span, double sample_density, OutIt out, TMetric metric,
                      TInterpolation interpolator) {
   using mut_state = std::remove_const_t<TState>;
-  return resample<TLogger>(
+  return resample(
       span<const mut_state>(static_cast<const mut_state*>(path_span.data()), path_span.size()),
       sample_density, out, metric, interpolator);
 }
 
 // forwarding overload using state_space Metric and Interpolation
-template <typename TLogger, typename TState, typename OutIt>
+template <typename TState, typename OutIt>
 std::size_t resample(span<TState> path_span, double sample_density, OutIt out) {
   using mut_state = std::remove_const_t<TState>;
   using metric = typename state_space<mut_state>::metric_type;
   using interpolation = typename state_space<mut_state>::interpolation_type;
-  return resample<TLogger>(
+  return resample(
       span<const mut_state>(static_cast<const mut_state*>(path_span.data()), path_span.size()),
       sample_density, out, metric{}, interpolation{});
 }

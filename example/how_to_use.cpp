@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "trailblaze/algorithm/resample.h"
-#include "trailblaze/logging.h"
 #include "trailblaze/path.h"
 #include "trailblaze/state_spaces/state_space_se2.h"
 
@@ -24,7 +23,7 @@ void run_example() {
   out.reserve(path.size() * 2);
   auto insert_it = std::back_inserter(out);
   const double sample_density = 0.1;
-  trailblaze::resample<trailblaze::null_logger>(path.states(), sample_density, insert_it);
+  trailblaze::resample(path.states(), sample_density, insert_it);
 }
 
 int main(int argc, char const* argv[]) {
