@@ -41,7 +41,6 @@ double length_xy(span<const TState> path_span) {
 template <typename Logger, typename TState>
 void normalize_yaw(span<TState> path_span) {
   static_assert(state_traits<TState>::has_yaw, "normalize_yaw: S must have member yaw");
-  TRAILBLAZE_LOG_DBG(Logger, ("normalize_yaw: N=", path_span.size()));
   using numbers::pi;
   using numbers::two_pi;
   for (auto& state : path_span) {
