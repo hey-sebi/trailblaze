@@ -45,7 +45,7 @@ constexpr const char* trim_prefix(const char* str, const char* prefix) noexcept 
     return str;
   }
 
-  std::size_t len = std::strlen(prefix);
+  const std::size_t len = std::strlen(prefix);
   // Return the pointer after the prefix
   // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
   return &(str[len]);
